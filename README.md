@@ -12,19 +12,28 @@ Quickinfo.io attempts to fill the gap when the search engine doesn't provide an 
 All the answers on http://quickinfo.io are instant as-you-type results, no need for the search button.
 
 Supported answers for now:
- 1. Unit conversions:
-  - Weight: pounds to kg and vice versa (`190 pounds`, `200lb`, `43 kg in lb`)
-  - Temperature: fahrenheit/celsius (`75f`, `75 f`, `75 fahrenheit`, `23c`, `23 c`, `23 c to f`)
-  - Distance: `12 miles`, `100 miles in km`
-  - Speed
-  - Volume
-  - Area: `1670 sq.ft`
-  - Fuel efficiency (`29mpg`)
- 1. Hex/decimal (just type a number)
- 1. Ascii table `ascii`
- 1. Color conversions - convert an RGB triplet to Hex color or hex color to RGB (`23 145 175`, `#eeaaf0`)
- 
-I will consider accepting very high quality pull requests that contribute new answer/solutions or fix bugs. In each case I will decide whether the PR adds a solution that fits the spirit of what I want to achieve. Sorry if I decline too specific or exotic functionality.
+1. Unit conversions:
+   1. Weight: pounds to kg and vice versa (`190 pounds`, `200lb`, `43 kg in lb`)
+   1. Temperature: fahrenheit/celsius (`75f`, `75 f`, `75 fahrenheit`, `23c`, `23 c`, `23 c to f`)
+   1. Distance: `12 miles`, `100 miles in km`
+   1. Speed
+   1. Volume
+   1. Area: `1670 sq.ft`
+   1. Fuel efficiency (`29mpg`)
+1. Hex/decimal (just type a number)
+1. Ascii table `ascii`
+1. Color conversions - convert an RGB triplet to Hex color or hex color to RGB (`23 145 175`, `#eeaaf0`)
+1. Factor an integer `2520`
+1. Generate a random Guid `guid`
+1. My IP address `ip`
+1. Math/arithmetic expressions `(24 * 365) * 4 - 1`, `22/7 - pi`
+1. Quick sum/average/product of a list of numbers, sort a list (separated by space or comma) `3 7 21 3 3 2 11`
+1. Unicode: type a codepoint to see what char it is: `U+2021` `\u3333`
+1. Url decode: `2%20%2B%203` shows the original string
 
-Longer term I want to think about letting people easily add their own answers, but this is far out in the future and I'm not sure I have the time and resources to maintain that.
+Type `?` for help.
+
+Feel free to open issues to suggest/propose ideas. If you want to contribute a PR, please open an issue first so we can discuss. I will consider accepting high quality pull requests, however in each case I will decide whether the PR adds a solution that fits the spirit of what I want to achieve. Sorry if I decline too specific or exotic functionality. I also can't add answers that won't be useful to the majority of users.
+
+Longer term I want to think about letting people easily add their own answers (and store them in their own private account, like OneNote), but this is far out in the future and I'm not sure I have the time and resources to maintain that.
 
