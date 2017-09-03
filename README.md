@@ -27,7 +27,7 @@ All the answers on http://quickinfo.io are instant as-you-type results, no need 
 1. Factor an integer `2520`
 1. Generate a random Guid `guid`
 1. My IP address `ip`
-1. Math/arithmetic expressions `(24 * 365) * 4 - 1`, `22/7 - pi`
+1. Math/arithmetic expressions `(24 * 365) * 4 - 1`, `22/7 - pi`, `rnd`, `Random(100)`
 1. Quick sum/average/product of a list of numbers, sort a list (separated by space or comma) `3 7 21 3 3 2 11`
 1. Unicode: type a codepoint to see what char it is: `U+2021` `\u3333`
 1. Url decode: `2%20%2B%203` shows the original string (fun exercise: `2%2525252520%252525252B%25252525205`)
