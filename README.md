@@ -35,6 +35,14 @@ All the answers on http://quickinfo.io are instant as-you-type results, no need 
 
 Type `?` for help.
 
+## Historical information
+
+It all started when I caught myself using the Windows Calc to convert a hex color to RGB. I thought to myself: _this is ridiculous_, I'm sitting in front of a supercomputer and punching buttons one by one instead of getting an immediate answer as I type it in.
+
+I kept catching myself, _how do I generate a random Guid from command line_? _Which is a good unit-converter app without ads_? _What is 130000 * (96 - 36) / 192_? I've realized that there are apps and websites to answer all these, but it will take me longer to find a good app than to calculate the answer myself.
+
+So I got into the mindset of "does this question have a single, well defined, computable answer"? "Can I type the question into a simple search box and expect a computer to give an immediate result?" Turns out, this class of questions is more expansive than one might think. I'm thinking of adding ToString() syntax for DateTime, string.Format cheat sheet, some man pages that I often look up, basically make carefully curated information easily accessible from a simple search box. I think it'll be beneficial to centralize all these little lookup utilities and make it so I can customize and extend it to fit my needs.
+
 ## Contributing
 
 Feel free to open issues to suggest/propose ideas. If you want to contribute a PR, please open an issue first so we can discuss. I will consider accepting high quality pull requests, however in each case I will decide whether the PR adds a solution that fits the spirit of what I want to achieve. Sorry if I decline too specific or exotic functionality. I also can't add answers that won't be useful to the majority of users.
