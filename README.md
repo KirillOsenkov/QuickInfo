@@ -1,7 +1,7 @@
 # http://quickinfo.io
 Extensible set of little one-off features that Google or Bing are missing, such as color and unit conversions, etc.
 
-**[http://quickinfo.io](http://quickinfo.io)**
+## Motivation
 
 There is a class of search engine queries that search engines aren't great at without dedicated support. These queries have exactly one well-defined answer that is computable or readily available. Search engines by default just show a list of (often poor quality and full of ads) websites instead of showing the answer directly as you type.
 
@@ -11,7 +11,8 @@ Quickinfo.io attempts to fill the gap when the search engine doesn't provide an 
 
 All the answers on http://quickinfo.io are instant as-you-type results, no need for the search button.
 
-Supported answers for now:
+## Currently supported answers
+
 1. Unit conversions:
    1. Weight: pounds to kg and vice versa (`190 pounds`, `200lb`, `43 kg in lb`)
    1. Temperature: fahrenheit/celsius (`75f`, `75 f`, `75 fahrenheit`, `23c`, `23 c`, `23 c to f`)
@@ -32,6 +33,8 @@ Supported answers for now:
 1. Url decode: `2%20%2B%203` shows the original string
 
 Type `?` for help.
+
+## Contributing
 
 Feel free to open issues to suggest/propose ideas. If you want to contribute a PR, please open an issue first so we can discuss. I will consider accepting high quality pull requests, however in each case I will decide whether the PR adds a solution that fits the spirit of what I want to achieve. Sorry if I decline too specific or exotic functionality. I also can't add answers that won't be useful to the majority of users.
 
