@@ -17,7 +17,8 @@ namespace QuickInfo
             if (string.Equals(input, "color", StringComparison.OrdinalIgnoreCase) ||
                 string.Equals(input, "colors", StringComparison.OrdinalIgnoreCase))
             {
-                return Div(Img(@"http://kirillosenkov.github.io/images/ColorChartSorted.png"));
+                return RenderColorTable();
+                // return Div(Img(@"http://kirillosenkov.github.io/images/ColorChartSorted.png"));
             }
 
             string knownColor = null;
@@ -82,6 +83,47 @@ namespace QuickInfo
             }
 
             return null;
+        }
+
+        private string RenderColorTable()
+        {
+            var sb = new StringBuilder();
+
+            var swatches = new string[10, 14]
+            {
+                { "Black", "DarkSlateGray", "DarkGreen", "Green", "Olive", "DarkOliveGreen", "SeaGreen", "DarkSeaGreen", "LimeGreen", "YellowGreen", "MediumAquamarine", "LightSeaGreen", "DarkCyan", "Teal" },
+                { "DimGray", "SlateGray", "LightSlateGray", "ForestGreen", "DarkKhaki", "OliveDrab", "MediumSeaGreen", "Chartreuse", "LightGreen", "MediumSpringGreen", "Aquamarine", "Turquoise", "MediumTurquoise", "CadetBlue" },
+                { "Gray", "DarkGray", "Gainsboro", "LightGoldenrodYellow", "Beige", "GreenYellow", "LawnGreen", "Lime", "SpringGreen", "Honeydew", "PaleTurquoise", "LightBlue", "DarkTurquoise", "SteelBlue" },
+                { "Silver", "LightGray", "WhiteSmoke", "Snow", "White", "LemonChiffon", "PaleGreen", "Ivory", "FloralWhite", "MintCream", "LightCyan", "Cyan", "DeepSkyBlue", "CornflowerBlue" },
+                { "Khaki", "BlanchedAlmond", "Bisque", "Cornsilk", "Transparent", "OldLace", "White", "Azure", "GhostWhite", "AliceBlue", "PowderBlue", "LightSkyBlue", "DodgerBlue", "MediumBlue" },
+                { "PaleGoldenrod", "Wheat", "Moccasin", "LightYellow", "PapayaWhip", "PeachPuff", "AntiqueWhite", "SeaShell", "LavenderBlush", "Lavender", "LightSteelBlue", "SkyBlue", "RoyalBlue", "Blue" },
+                { "Yellow", "BurlyWood", "NavajoWhite", "Orange", "Coral", "DarkSalmon", "LightSalmon", "LightPink", "MistyRose", "Linen", "Thistle", "MediumSlateBlue", "SlateBlue", "DarkSlateBlue" },
+                { "Gold", "Tan", "SandyBrown", "DarkOrange", "Tomato", "Salmon", "LightCoral", "RosyBrown", "Violet", "Pink", "Plum", "BlueViolet", "MediumPurple", "DarkBlue" },
+                { "Goldenrod", "Peru", "Chocolate", "OrangeRed", "Firebrick", "Crimson", "IndianRed", "PaleVioletRed", "Orchid", "MediumOrchid", "DarkViolet", "DarkOrchid", "Indigo", "Navy" },
+                { "DarkGoldenrod", "SaddleBrown", "Sienna", "Red", "DarkRed", "Maroon", "Brown", "HotPink", "Magenta", "DeepPink", "MediumVioletRed", "DarkMagenta", "Purple", "MidnightBlue" },
+            };
+
+            sb.AppendLine("<table style='font-size:x-small;border-spacing: 10px'>");
+            for (int row = 0; row < swatches.GetLength(0); row++)
+            {
+                sb.AppendLine("<tr>");
+
+                for (int column = 0; column < swatches.GetLength(1); column++)
+                {
+                    var swatch = swatches[row, column];
+
+                    sb.AppendLine($"<td>");
+                    sb.Append(SearchLink(Div("", $"style=\"background:{swatch};width:50px;height:50px\""), swatch));
+                    sb.Append(Div(swatch));
+                    sb.AppendLine("</td>");
+                }
+
+                sb.AppendLine("</tr>");
+            }
+
+            sb.AppendLine("</table>");
+
+            return sb.ToString();
         }
 
         private string GetResultFromHexString(string hexString)
