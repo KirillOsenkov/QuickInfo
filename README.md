@@ -12,11 +12,19 @@ Quickinfo.io attempts to fill the gap when the search engine doesn't provide an 
 All the answers on http://quickinfo.io are instant as-you-type results, no need for the search button.
 
 Supported answers for now:
- 1. Color conversions - convert an RGB triplet to Hex color or hex color to RGB ("23 145 175", "#eeaaf0")
- 2. Weight conversions - convert pounds to kg and vice versa ("190 pounds", "200lb", "43 kg")
- 3. Temperature conversions - fahrenheit/celsius ("75f", "75 f", "75 fahrenheit", "23c", "23 c")
+ 1. Unit conversions:
+  - Weight: pounds to kg and vice versa (`190 pounds`, `200lb`, `43 kg in lb`)
+  - Temperature: fahrenheit/celsius (`75f`, `75 f`, `75 fahrenheit`, `23c`, `23 c`, `23 c to f`)
+  - Distance: `12 miles`, `100 miles in km`
+  - Speed
+  - Volume
+  - Area: `1670 sq.ft`
+  - Fuel efficiency (`29mpg`)
+ 1. Hex/decimal (just type a number)
+ 1. Ascii table `ascii`
+ 1. Color conversions - convert an RGB triplet to Hex color or hex color to RGB (`23 145 175`, `#eeaaf0`)
  
-Feel free to fork away and host your own modified copies. I will consider accepting very high quality pull requests that contribute new solutions or fix bugs. In each case I will decide whether the PR adds a solution that fits the spirit of what I want to achieve. Sorry if I decline too specific or exotic functionality.
+I will consider accepting very high quality pull requests that contribute new answer/solutions or fix bugs. In each case I will decide whether the PR adds a solution that fits the spirit of what I want to achieve. Sorry if I decline too specific or exotic functionality.
 
-Longer term I want to think about letting people easily add their own answers, but this is far ou in the future.
+Longer term I want to think about letting people easily add their own answers, but this is far out in the future and I'm not sure I have the time and resources to maintain that.
 
