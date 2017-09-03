@@ -23,6 +23,7 @@ All the answers on http://quickinfo.io are instant as-you-type results, no need 
    1. Fuel efficiency (`29mpg`)
 1. Hex/decimal (just type a number)
 1. Ascii table `ascii`
+1. List of colors: `color`, `colors`
 1. Color conversions - convert an RGB triplet to Hex color or hex color to RGB (`23 145 175`, `#eeaaf0`)
 1. Factor an integer `2520`
 1. Generate a random Guid `guid`
