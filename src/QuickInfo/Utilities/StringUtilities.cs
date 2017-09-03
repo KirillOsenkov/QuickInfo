@@ -55,12 +55,14 @@ namespace QuickInfo
 
         public static bool TryParseHex(this string s, out int result)
         {
-            return int.TryParse(s, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out result);
+            bool success = int.TryParse("0" + s, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out result);
+            return success;
         }
 
         public static bool TryParseHex(this string s, out BigInteger result)
         {
-            return BigInteger.TryParse(s, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out result);
+            bool success = BigInteger.TryParse("0" + s, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out result);
+            return success;
         }
 
         public static bool IsPrintable(this char c)
