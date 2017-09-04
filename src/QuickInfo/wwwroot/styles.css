@@ -30,3 +30,11 @@ h1 {
     margin: 20px;
     font-size: 16pt;
 }
+
+.swatch {
+    border: 1px solid transparent;
+}
+
+    .swatch:hover {
+        border: 1px solid black;
+    }

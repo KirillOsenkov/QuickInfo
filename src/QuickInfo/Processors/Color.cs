@@ -113,7 +113,7 @@ namespace QuickInfo
                     var swatch = swatches[row, column];
 
                     sb.AppendLine($"<td>");
-                    sb.Append(SearchLink(Div("", $"style=\"background:{swatch};width:50px;height:50px\""), swatch));
+                    sb.Append(SearchLink(Div("", $"style=\"background:{swatch};width:50px;height:50px\"", "class='swatch'"), swatch));
                     sb.Append(Div(swatch));
                     sb.AppendLine("</td>");
                 }
