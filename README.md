@@ -1,6 +1,8 @@
 # http://quickinfo.io
 Extensible set of little one-off features that Google or Bing are missing, such as color and unit conversions, etc.
 
+![screenshot](https://github.com/KirillOsenkov/QuickInfo/raw/master/docs/ColorChart.png)
+
 ## Motivation
 
 There is a class of search engine queries that search engines aren't great at without dedicated support. These queries have exactly one well-defined answer that is computable or readily available. Search engines by default just show a list of (often poor quality and full of ads) websites instead of showing the answer directly as you type.
