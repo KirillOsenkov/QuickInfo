@@ -5,7 +5,7 @@
 
     inputBox.onkeyup = function () {
         if (event && event.keyCode == 13) {
-            search();
+            searchCore(inputBox.value);
         }
     };
 
@@ -18,30 +18,23 @@
         query = query.slice(1);
         if (query) {
             query = decodeURIComponent(query);
-            inputBox.value = query;
-            lastSearchString = query;
-            search();
+            searchFor(query);
         }
     }
 }
 
 function onSearchChange() {
-    if (inputBox.value.length > 0) {
-        lastInputTime = new Date();
-        setTimeout(checkTimeout, 400);
+    inputBoxText = inputBox.value;
+    if (inputBoxText.length > 0) {
+        setTimeout(function (capturedText) {
+            if (capturedText === inputBox.value) {
+                search(capturedText);
+            }
+        }, 400, inputBoxText);
     } else {
         lastQuery = "";
         loadResults("");
     }
-}
-
-function checkTimeout() {
-    var current = new Date();
-    if ((current.getTime() - lastInputTime.getTime()) <= 300) {
-        return;
-    }
-
-    search();
 }
 
 // this is called from generated onclick handlers on hyperlinks
@@ -61,8 +54,11 @@ function search(query) {
 
     lastQuery = query;
 
-    query = "api/answers/?query=" + encodeURIComponent(query);
+    searchCore(query);
+}
 
+function searchCore(query) {
+    query = "api/answers/?query=" + encodeURIComponent(query);
     getUrl(query, loadResults);
 }
 
@@ -85,8 +81,10 @@ function getUrl(url, callback) {
 function loadResults(data) {
     var container = document.getElementById("outputDiv");
     if (container) {
-        container.innerHTML = data;
-        updateUrl();
+        if (container.innerHTML !== data) {
+            container.innerHTML = data;
+            updateUrl();
+        }
     }
 }
 
