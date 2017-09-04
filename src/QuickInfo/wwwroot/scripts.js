@@ -43,6 +43,8 @@ function searchFor(query) {
     inputBox.value = query;
     settingTextProgrammatically = false;
     search(query);
+
+    updateInputBoxWidth();
 }
 
 function onSearchChange() {
