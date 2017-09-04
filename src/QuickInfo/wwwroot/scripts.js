@@ -1,14 +1,16 @@
-﻿function onPageLoad() {
-    window.onresize = onWindowResize;
-    updateInputBoxWidth();
+﻿var settingTextProgrammatically = false;
 
-    lastQuery = null;
+function onPageLoad() {
+    window.onresize = onWindowResize;
+    window.onpopstate = onPopState;
+
+    updateInputBoxWidth();
 
     inputBox.focus();
 
     inputBox.onkeyup = function () {
         if (event && event.keyCode == 13) {
-            searchCore(inputBox.value);
+            search(inputBox.value);
         }
     };
 
@@ -16,6 +18,10 @@
         onSearchChange();
     };
 
+    searchFromCurrentUrl();
+}
+
+function searchFromCurrentUrl() {
     var query = document.location.search;
     if (query) {
         query = query.slice(1);
@@ -24,14 +30,28 @@
             searchFor(query);
         }
     }
+    else {
+        searchFor("");
+    }
 }
 
-function onWindowResize() {
-    updateInputBoxWidth();
+// this is called from generated onclick handlers on hyperlinks
+// it is only needed to avoid the 400ms delay otherwise we could
+// just set the inputBox.value
+function searchFor(query) {
+    settingTextProgrammatically = true;
+    inputBox.value = query;
+    settingTextProgrammatically = false;
+    search(query);
 }
 
 function onSearchChange() {
+    if (settingTextProgrammatically) {
+        return;
+    }
+
     inputBoxText = inputBox.value;
+
     if (inputBoxText.length > 0) {
         setTimeout(function (capturedText) {
             if (capturedText === inputBox.value) {
@@ -39,10 +59,55 @@ function onSearchChange() {
             }
         }, 400, inputBoxText);
     } else {
-        lastQuery = "";
-        loadResults("");
+        search("");
     }
 
+    updateInputBoxWidth();
+}
+
+function search(query) {
+    if (query) {
+        query = "api/answers/?query=" + encodeURIComponent(query);
+        getUrl(query, serverCallback);
+    }
+    else {
+        serverCallback("");
+    }
+}
+
+function serverCallback(data) {
+    displayResults(data);
+    updateUrl();
+}
+
+function displayResults(data) {
+    var container = document.getElementById("outputDiv");
+    if (container) {
+        if (container.innerHTML !== data) {
+            container.innerHTML = data;
+        }
+    }
+}
+
+function onPopState() {
+    searchFromCurrentUrl();
+}
+
+function updateUrl() {
+    var query = inputBox.value;
+    if (query) {
+        query = "?" + encodeURIComponent(query);
+        if (document.location.search !== query) {
+            top.history.pushState(null, top.document.title, query);
+        }
+    } else {
+        if (top.location.pathname !== "/" || top.location.search) {
+            top.history.pushState(null, top.document.title, "/");
+        }
+    }
+}
+
+function onWindowResize() {
     updateInputBoxWidth();
 }
 
@@ -64,31 +129,6 @@ function updateInputBoxWidth() {
     }
 }
 
-// this is called from generated onclick handlers on hyperlinks
-function searchFor(query) {
-    inputBox.value = query;
-    search(query);
-}
-
-function search(query) {
-    if (!query) {
-        query = inputBox.value;
-    }
-
-    if (lastQuery === query) {
-        return;
-    }
-
-    lastQuery = query;
-
-    searchCore(query);
-}
-
-function searchCore(query) {
-    query = "api/answers/?query=" + encodeURIComponent(query);
-    getUrl(query, loadResults);
-}
-
 function getUrl(url, callback) {
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url, true);
@@ -103,26 +143,4 @@ function getUrl(url, callback) {
     };
     xhr.send();
     return xhr;
-}
-
-function loadResults(data) {
-    var container = document.getElementById("outputDiv");
-    if (container) {
-        if (container.innerHTML !== data) {
-            container.innerHTML = data;
-            updateUrl();
-        }
-    }
-}
-
-function updateUrl() {
-    var query = inputBox.value;
-    if (query) {
-        query = "?" + encodeURIComponent(query);
-        if (document.location.search !== query) {
-            top.history.replaceState(null, top.document.title, query);
-        }
-    } else {
-        top.history.replaceState(null, top.document.title, "");
-    }
 }
