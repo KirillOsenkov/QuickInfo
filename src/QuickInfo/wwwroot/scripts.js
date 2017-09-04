@@ -1,4 +1,7 @@
 ﻿function onPageLoad() {
+    window.onresize = onWindowResize;
+    updateInputBoxWidth();
+
     lastQuery = null;
 
     inputBox.focus();
@@ -23,6 +26,10 @@
     }
 }
 
+function onWindowResize() {
+    updateInputBoxWidth();
+}
+
 function onSearchChange() {
     inputBoxText = inputBox.value;
     if (inputBoxText.length > 0) {
@@ -34,6 +41,26 @@ function onSearchChange() {
     } else {
         lastQuery = "";
         loadResults("");
+    }
+
+    updateInputBoxWidth();
+}
+
+function updateInputBoxWidth() {
+
+    var pageWidth = window.innerWidth || document.body.clientWidth;
+
+    if (pageWidth < 452) {
+        inputBox.style.width = "calc(100% - 52px)";
+        return;
+    }
+
+    var length = inputBox.value.length;
+    if (length > 15) {
+        inputBox.style.width = "calc(100% - 52px)";
+    }
+    else {
+        inputBox.style.width = "400px";
     }
 }
 

@@ -1,5 +1,8 @@
 ﻿body {
     font-family: Segoe UI, Tahoma, Helvetica, sans-serif;
+    box-sizing: border-box;
+    padding: 0px;
+    margin: 0px;
 }
 
 h1 {
@@ -22,7 +25,7 @@ h1 {
     margin-left: 20px;
     margin-top: 20px;
     margin-bottom: 0;
-    margin-right: 0;
+    margin-right: 20px;
     vertical-align: top;
 }
 
