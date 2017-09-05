@@ -67,6 +67,11 @@ namespace QuickInfo
             return Tag(content, "div", attributes);
         }
 
+        public static string DivClass(string content, string className)
+        {
+            return Div(content, "class=\"" + className + "\"");
+        }
+
         public static string Attribute(string name, object value)
         {
             return name + "=\"" + Escape(Convert.ToString(value)) + "\"";

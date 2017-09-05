@@ -103,7 +103,7 @@ namespace QuickInfo
                 { "DarkGoldenrod", "SaddleBrown", "Sienna", "Red", "DarkRed", "Maroon", "Brown", "HotPink", "Magenta", "DeepPink", "MediumVioletRed", "DarkMagenta", "Purple", "MidnightBlue" },
             };
 
-            sb.AppendLine("<table style='font-size:x-small;border-spacing: 10px'>");
+            sb.AppendLine("<table style='border-spacing: 10px'>");
             for (int row = 0; row < swatches.GetLength(0); row++)
             {
                 sb.AppendLine("<tr>");
@@ -114,7 +114,7 @@ namespace QuickInfo
 
                     sb.AppendLine($"<td>");
                     sb.Append(SearchLink(GetSwatch(swatch), swatch));
-                    sb.Append(Div(swatch));
+                    sb.Append(DivClass(swatch, "swatchName"));
                     sb.AppendLine("</td>");
                 }
 
@@ -166,15 +166,15 @@ namespace QuickInfo
             var hexColor = GetHexColor(r, g, b);
             var result = new StringBuilder();
 
-            string knownColor = null;
-            if (knownColorNames.TryGetValue(r + g * 256 + b * 65536, out knownColor))
-            {
-                result.AppendLine(Div(knownColor));
-            }
-
             result.AppendLine(Div(Escape($"RGB({r},{g},{b}) = {hexColor}")));
 
             result.AppendLine(GetSwatch(hexColor));
+
+            string knownColor = null;
+            if (knownColorNames.TryGetValue(r + g * 256 + b * 65536, out knownColor))
+            {
+                result.AppendLine(DivClass(knownColor, "swatchName"));
+            }
 
             var nearestColors = GetNearestColors(r, g, b).Take(11);
 

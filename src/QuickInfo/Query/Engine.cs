@@ -48,15 +48,15 @@ namespace QuickInfo
             if (input.IndexOf('|') != -1)
             {
                 var sb = new StringBuilder();
-                sb.AppendLine("<div style=\"display: flex;\">");
+                sb.AppendLine("<div class=\"answersList\">");
                 var multipleQueries = input.Split(multipleQuerySeparator, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var singleQuery in multipleQueries)
                 {
                     var result = Instance.GetSingleResponseWorker(singleQuery, request);
                     if (result != null)
                     {
-                        sb.AppendLine("<div style=\"margin-right: 20px\">");
-                        sb.AppendLine(H1(singleQuery));
+                        sb.AppendLine("<div class=\"answerBlock\">");
+                        sb.AppendLine(DivClass(singleQuery, "answerBlockHeader"));
                         if (!string.IsNullOrEmpty(result))
                         {
                             sb.AppendLine(Div(result));
@@ -85,6 +85,10 @@ namespace QuickInfo
                 if (string.IsNullOrEmpty(result))
                 {
                     result = Div("No results. Enter ? for help.");
+                }
+                else
+                {
+                    result = DivClass(DivClass(result, "answerBlock"), "answersList");
                 }
 
                 return result;

@@ -42,6 +42,10 @@ h1 {
         border: 1px solid black;
     }
 
+.swatchName {
+    font-size: x-small;
+}
+
 .forkMeOnGithub {
     opacity: 0.1;
     z-index: -1;
@@ -56,4 +60,20 @@ h1 {
     margin-bottom: 10px;
     margin-top: 20px;
     color: gray;
+}
+
+.answerBlock {
+    border: 1px solid lightgray;
+    margin-right: 20px;
+}
+
+.answerBlockHeader {
+    border-bottom: 1px solid lightgray;
+    padding: 4px;
+    background: #f8f8f8;
+    color: gray;
+}
+
+.answersList {
+    display: flex;
 }
