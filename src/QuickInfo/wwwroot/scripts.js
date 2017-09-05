@@ -1,6 +1,4 @@
-﻿var settingTextProgrammatically = false;
-
-function onPageLoad() {
+﻿function onPageLoad() {
     window.onresize = onWindowResize;
     window.onpopstate = onPopState;
 
@@ -40,18 +38,15 @@ function searchFromCurrentUrl() {
 // just set the inputBox.value
 function searchFor(query) {
     if (inputBox.value !== query) {
-        settingTextProgrammatically = true;
         inputBox.value = query;
-        settingTextProgrammatically = false;
+        updateInputBoxWidth();
     }
 
     search(query);
 }
 
 function onSearchChange() {
-    if (settingTextProgrammatically) {
-        return;
-    }
+    updateInputBoxWidth();
 
     inputBoxText = inputBox.value;
 
@@ -74,8 +69,6 @@ function search(query) {
     else {
         serverCallback("");
     }
-
-    updateInputBoxWidth();
 }
 
 function serverCallback(data) {
