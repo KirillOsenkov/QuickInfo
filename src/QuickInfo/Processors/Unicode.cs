@@ -90,9 +90,7 @@ namespace QuickInfo
                 return null;
             }
 
-            var sb = new StringBuilder();
-            sb.AppendLine(Div("UTF-8: " + text));
-            return sb.ToString();
+            return GetResult(text);
         }
 
         private bool IsUnicodeCodepoint(int number)
