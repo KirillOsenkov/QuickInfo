@@ -113,7 +113,7 @@ namespace QuickInfo
                     var swatch = swatches[row, column];
 
                     sb.AppendLine($"<td>");
-                    sb.Append(SearchLink(Div("", $"style=\"background:{swatch};width:50px;height:50px\"", "class='swatch'"), swatch));
+                    sb.Append(SearchLink(GetSwatch(swatch), swatch));
                     sb.Append(Div(swatch));
                     sb.AppendLine("</td>");
                 }
@@ -124,6 +124,11 @@ namespace QuickInfo
             sb.AppendLine("</table>");
 
             return sb.ToString();
+        }
+
+        private static string GetSwatch(string swatch)
+        {
+            return Div("", $"style=\"background:{swatch};width:50px;height:50px\"", "class='swatch'");
         }
 
         private string GetResultFromHexString(string hexString)
@@ -169,10 +174,13 @@ namespace QuickInfo
 
             result.AppendLine(Div(Escape($"RGB({r},{g},{b}) = {hexColor}")));
 
-            result.AppendLine(GetCanvas(hexColor, 350, 215, ";margin-top:20px"));
+            result.AppendLine(GetSwatch(hexColor));
 
             var nearestColors = GetNearestColors(r, g, b).Take(11);
-            result.AppendLine(Div("Closest named colors:"));
+
+            result.AppendLine("<div style='font-size: smaller'>");
+            result.AppendLine(Div("Closest named colors:", "class='sectionHeader'"));
+            result.AppendLine("<table>");
             foreach (var nearestColor in nearestColors)
             {
                 if (nearestColor == knownColor)
@@ -182,14 +190,19 @@ namespace QuickInfo
 
                 var canvas = GetCanvas(nearestColor, 60, 16);
                 var hex = "#" + knownColors[nearestColor];
-                result.AppendLine(
-                    Div(nearestColor +
-                        " ( " +
-                        SearchLink(hex, hex) +
-                        "  " +
-                        SearchLink(canvas, hex) +
-                        " )"));
+                result.AppendLine
+                (
+                    Tr
+                    (
+                        Td(nearestColor) +
+                        Td(SearchLink(hex, hex)) +
+                        Td(SearchLink(canvas, hex))
+                    )
+                );
             }
+
+            result.AppendLine("</table>");
+            result.AppendLine("</div>");
 
             return result.ToString();
         }

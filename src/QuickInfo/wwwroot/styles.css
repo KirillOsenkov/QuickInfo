@@ -50,3 +50,10 @@ h1 {
     .forkMeOnGithub:hover {
         opacity: 1.0;
     }
+
+.sectionHeader {
+    border-bottom: 1px solid lightgray;
+    margin-bottom: 10px;
+    margin-top: 20px;
+    color: gray;
+}
