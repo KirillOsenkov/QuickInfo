@@ -39,12 +39,13 @@ function searchFromCurrentUrl() {
 // it is only needed to avoid the 400ms delay otherwise we could
 // just set the inputBox.value
 function searchFor(query) {
-    settingTextProgrammatically = true;
-    inputBox.value = query;
-    settingTextProgrammatically = false;
-    search(query);
+    if (inputBox.value !== query) {
+        settingTextProgrammatically = true;
+        inputBox.value = query;
+        settingTextProgrammatically = false;
+    }
 
-    updateInputBoxWidth();
+    search(query);
 }
 
 function onSearchChange() {
@@ -63,8 +64,6 @@ function onSearchChange() {
     } else {
         search("");
     }
-
-    updateInputBoxWidth();
 }
 
 function search(query) {
@@ -75,6 +74,8 @@ function search(query) {
     else {
         serverCallback("");
     }
+
+    updateInputBoxWidth();
 }
 
 function serverCallback(data) {
