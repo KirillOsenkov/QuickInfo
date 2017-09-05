@@ -12,6 +12,11 @@ namespace QuickInfo
         {
             var input = query.OriginalInput;
 
+            if (input.Length == 1)
+            {
+                return GetResult(input[0]);
+            }
+
             var bytes = query.TryGetStructure<byte[]>();
             if (bytes != null)
             {
@@ -69,6 +74,7 @@ namespace QuickInfo
             string text = char.ConvertFromUtf32(value);
             sb.AppendLine(Div(Escape(text), "style=\"font-size: 72px\""));
             sb.AppendLine(Div("Unicode code point: " + value));
+            sb.AppendLine(Div("\\u" + value.ToHex()));
             sb.AppendLine(Div("Category: " + CharUnicodeInfo.GetUnicodeCategory(text[0])));
             sb.AppendLine(Div("UTF-8: " + string.Join(" ", Encoding.UTF8.GetBytes(text).Select(b => "0x" + b.ToString("X")))));
             return sb.ToString();
