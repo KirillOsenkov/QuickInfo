@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -29,6 +30,8 @@ namespace QuickInfo
                 return GetResult(char.ConvertToUtf32(input[0], input[1]));
             }
 
+            // naive linear lookup is about 70-80 ms
+            // TODO: optimize this?
             var sb = new StringBuilder();
             int hitcount = 0;
             foreach (var d in descriptions)
