@@ -41,7 +41,7 @@ namespace QuickInfo
         public static readonly Unit CubicInch = new Unit("in³", "in3");
 
         public static readonly Unit SquareMeter = new Unit("m²", "sq.m", "sq.m.");
-        public static readonly Unit SquareFoot = new Unit("sq.ft", "sq.ft.", "ft²");
+        public static readonly Unit SquareFoot = new Unit("sq.ft", "sq.ft.", "ft²", "sqft");
         public static readonly Unit SquareInch = new Unit("sq.in", "sq.in.", "in²");
         public static readonly Unit SquareYard = new Unit("sq.yd", "sq.yd.", "yd²");
         public static readonly Unit SquareMile = new Unit("sq.miles", "sq.mile", "mile²");
