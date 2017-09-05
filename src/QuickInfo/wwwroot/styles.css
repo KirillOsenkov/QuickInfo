@@ -70,6 +70,10 @@ h1 {
     color: gray;
 }
 
+.answerSection {
+    display: inline-block;
+}
+
 .answerBlock {
     border: 1px solid lightgray;
     margin-right: 20px;

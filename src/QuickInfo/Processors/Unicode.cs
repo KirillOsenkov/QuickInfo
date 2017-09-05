@@ -1,13 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Unicode;
 using static QuickInfo.HtmlFactory;
 
 namespace QuickInfo
 {
     public class Unicode : IProcessor
     {
+        public Unicode()
+        {
+            BuildUnicodeList();
+        }
+
         public string GetResult(Query query)
         {
             var input = query.OriginalInput;
@@ -19,7 +26,28 @@ namespace QuickInfo
 
             if (input.Length == 2 && char.IsHighSurrogate(input[0]) && char.IsLowSurrogate(input[1]))
             {
-                return GetResult(input);
+                return GetResult(char.ConvertToUtf32(input[0], input[1]));
+            }
+
+            var sb = new StringBuilder();
+            int hitcount = 0;
+            foreach (var d in descriptions)
+            {
+                if (hitcount > 20)
+                {
+                    return sb.ToString();
+                }
+
+                if (d.Value.IndexOf(input, StringComparison.OrdinalIgnoreCase) > -1)
+                {
+                    sb.AppendLine(DivClass(GetResult(d.Key), "answerSection"));
+                    hitcount++;
+                }
+            }
+
+            if (sb.Length > 0)
+            {
+                return sb.ToString();
             }
 
             var bytes = query.TryGetStructure<byte[]>();
@@ -37,7 +65,7 @@ namespace QuickInfo
             var list = query.TryGetStructure<SeparatedList>();
             if (list != null)
             {
-                var sb = new StringBuilder();
+                sb = new StringBuilder();
 
                 var unicodes = list.GetStructuresOfType<Prefix>();
                 foreach (var prefix in unicodes)
@@ -66,6 +94,31 @@ namespace QuickInfo
             }
 
             return null;
+        }
+
+        private Dictionary<int, string> descriptions = new Dictionary<int, string>();
+
+        private void BuildUnicodeList()
+        {
+            var blocks = UnicodeInfo.GetBlocks();
+
+            foreach (var block in blocks)
+            {
+                foreach (var codepoint in block.CodePointRange)
+                {
+                    if (char.IsSurrogate((char)codepoint))
+                    {
+                        continue;
+                    }
+
+                    var charInfo = UnicodeInfo.GetCharInfo(codepoint);
+                    var displayText = charInfo.Name;
+                    if (displayText != null)
+                    {
+                        descriptions[codepoint] = displayText;
+                    }
+                }
+            }
         }
 
         private string GetResult(byte[] bytes)
@@ -102,12 +155,32 @@ namespace QuickInfo
         private string GetResult(int value)
         {
             var sb = new StringBuilder();
-            string text = char.ConvertFromUtf32(value);
-            sb.AppendLine(DivClass(Escape(text), "charSample"));
+            char ch = (char)value;
+
+            bool isSurrogate = char.IsSurrogate(ch);
+            string text = null;
+            if (!isSurrogate)
+            {
+                text = char.ConvertFromUtf32(value);
+                sb.AppendLine(DivClass(Escape(text), "charSample"));
+            }
+
+            if (descriptions.TryGetValue(value, out string description))
+            {
+                sb.AppendLine(Div(description));
+            }
+
+            var info = UnicodeInfo.GetCharInfo(value);
+
             sb.AppendLine(Div("Unicode code point: " + value));
             sb.AppendLine(DivClass("\\u" + value.ToHex(), "fixed"));
-            sb.AppendLine(Div("Category: " + CharUnicodeInfo.GetUnicodeCategory(text[0])));
-            sb.AppendLine(GetUtf8(text));
+            sb.AppendLine(Div("Category: " + CharUnicodeInfo.GetUnicodeCategory(ch)));
+            sb.AppendLine(Div("Block: " + info.Block));
+            if (text != null)
+            {
+                sb.AppendLine(GetUtf8(text));
+            }
+
             return sb.ToString();
         }
 
@@ -118,6 +191,11 @@ namespace QuickInfo
 
         private string GetResult(string text)
         {
+            if (text.Length == 2 && char.IsHighSurrogate(text[0]) && char.IsLowSurrogate(text[1]))
+            {
+                return GetResult(char.ConvertToUtf32(text[0], text[1]));
+            }
+
             var sb = new StringBuilder();
             sb.AppendLine(DivClass(Escape(text), "charSample"));
             sb.AppendLine(DivClass(GetUtf8(text), "fixed"));

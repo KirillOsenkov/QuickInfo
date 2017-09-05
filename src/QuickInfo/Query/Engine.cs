@@ -227,7 +227,7 @@ namespace QuickInfo
                 var result = processor.GetResult(query);
                 if (!string.IsNullOrEmpty(result))
                 {
-                    sb.AppendLine(result);
+                    sb.AppendLine(DivClass(result, "answerSection"));
                 }
             }
 
