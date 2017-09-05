@@ -43,6 +43,11 @@ namespace QuickInfo
             return ToHex((int)c);
         }
 
+        public static string ToHexByte(this int c)
+        {
+            return string.Format("{0:X2}", c);
+        }
+
         public static string ToHex(this int i)
         {
             return i.ToString("X");

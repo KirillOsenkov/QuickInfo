@@ -243,9 +243,9 @@ namespace QuickInfo
 
         private string GetHexColor(int r, int g, int b)
         {
-            string rhex = ToHex(r);
-            string ghex = ToHex(g);
-            string bhex = ToHex(b);
+            string rhex = r.ToHexByte();
+            string ghex = g.ToHexByte();
+            string bhex = b.ToHexByte();
             if (rhex[0] == rhex[1] && ghex[0] == ghex[1] && bhex[0] == bhex[1])
             {
                 rhex = rhex.Substring(1);
@@ -254,11 +254,6 @@ namespace QuickInfo
             }
 
             return "#" + rhex + ghex + bhex;
-        }
-
-        private string ToHex(int c)
-        {
-            return string.Format("{0:X2}", c);
         }
 
         private static readonly Dictionary<int, string> knownColorNames = new Dictionary<int, string>()

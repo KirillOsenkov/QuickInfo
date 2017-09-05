@@ -127,7 +127,22 @@ namespace QuickInfo
                     var byteList = separatedList.GetStructuresOfType<Integer>();
                     if (byteList.Count == separatedList.Count && byteList.All(b => b.Value >= 0 && b.Value <= 255))
                     {
-                        return (T)(object)(byteList.Select(b => (byte)b.Value).ToArray());
+                        List<byte> result = new List<byte>();
+                        foreach (var b in byteList)
+                        {
+                            if (b.Kind == IntegerKind.Decimal)
+                            {
+                                var hexString = b.Value.ToString();
+                                hexString.TryParseHex(out int hexNumber);
+                                result.Add((byte)hexNumber);
+                            }
+                            else
+                            {
+                                result.Add((byte)b.Value);
+                            }
+                        }
+
+                        return (T)(object)result.ToArray();
                     }
                 }
             }
@@ -149,7 +164,7 @@ namespace QuickInfo
             if (integer != null && integer.Kind == IntegerKind.Decimal && typeof(T) == typeof(Double))
             {
                 // uhm... yeah.
-                return (T)(object)new Double((double)((Integer)instance).Value);
+                return (T)(object)new Double((double)integer.Value);
             }
 
             return default(T);
