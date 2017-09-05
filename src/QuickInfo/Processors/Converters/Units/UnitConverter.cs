@@ -164,7 +164,7 @@ namespace QuickInfo
 
         private string GetResult(double value, Conversion conversion)
         {
-            return Div($"{value} {conversion.From.ToString()} = {conversion.Converter(value)} {conversion.To.ToString()}");
+            return DivClass($"{value} {conversion.From.ToString()} = {conversion.Converter(value)} {conversion.To.ToString()}", "fixed");
         }
     }
 }

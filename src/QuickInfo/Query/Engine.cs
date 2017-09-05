@@ -63,7 +63,7 @@ namespace QuickInfo
                         }
                         else
                         {
-                            sb.AppendLine(Div("No result."));
+                            sb.AppendLine(DivClass("No result.", "note"));
                         }
 
                         sb.AppendLine("</div>");
@@ -72,7 +72,7 @@ namespace QuickInfo
 
                 if (sb.Length == 0)
                 {
-                    sb.AppendLine(Div("No results."));
+                    sb.AppendLine(DivClass("No results.", "note"));
                 }
 
                 sb.AppendLine("</div>");
@@ -84,12 +84,14 @@ namespace QuickInfo
                 var result = Instance.GetSingleResponseWorker(input, request);
                 if (string.IsNullOrEmpty(result))
                 {
-                    result = Div("No results. Enter ? for help.");
+                    result = DivClass("No results. Enter ? for help.", "note");
                 }
                 else
                 {
-                    result = DivClass(DivClass(result, "answerBlock"), "answersList");
+                    result = DivClass(result, "answerBlock");
                 }
+
+                result = DivClass(result, "answersList");
 
                 return result;
             }
@@ -191,6 +193,7 @@ namespace QuickInfo
         {
             var query = new Query(input);
             query.Request = request;
+
             var sb = new StringBuilder();
             foreach (var processor in processors)
             {
@@ -201,7 +204,13 @@ namespace QuickInfo
                 }
             }
 
-            return sb.ToString();
+            var response = sb.ToString();
+            if (!string.IsNullOrEmpty(response))
+            {
+                response = DivClass(response, "section");
+            }
+
+            return response;
         }
     }
 }

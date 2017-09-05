@@ -166,7 +166,7 @@ namespace QuickInfo
             var hexColor = GetHexColor(r, g, b);
             var result = new StringBuilder();
 
-            result.AppendLine(Div(Escape($"RGB({r},{g},{b}) = {hexColor}")));
+            result.AppendLine(DivClass(Escape($"RGB({r},{g},{b}) = {hexColor}"), "fixed"));
 
             result.AppendLine(GetSwatch(hexColor));
 
