@@ -28,6 +28,11 @@ namespace QuickInfo
             structureParsers.Add(new Keyword("hex"));
             structureParsers.Add(new Invocation());
             structureParsers.Add(new Prefix("#"));
+            structureParsers.Add(new Prefix("\\U"));
+            structureParsers.Add(new Prefix("\\u"));
+            structureParsers.Add(new Prefix("u+"));
+            structureParsers.Add(new Prefix("U+"));
+            structureParsers.Add(new Prefix("utf8", "utf-8", "utf"));
             structureParsers.Add(new Integer());
             structureParsers.Add(new Double());
             structureParsers.Add(new SeparatedList(','));
@@ -166,7 +171,14 @@ namespace QuickInfo
                 var result = parser.TryParse(input);
                 if (result != null)
                 {
-                    list.Add(result);
+                    if (result is Double d && list.Count == 1 && list[0] is Integer integer && ((double)integer.Value) == d.Value)
+                    {
+                        // skip the double if the int is the same
+                    }
+                    else
+                    {
+                        list.Add(result);
+                    }
                 }
             }
 

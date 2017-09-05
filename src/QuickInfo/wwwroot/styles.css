@@ -93,3 +93,7 @@ h1 {
     padding: 4px;
     box-shadow: rgba(200,200,200,0.4) 10px 10px 20px;
 }
+
+.charSample {
+    font-size: 72px;
+}

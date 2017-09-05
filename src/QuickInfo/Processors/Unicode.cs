@@ -17,10 +17,43 @@ namespace QuickInfo
                 return GetResult(input[0]);
             }
 
+            if (input.Length == 2 && char.IsHighSurrogate(input[0]) && char.IsLowSurrogate(input[1]))
+            {
+                return GetResult(input);
+            }
+
             var bytes = query.TryGetStructure<byte[]>();
             if (bytes != null)
             {
                 return GetResult(bytes);
+            }
+
+            var utfPrefix = query.TryGetStructure<Prefix>();
+            if (utfPrefix != null && utfPrefix.PrefixString.StartsWith("utf"))
+            {
+                return GetResult(utfPrefix.RemainderString);
+            }
+
+            var list = query.TryGetStructure<SeparatedList>();
+            if (list != null)
+            {
+                var sb = new StringBuilder();
+
+                var unicodes = list.GetStructuresOfType<Prefix>();
+                foreach (var prefix in unicodes)
+                {
+                    if (prefix.Remainder is Integer i)
+                    {
+                        int value = (int)i.Value;
+                        char ch = (char)value;
+                        sb.Append(ch);
+                    }
+                }
+
+                if (sb.Length > 0)
+                {
+                    return GetResult(sb.ToString());
+                }
             }
 
             if (input.StartsWith("\\u", StringComparison.OrdinalIgnoreCase) || input.StartsWith("U+", StringComparison.OrdinalIgnoreCase))
@@ -72,11 +105,25 @@ namespace QuickInfo
         {
             var sb = new StringBuilder();
             string text = char.ConvertFromUtf32(value);
-            sb.AppendLine(Div(Escape(text), "style=\"font-size: 72px\""));
+            sb.AppendLine(DivClass(Escape(text), "charSample"));
             sb.AppendLine(Div("Unicode code point: " + value));
-            sb.AppendLine(Div("\\u" + value.ToHex()));
+            sb.AppendLine(DivClass("\\u" + value.ToHex(), "fixed"));
             sb.AppendLine(Div("Category: " + CharUnicodeInfo.GetUnicodeCategory(text[0])));
-            sb.AppendLine(Div("UTF-8: " + string.Join(" ", Encoding.UTF8.GetBytes(text).Select(b => "0x" + b.ToString("X")))));
+            sb.AppendLine(GetUtf8(text));
+            return sb.ToString();
+        }
+
+        private static string GetUtf8(string text)
+        {
+            return Div("UTF-8: " + string.Join(" ", Encoding.UTF8.GetBytes(text).Select(b => b.ToString("X"))));
+        }
+
+        private string GetResult(string text)
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine(DivClass(Escape(text), "charSample"));
+            sb.AppendLine(DivClass(GetUtf8(text), "fixed"));
+            sb.AppendLine(DivClass(string.Join(" ", text.Select(c => "\\u" + ((int)c).ToHex())), "fixed"));
             return sb.ToString();
         }
     }

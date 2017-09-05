@@ -1,19 +1,32 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace QuickInfo
 {
     public class Keyword : IStructureParser
     {
         public string Text { get; }
+        public HashSet<string> AlternateSpellings { get; set; }
 
         public Keyword(string keyword)
         {
             Text = keyword;
         }
 
+        public Keyword(string keyword, params string[] alternateSpellings)
+        {
+            Text = keyword;
+            AlternateSpellings = new HashSet<string>(alternateSpellings, StringComparer.OrdinalIgnoreCase);
+        }
+
         public object TryParse(string query)
         {
             if (string.Equals(query, Text, StringComparison.OrdinalIgnoreCase))
+            {
+                return this;
+            }
+
+            if (AlternateSpellings != null && AlternateSpellings.Contains(query))
             {
                 return this;
             }
