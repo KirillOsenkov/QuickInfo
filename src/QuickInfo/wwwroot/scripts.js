@@ -39,6 +39,7 @@ function searchFromCurrentUrl() {
 function searchFor(query) {
     if (inputBox.value !== query) {
         inputBox.value = query;
+        inputBox.focus();
         updateInputBoxWidth();
     }
 

@@ -10,7 +10,8 @@ namespace QuickInfo
         {
             if (query.IsHelp)
             {
-                return Table(Row(SearchLink("ascii"), "ASCII table"));
+                return HelpTable(
+                    ("ascii", "ASCII table"));
             }
 
             if (query.OriginalInput.Equals("ascii", StringComparison.OrdinalIgnoreCase))

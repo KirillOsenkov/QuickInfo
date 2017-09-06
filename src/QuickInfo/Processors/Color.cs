@@ -12,13 +12,23 @@ namespace QuickInfo
     {
         public string GetResult(Query query)
         {
+            if (query.IsHelp)
+            {
+                return HelpTable
+                (
+                    ("color", "Named color palette"),
+                    ("red", "Named color"),
+                    ("#FFC0CB", "Hex color"),
+                    ("rgb 23 145 175", "RGB")
+                );
+            }
+
             var input = query.OriginalInput.Trim();
 
             if (string.Equals(input, "color", StringComparison.OrdinalIgnoreCase) ||
                 string.Equals(input, "colors", StringComparison.OrdinalIgnoreCase))
             {
                 return RenderColorTable();
-                // return Div(Img(@"http://kirillosenkov.github.io/images/ColorChartSorted.png"));
             }
 
             string knownColor = null;
@@ -112,10 +122,9 @@ namespace QuickInfo
                 {
                     var swatch = swatches[row, column];
 
-                    sb.AppendLine($"<td>");
-                    sb.Append(SearchLink(GetSwatch(swatch), swatch));
-                    sb.Append(DivClass(swatch, "swatchName"));
-                    sb.AppendLine("</td>");
+                    sb.AppendLine(Td(
+                        SearchLink(GetSwatch(swatch), swatch) +
+                        DivClass(swatch, "swatchName")));
                 }
 
                 sb.AppendLine("</tr>");
@@ -128,7 +137,7 @@ namespace QuickInfo
 
         private static string GetSwatch(string swatch)
         {
-            return Div("", $"style=\"background:{swatch};width:50px;height:50px\"", "class='swatch'");
+            return Div("", $"style=\"background:{swatch}\"", "class='swatch'");
         }
 
         private string GetResultFromHexString(string hexString)

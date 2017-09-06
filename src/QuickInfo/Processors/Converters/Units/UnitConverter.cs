@@ -8,6 +8,49 @@ namespace QuickInfo
     {
         public string GetResult(Query query)
         {
+            if (query.IsHelp)
+            {
+                return Div(
+                    DivClass("Temperature", "sectionHeader") +
+                    HelpTable
+                    (
+                        ("75 f", "")
+                    ) +
+                    DivClass("Weight", "sectionHeader") +
+                    HelpTable
+                    (
+                        ("167 lb", ""),
+                        ("30 ounces to grams", "")
+                    ) +
+                    DivClass("Distance", "sectionHeader") +
+                    HelpTable
+                    (
+                        ("26.2 miles", ""),
+                        ("900 ft in yards", "")
+                    ) +
+                    DivClass("Speed", "sectionHeader") +
+                    HelpTable
+                    (
+                        ("60 mph", "")
+                    ) +
+                    DivClass("Volume", "sectionHeader") +
+                    HelpTable
+                    (
+                        ("5 gallons in m3", "")
+                    ) +
+                    DivClass("Area", "sectionHeader") +
+                    HelpTable
+                    (
+                        ("1670 sq.ft", ""),
+                        ("10 acres in m2", "")
+                    ) +
+                    DivClass("Fuel efficiency", "sectionHeader") +
+                    HelpTable
+                    (
+                        ("29 mpg", "")
+                    ));
+            }
+
             var tuple = query.TryGetStructure<Tuple<Double, Unit>>();
             if (tuple != null)
             {

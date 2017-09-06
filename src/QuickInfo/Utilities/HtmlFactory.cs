@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Text;
 
@@ -14,6 +15,11 @@ namespace QuickInfo
         public static string UrlEncode(string text)
         {
             return WebUtility.UrlEncode(text);
+        }
+
+        public static string HelpTable(params (string link, string description)[] links)
+        {
+            return Table(links.Select(l => Row(SearchLink(l.link), l.description)).ToArray());
         }
 
         public static string Table(params string[] rows)
