@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using Microsoft.AspNetCore.Http;
 
 namespace QuickInfo
@@ -6,12 +7,14 @@ namespace QuickInfo
     public class Query
     {
         public string OriginalInput { get; }
+        public bool IsHelp { get; }
         public object Structure { get; }
         public HttpRequest Request { get; set; }
 
         public Query(string input)
         {
             OriginalInput = input;
+            IsHelp = input == "?" || string.Equals(input, "help", StringComparison.OrdinalIgnoreCase);
             Structure = Engine.Parse(input);
         }
 

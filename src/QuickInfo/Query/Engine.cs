@@ -95,7 +95,7 @@ namespace QuickInfo
                 var result = Instance.GetSingleResponseWorker(input, request);
                 if (string.IsNullOrEmpty(result))
                 {
-                    result = DivClass("No results. Enter ? for help.", "note");
+                    result = DivClass($"No results. {SearchLink("Enter ? for help.", "?")}", "note");
                 }
 
                 result = DivClass(result, "answersList");

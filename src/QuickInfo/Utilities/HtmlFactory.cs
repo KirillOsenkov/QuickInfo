@@ -16,6 +16,29 @@ namespace QuickInfo
             return WebUtility.UrlEncode(text);
         }
 
+        public static string Table(params string[] rows)
+        {
+            if (rows == null || rows.Length == 0)
+            {
+                return null;
+            }
+
+            var sb = new StringBuilder();
+            sb.AppendLine(TableStart("smallTable"));
+            foreach (var row in rows)
+            {
+                sb.AppendLine(row);
+            }
+
+            sb.AppendLine("</table>");
+            return sb.ToString();
+        }
+
+        public static string Row(string name, string value)
+        {
+            return Tr(Td(Gray(name)), Td(value));
+        }
+
         public static string TableStart(string tableClass = "")
         {
             if (string.IsNullOrEmpty(tableClass))
@@ -70,6 +93,11 @@ namespace QuickInfo
         public static string H1(string content, params string[] attributes)
         {
             return Tag(content, "h1", attributes);
+        }
+
+        public static string SearchLink(string content)
+        {
+            return SearchLink(content, content);
         }
 
         public static string SearchLink(string content, string hyperlink)

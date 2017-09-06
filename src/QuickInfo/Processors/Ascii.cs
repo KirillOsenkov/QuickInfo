@@ -8,6 +8,11 @@ namespace QuickInfo
     {
         public string GetResult(Query query)
         {
+            if (query.IsHelp)
+            {
+                return Table(Row(SearchLink("ascii"), "ASCII table"));
+            }
+
             if (query.OriginalInput.Equals("ascii", StringComparison.OrdinalIgnoreCase))
             {
                 return AsciiTable();
