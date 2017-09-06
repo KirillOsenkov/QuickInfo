@@ -16,9 +16,14 @@ namespace QuickInfo
 
         public string GetResult(Query query)
         {
+            if (query.IsHelp)
+            {
+                return HelpTable(("ip", "Your IP address"));
+            }
+
             if (triggers.Contains(query.OriginalInput.Trim()))
             {
-                return Div("Your IP address: " + query.IpAddress);
+                return Table(Row("Your IP address:", query.IpAddress));
             }
 
             return null;

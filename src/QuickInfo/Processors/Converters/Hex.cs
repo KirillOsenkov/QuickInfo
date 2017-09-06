@@ -7,6 +7,15 @@ namespace QuickInfo
     {
         public string GetResult(Query query)
         {
+            if (query.IsHelp)
+            {
+                return HelpTable
+                (
+                    ("0x42a", ""),
+                    ("79", "Convert decimal to hex")
+                );
+            }
+
             var integer = query.TryGetStructure<Integer>();
             if (integer != null)
             {

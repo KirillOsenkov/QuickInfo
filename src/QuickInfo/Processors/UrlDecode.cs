@@ -8,6 +8,12 @@ namespace QuickInfo
     {
         public string GetResult(Query query)
         {
+            if (query.IsHelp)
+            {
+                return HelpTable(
+                    ("3%2B2%2F(2%2B3)", "Decode an url"));
+            }
+
             var input = query.OriginalInput;
             var percent = input.IndexOf('%');
             while (percent != -1)

@@ -23,6 +23,23 @@ namespace QuickInfo
             Value = i;
         }
 
+        public int ForceHexadecimalValue()
+        {
+            if (Kind == IntegerKind.Hexadecimal)
+            {
+                // we're already hex
+                return Int32;
+            }
+            else
+            {
+                // we originally interpreted the value as decimal;
+                // now re-interpret as hex and return
+                var hexString = Int32.ToString();
+                hexString.TryParseHex(out int hexNumber);
+                return hexNumber;
+            }
+        }
+
         public object TryParse(string query)
         {
             return TryParseInteger(query);

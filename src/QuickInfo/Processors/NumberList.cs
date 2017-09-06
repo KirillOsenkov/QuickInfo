@@ -9,6 +9,14 @@ namespace QuickInfo
     {
         public string GetResult(Query query)
         {
+            if (query.IsHelp)
+            {
+                return HelpTable(
+                    ("16000 41500 3000 2500 12000", "Quick sum of several numbers"),
+                    ("3 19 4 -2 7 7 1", "Sum, average, product, sort, min, max"),
+                    ("9,1,100,42,0,0,19", "Comma or space delimited sequences"));
+            }
+
             var list = query.TryGetStructure<SeparatedList>();
             if (list != null)
             {

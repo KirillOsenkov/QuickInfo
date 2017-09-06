@@ -17,15 +17,16 @@ namespace QuickInfo
 
         public string GetResult(Query query)
         {
+            if (query.IsHelp)
+            {
+                return HelpTable(("guid", "Random Guid"));
+            }
+
             if (triggerStrings.Contains(query.OriginalInput))
             {
                 var guid = Guid.NewGuid();
-                var sb = new StringBuilder();
-                sb.Append("<div>");
-                sb.Append(Div(guid.ToString("D")));
-                sb.Append(Div(guid.ToString("D").ToUpperInvariant()));
-                sb.Append("</div>");
-                return sb.ToString();
+                return DivClass(guid.ToString("D"), "fixed") +
+                       DivClass(guid.ToString("D").ToUpperInvariant(), "fixed");
             }
 
             return null;

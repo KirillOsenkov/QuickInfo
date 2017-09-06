@@ -45,6 +45,15 @@ namespace QuickInfo
 
         public string GetResult(Query query)
         {
+            if (query.IsHelp)
+            {
+                return HelpTable(
+                    ("(2 + 3) * 4", ""),
+                    ("cos(pi / 4)", ""),
+                    ("rnd", "Random number [0; 1)"),
+                    ("Random(50, 100)", "Random number [50; 100)"));
+            }
+
             var compiler = new Compiler();
             var result = compiler.CompileExpression(query.OriginalInput);
             if (result.IsSuccess)

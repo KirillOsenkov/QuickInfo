@@ -1,10 +1,28 @@
-﻿using System.Globalization;
+﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Numerics;
 
 namespace QuickInfo
 {
     public static class StringUtilities
     {
+        public static int[] EnumerateCodePoints(this string text)
+        {
+            var codePoints = new List<int>(text.Length);
+
+            for (int i = 0; i < text.Length; i++)
+            {
+                var codePoint = char.ConvertToUtf32(text, i);
+                codePoints.Add(codePoint);
+                if (char.IsHighSurrogate(text[i]))
+                {
+                    i += 1;
+                }
+            }
+
+            return codePoints.ToArray();
+        }
+
         public static bool IsHexOrDecimalChar(this char c)
         {
             return

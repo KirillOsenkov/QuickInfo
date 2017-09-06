@@ -2,6 +2,7 @@
 using System.Numerics;
 using System.Text;
 using Number = System.Int32;
+using static QuickInfo.HtmlFactory;
 
 namespace QuickInfo
 {
@@ -9,6 +10,11 @@ namespace QuickInfo
     {
         public string GetResult(Query query)
         {
+            if (query.IsHelp)
+            {
+                return HelpTable(("2520", "Factor integers (< 10,000,000)"));
+            }
+
             var integer = query.TryGetStructure<Integer>();
             if (integer != null && integer.Value > -10000000 && integer.Value < 10000000)
             {

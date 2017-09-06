@@ -12,6 +12,11 @@ namespace QuickInfo
             return WebUtility.HtmlEncode(text);
         }
 
+        public static string JsEscape(string text)
+        {
+            return text.Replace("\\", "\\\\");
+        }
+
         public static string UrlEncode(string text)
         {
             return WebUtility.UrlEncode(text);
@@ -109,7 +114,7 @@ namespace QuickInfo
         public static string SearchLink(string content, string hyperlink)
         {
             var href = Attribute("href", "?" + UrlEncode(hyperlink));
-            var onclick = Attribute("onclick", "searchFor(\"" + Escape(hyperlink) + "\");return false;");
+            var onclick = Attribute("onclick", "searchFor(\"" + JsEscape(hyperlink) + "\");return false;");
             return Tag(content, "a", href, onclick);
         }
 

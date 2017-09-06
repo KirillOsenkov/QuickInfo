@@ -18,6 +18,17 @@ namespace QuickInfo
 
         public string GetResult(Query query)
         {
+            if (query.IsHelp)
+            {
+                return HelpTable(
+                    ("char cherries", "Lookup a unicode char/emoji"),
+                    ("\\U0001F352", "Lookup char"),
+                    ("\\U0001F347 \\U0001F352", "Lookup multiple chars"),
+                    ("🍒", "Show char info"),
+                    ("F0 9F 8D 92 F0 9F 8D 87", "Decode from UTF-8 bytes"),
+                    ("utf8 пример", "Encode in UTF-8"));
+            }
+
             var input = query.OriginalInput;
 
             if (input.Length == 1)
@@ -49,9 +60,10 @@ namespace QuickInfo
 
                 if (prefix.PrefixKind == "U+")
                 {
-                    if (prefix.Remainder is Integer i && IsUnicodeCodepoint(i.Int32))
+                    var integer = Engine.TryGetStructure<Integer>(prefix.Remainder);
+                    if (integer != null && integer.ForceHexadecimalValue() is int hexValue && IsUnicodeCodepoint(hexValue))
                     {
-                        return GetResult(i.Int32);
+                        return GetResult(hexValue);
                     }
                 }
             }
@@ -70,9 +82,10 @@ namespace QuickInfo
                 var codepoints = list.GetStructuresOfType<Prefix>();
                 foreach (var uPrefix in codepoints)
                 {
-                    if (uPrefix.Remainder is Integer i)
+                    var integer = Engine.TryGetStructure<Integer>(uPrefix.Remainder);
+                    if (integer != null && integer.ForceHexadecimalValue() is int hexValue && IsUnicodeCodepoint(hexValue))
                     {
-                        sb.Append((char)i.Int32);
+                        sb.Append(char.ConvertFromUtf32(hexValue));
                     }
                 }
 
@@ -247,8 +260,8 @@ namespace QuickInfo
             var sb = new StringBuilder();
             sb.AppendLine(DivClass(Escape(text), "charSample"));
 
+            sb.AppendLine(DivClass(string.Join(" ", text.EnumerateCodePoints().Select(c => SearchLink(GetEscapeString(c)))), "fixed"));
             sb.AppendLine(DivClass(GetUtf8(text), "fixed"));
-            sb.AppendLine(DivClass(string.Join(" ", text.Select(c => "\\u" + ((int)c).ToHex())), "fixed"));
 
             return sb.ToString();
         }

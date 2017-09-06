@@ -129,16 +129,7 @@ namespace QuickInfo
                         List<byte> result = new List<byte>();
                         foreach (var b in byteList)
                         {
-                            if (b.Kind == IntegerKind.Decimal)
-                            {
-                                var hexString = b.Value.ToString();
-                                hexString.TryParseHex(out int hexNumber);
-                                result.Add((byte)hexNumber);
-                            }
-                            else
-                            {
-                                result.Add((byte)b.Value);
-                            }
+                            result.Add((byte)b.ForceHexadecimalValue());
                         }
 
                         return (T)(object)result.ToArray();
