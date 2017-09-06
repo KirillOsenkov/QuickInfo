@@ -223,13 +223,13 @@ namespace QuickInfo
             var query = new Query(input);
             query.Request = request;
 
-            List<string> results = new List<string>();
+            List<(string processorName, string resultText)> results = new List<(string, string)>();
             foreach (var processor in processors)
             {
                 var result = processor.GetResult(query);
                 if (!string.IsNullOrEmpty(result))
                 {
-                    results.Add(result);
+                    results.Add((processor.GetType().Name, result));
                 }
             }
 
@@ -240,16 +240,32 @@ namespace QuickInfo
 
             if (results.Count == 1)
             {
-                return results[0];
+                return results[0].resultText;
             }
 
             var sb = new StringBuilder();
             foreach (var result in results)
             {
-                var toAppend = result;
+                var toAppend = result.resultText;
                 if (!toAppend.Contains("answerSection"))
                 {
-                    toAppend = DivClass(toAppend, "answerSection");
+                    if (query.IsHelp)
+                    {
+                        toAppend = DivClass(toAppend, "singleAnswerSection");
+                    }
+                    else
+                    {
+                        toAppend = DivClass(toAppend, "answerSection");
+                    }
+                }
+
+                if (query.IsHelp)
+                {
+                    toAppend = DivClass(result.processorName, "answerBlockHeader") + toAppend;
+
+                    toAppend = DivClass(
+                        toAppend,
+                        "answerBlock");
                 }
 
                 sb.AppendLine(toAppend);
