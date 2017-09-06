@@ -23,28 +23,41 @@ namespace QuickInfo
                 var numbersList = list.GetStructuresOfType<Double>();
                 if (numbersList != null && numbersList.Count == list.Count)
                 {
-                    return GetResult(numbersList);
+                    return GetResult(list, numbersList);
                 }
             }
 
             return null;
         }
 
-        private string GetResult(IReadOnlyList<Double> numbersList)
+        private string GetResult(SeparatedList originalList, IReadOnlyList<Double> numbersList)
         {
             var sb = new StringBuilder();
 
             var list = numbersList.Select(l => l.Value).ToList();
 
-            sb.AppendLine(Div("Sum: " + list.Sum()));
-            sb.AppendLine(Div("Product: " + list.Aggregate(1.0, (n, m) => n * m)));
-            sb.AppendLine(Div("Average: " + list.Average()));
-            sb.AppendLine(Div("Min: " + list.Min()));
-            sb.AppendLine(Div("Max: " + list.Max()));
-            sb.AppendLine(Div("Count: " + list.Count()));
+            sb.AppendLine(TableStart());
+            sb.AppendLine(Row("Sum:", Fixed(list.Sum().ToString())));
+            sb.AppendLine(Row("Product:", Fixed(list.Aggregate(1.0, (n, m) => n * m).ToString())));
+            sb.AppendLine(Row("Average:", Fixed(list.Average().ToString())));
+            sb.AppendLine(Row("Min:", Fixed(list.Min().ToString())));
+            sb.AppendLine(Row("Max:", Fixed(list.Max().ToString())));
+            sb.AppendLine(Row("Count:", Fixed(list.Count().ToString())));
 
             list.Sort();
-            sb.AppendLine(Div("Sorted: " + string.Join(", ", list)));
+            sb.AppendLine(Row("Sorted:", Fixed(string.Join(", ", list))));
+
+            var integerList = originalList.GetStructuresOfType<Integer>();
+            if (integerList != null && integerList.Count == originalList.Count)
+            {
+                sb.AppendLine(Row("Hex to decimal:", Fixed(string.Join(", ", integerList.Select(l => l.ForceHexadecimalValue().ToString())))));
+                if (integerList.All(i => i.Kind == IntegerKind.Decimal))
+                {
+                    sb.AppendLine(Row("Decimal to hex:", Fixed(string.Join(", ", integerList.Select(l => l.Int32.ToHex())))));
+                }
+            }
+
+            sb.AppendLine("</table>");
 
             return sb.ToString();
         }

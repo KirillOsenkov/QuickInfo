@@ -19,7 +19,7 @@ namespace QuickInfo
             var processorTypes = assembly.GetTypes()
                 .Where(t => t.GetTypeInfo().ImplementedInterfaces.Contains(typeof(IProcessor)));
 
-            processors.AddRange(processorTypes.Select(t => (IProcessor)Activator.CreateInstance(t)));
+            processors.AddRange(processorTypes.Select(t => (IProcessor)Activator.CreateInstance(t)).OrderBy(p => p.GetType().Name));
 
             structureParsers.Add(new UnitParser());
             structureParsers.Add(new Keyword("rgb"));
@@ -151,10 +151,9 @@ namespace QuickInfo
             }
 
             var integer = instance as Integer;
-            if (integer != null && integer.Kind == IntegerKind.Decimal && typeof(T) == typeof(Double))
+            if (integer != null && typeof(T) == typeof(Double))
             {
-                // uhm... yeah.
-                return (T)(object)new Double((double)integer.Value);
+                return (T)(object)new Double(integer.Int32);
             }
 
             return default(T);
