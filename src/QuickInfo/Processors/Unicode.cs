@@ -30,6 +30,63 @@ namespace QuickInfo
                 return GetResult(char.ConvertToUtf32(input[0], input[1]));
             }
 
+            var prefix = query.TryGetStructure<Prefix>();
+            if (prefix != null)
+            {
+                if (prefix.PrefixKind == "utf8 ")
+                {
+                    return GetResult(prefix.RemainderString);
+                }
+
+                if (prefix.PrefixKind == "unicode ")
+                {
+                    var lookup = LookupUnicodeCharacter(prefix.RemainderString);
+                    if (lookup != null)
+                    {
+                        return lookup;
+                    }
+                }
+
+                if (prefix.PrefixKind == "U+")
+                {
+                    if (prefix.Remainder is Integer i && IsUnicodeCodepoint(i.Int32))
+                    {
+                        return GetResult(i.Int32);
+                    }
+                }
+            }
+
+            var bytes = query.TryGetStructure<byte[]>();
+            if (bytes != null)
+            {
+                return GetResult(bytes);
+            }
+
+            var list = query.TryGetStructure<SeparatedList>();
+            if (list != null)
+            {
+                var sb = new StringBuilder();
+
+                var codepoints = list.GetStructuresOfType<Prefix>();
+                foreach (var uPrefix in codepoints)
+                {
+                    if (uPrefix.Remainder is Integer i)
+                    {
+                        sb.Append((char)i.Int32);
+                    }
+                }
+
+                if (sb.Length > 0)
+                {
+                    return GetResult(sb.ToString());
+                }
+            }
+
+            return null;
+        }
+
+        private string LookupUnicodeCharacter(string input)
+        {
             // naive linear lookup is about 70-80 ms
             // TODO: optimize this?
             var sb = new StringBuilder();
@@ -51,49 +108,6 @@ namespace QuickInfo
             if (sb.Length > 0)
             {
                 return sb.ToString();
-            }
-
-            var bytes = query.TryGetStructure<byte[]>();
-            if (bytes != null)
-            {
-                return GetResult(bytes);
-            }
-
-            var utfPrefix = query.TryGetStructure<Prefix>();
-            if (utfPrefix != null && utfPrefix.PrefixString.StartsWith("utf"))
-            {
-                return GetResult(utfPrefix.RemainderString);
-            }
-
-            var list = query.TryGetStructure<SeparatedList>();
-            if (list != null)
-            {
-                sb = new StringBuilder();
-
-                var unicodes = list.GetStructuresOfType<Prefix>();
-                foreach (var prefix in unicodes)
-                {
-                    if (prefix.Remainder is Integer i)
-                    {
-                        int value = (int)i.Value;
-                        char ch = (char)value;
-                        sb.Append(ch);
-                    }
-                }
-
-                if (sb.Length > 0)
-                {
-                    return GetResult(sb.ToString());
-                }
-            }
-
-            if (input.StartsWith("\\u", StringComparison.OrdinalIgnoreCase) || input.StartsWith("U+", StringComparison.OrdinalIgnoreCase))
-            {
-                int number;
-                if (input.Substring(2).TryParseHex(out number) && IsUnicodeCodepoint(number))
-                {
-                    return GetResult(number);
-                }
             }
 
             return null;

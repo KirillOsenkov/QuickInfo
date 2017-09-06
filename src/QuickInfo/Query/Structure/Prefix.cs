@@ -9,23 +9,27 @@ namespace QuickInfo
         public string RemainderString { get; }
         public object Remainder { get; }
         public HashSet<string> AlternateSpellings { get; set; }
+        public string PrefixKind { get; set; }
 
         public Prefix(string prefix)
         {
             PrefixString = prefix;
+            PrefixKind = prefix;
         }
 
         public Prefix(string prefix, params string[] alternateSpellings)
         {
             PrefixString = prefix;
+            PrefixKind = prefix;
             AlternateSpellings = new HashSet<string>(alternateSpellings, StringComparer.OrdinalIgnoreCase);
         }
 
-        public Prefix(string prefix, string remainderString, object remainder)
+        public Prefix(string prefixKind, string prefix, string remainderString, object remainder)
         {
             PrefixString = prefix;
             RemainderString = remainderString;
             Remainder = remainder;
+            PrefixKind = prefixKind;
         }
 
         public object TryParse(string query)
@@ -57,7 +61,7 @@ namespace QuickInfo
             {
                 var remainderString = query.Substring(prefix.Length);
                 var parsedRemainder = Engine.Parse(remainderString);
-                return new Prefix(prefix, remainderString, parsedRemainder);
+                return new Prefix(PrefixKind, prefix, remainderString, parsedRemainder);
             }
 
             return null;

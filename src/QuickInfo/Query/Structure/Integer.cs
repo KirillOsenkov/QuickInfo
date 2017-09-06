@@ -12,6 +12,7 @@ namespace QuickInfo
     {
         public BigInteger Value { get; }
         public IntegerKind Kind { get; private set; }
+        public int Int32 => (int)Value;
 
         public Integer()
         {

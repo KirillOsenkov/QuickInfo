@@ -28,11 +28,9 @@ namespace QuickInfo
             structureParsers.Add(new Keyword("hex"));
             structureParsers.Add(new Invocation());
             structureParsers.Add(new Prefix("#"));
-            structureParsers.Add(new Prefix("\\U"));
-            structureParsers.Add(new Prefix("\\u"));
-            structureParsers.Add(new Prefix("u+"));
-            structureParsers.Add(new Prefix("U+"));
-            structureParsers.Add(new Prefix("utf8", "utf-8", "utf"));
+            structureParsers.Add(new Prefix("U+", "u+", "\\U", "\\u"));
+            structureParsers.Add(new Prefix("utf8 ", "utf-8 ", "utf "));
+            structureParsers.Add(new Prefix("unicode ", "char ", "emoji "));
             structureParsers.Add(new Integer());
             structureParsers.Add(new Double());
             structureParsers.Add(new SeparatedList(','));
@@ -58,18 +56,26 @@ namespace QuickInfo
                 foreach (var singleQuery in multipleQueries)
                 {
                     var result = Instance.GetSingleResponseWorker(singleQuery, request);
-                    if (result != null)
+                    if (!string.IsNullOrEmpty(result))
                     {
                         sb.AppendLine("<div class=\"answerBlock\">");
                         sb.AppendLine(DivClass(singleQuery, "answerBlockHeader"));
-                        if (!string.IsNullOrEmpty(result))
+
+                        if (string.IsNullOrEmpty(result))
                         {
-                            sb.AppendLine(Div(result));
+                            result = DivClass("No result.", "note");
+                        }
+
+                        if (!result.Contains("singleAnswerSection"))
+                        {
+                            result = DivClass(result, "singleAnswerSection");
                         }
                         else
                         {
-                            sb.AppendLine(DivClass("No result.", "note"));
+                            result = Div(result);
                         }
+
+                        sb.AppendLine(result);
 
                         sb.AppendLine("</div>");
                     }
@@ -90,10 +96,6 @@ namespace QuickInfo
                 if (string.IsNullOrEmpty(result))
                 {
                     result = DivClass("No results. Enter ? for help.", "note");
-                }
-                else
-                {
-                    result = DivClass(result, "answerBlock");
                 }
 
                 result = DivClass(result, "answersList");
@@ -221,22 +223,39 @@ namespace QuickInfo
             var query = new Query(input);
             query.Request = request;
 
-            var sb = new StringBuilder();
+            List<string> results = new List<string>();
             foreach (var processor in processors)
             {
                 var result = processor.GetResult(query);
                 if (!string.IsNullOrEmpty(result))
                 {
-                    sb.AppendLine(DivClass(result, "answerSection"));
+                    results.Add(result);
                 }
             }
 
-            var response = sb.ToString();
-            if (!string.IsNullOrEmpty(response))
+            if (results.Count == 0)
             {
-                response = DivClass(response, "section");
+                return null;
             }
 
+            if (results.Count == 1)
+            {
+                return results[0];
+            }
+
+            var sb = new StringBuilder();
+            foreach (var result in results)
+            {
+                var toAppend = result;
+                if (!toAppend.Contains("answerSection"))
+                {
+                    toAppend = DivClass(toAppend, "answerSection");
+                }
+
+                sb.AppendLine(toAppend);
+            }
+
+            var response = sb.ToString();
             return response;
         }
     }
