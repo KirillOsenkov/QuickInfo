@@ -57,6 +57,11 @@ namespace QuickInfo
             }
         }
 
+        public static string Gray(string src)
+        {
+            return DivClass(src, "gray");
+        }
+
         public static string Img(string src)
         {
             return Tag(null, "img", Attribute("src", src));

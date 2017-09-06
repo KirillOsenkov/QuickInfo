@@ -206,13 +206,13 @@ namespace QuickInfo
             var info = UnicodeInfo.GetCharInfo(value);
 
             sb.AppendLine(TableStart("smallTable"));
-            sb.AppendLine(Tr(Td("Unicode code point:"), Td(value.ToString())));
-            sb.AppendLine(Tr(Td("Escape:"), Td(DivClass(GetEscapeString(value), "fixed"))));
-            sb.AppendLine(Tr(Td("Category:"), Td(CharUnicodeInfo.GetUnicodeCategory(ch).ToString())));
-            sb.AppendLine(Tr(Td("Block:"), Td(info.Block)));
+            sb.AppendLine(Tr(Td(Gray("Code point:")), Td(value.ToString())));
+            sb.AppendLine(Tr(Td(Gray("Category:")), Td(CharUnicodeInfo.GetUnicodeCategory(ch).ToString())));
+            sb.AppendLine(Tr(Td(Gray("Block:")), Td(info.Block)));
+            sb.AppendLine(Tr(Td(Gray("Escape:")), Td(DivClass(GetEscapeString(value), "fixed"))));
             if (text != null)
             {
-                sb.AppendLine(Tr(Td("UTF-8:"), Td(GetUtf8(text))));
+                sb.AppendLine(Tr(Td(Gray("UTF-8:")), Td(GetUtf8(text))));
             }
 
             sb.AppendLine("</table>");

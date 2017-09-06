@@ -116,3 +116,7 @@ h1 {
 .smallTable {
     font-size: medium;
 }
+
+.gray {
+    color: gray;
+}
