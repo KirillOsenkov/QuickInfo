@@ -180,7 +180,7 @@ namespace QuickInfo
 
             result.AppendLine("<div style='font-size: smaller'>");
             result.AppendLine(Div("Closest named colors:", "class='sectionHeader'"));
-            result.AppendLine("<table>");
+            result.AppendLine(TableStart("smallTable"));
             foreach (var nearestColor in nearestColors)
             {
                 if (nearestColor == knownColor)

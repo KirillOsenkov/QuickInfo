@@ -16,9 +16,21 @@ namespace QuickInfo
             return WebUtility.UrlEncode(text);
         }
 
-        public static string Tr(string s)
+        public static string TableStart(string tableClass = "")
         {
-            return "<tr>" + s + "</tr>";
+            if (string.IsNullOrEmpty(tableClass))
+            {
+                return "<table>";
+            }
+            else
+            {
+                return $"<table class=\"{tableClass}\">";
+            }
+        }
+
+        public static string Tr(params string[] td)
+        {
+            return "<tr>" + string.Concat(td) + "</tr>";
         }
 
         public static string Td(string s, string attributes = null)

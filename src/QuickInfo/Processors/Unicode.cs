@@ -89,28 +89,44 @@ namespace QuickInfo
         {
             // naive linear lookup is about 70-80 ms
             // TODO: optimize this?
-            var sb = new StringBuilder();
+            List<string> resultCards = new List<string>();
             int hitcount = 0;
             foreach (var d in descriptions)
             {
                 if (hitcount > 20)
                 {
-                    return sb.ToString();
+                    return RenderResultCards(resultCards);
                 }
 
                 if (d.Value.IndexOf(input, StringComparison.OrdinalIgnoreCase) > -1)
                 {
-                    sb.AppendLine(DivClass(GetResult(d.Key), "answerSection"));
+                    resultCards.Add(GetResult(d.Key));
                     hitcount++;
                 }
             }
 
-            if (sb.Length > 0)
+            return RenderResultCards(resultCards);
+        }
+
+        private string RenderResultCards(List<string> resultCards)
+        {
+            if (resultCards.Count == 0)
             {
-                return sb.ToString();
+                return null;
             }
 
-            return null;
+            if (resultCards.Count == 1)
+            {
+                return resultCards[0];
+            }
+
+            var sb = new StringBuilder();
+            foreach (var card in resultCards)
+            {
+                sb.AppendLine(DivClass(card, "answerSection"));
+            }
+
+            return sb.ToString();
         }
 
         private Dictionary<int, string> descriptions = new Dictionary<int, string>();
@@ -189,21 +205,36 @@ namespace QuickInfo
 
             var info = UnicodeInfo.GetCharInfo(value);
 
-            sb.AppendLine(Div("Unicode code point: " + value));
-            sb.AppendLine(DivClass("\\u" + value.ToHex(), "fixed"));
-            sb.AppendLine(Div("Category: " + CharUnicodeInfo.GetUnicodeCategory(ch)));
-            sb.AppendLine(Div("Block: " + info.Block));
+            sb.AppendLine(TableStart("smallTable"));
+            sb.AppendLine(Tr(Td("Unicode code point:"), Td(value.ToString())));
+            sb.AppendLine(Tr(Td("Escape:"), Td(DivClass(GetEscapeString(value), "fixed"))));
+            sb.AppendLine(Tr(Td("Category:"), Td(CharUnicodeInfo.GetUnicodeCategory(ch).ToString())));
+            sb.AppendLine(Tr(Td("Block:"), Td(info.Block)));
             if (text != null)
             {
-                sb.AppendLine(GetUtf8(text));
+                sb.AppendLine(Tr(Td("UTF-8:"), Td(GetUtf8(text))));
             }
+
+            sb.AppendLine("</table>");
 
             return sb.ToString();
         }
 
+        private static string GetEscapeString(int value)
+        {
+            if (char.ConvertFromUtf32(value).Length == 2)
+            {
+                return "\\U" + value.ToHex().PadLeft(8, '0');
+            }
+            else
+            {
+                return "\\u" + value.ToHex().PadLeft(4, '0');
+            }
+        }
+
         private static string GetUtf8(string text)
         {
-            return Div("UTF-8: " + string.Join(" ", Encoding.UTF8.GetBytes(text).Select(b => b.ToString("X"))));
+            return DivClass(string.Join(" ", Encoding.UTF8.GetBytes(text).Select(b => b.ToString("X"))), "fixed");
         }
 
         private string GetResult(string text)
@@ -215,8 +246,10 @@ namespace QuickInfo
 
             var sb = new StringBuilder();
             sb.AppendLine(DivClass(Escape(text), "charSample"));
+
             sb.AppendLine(DivClass(GetUtf8(text), "fixed"));
             sb.AppendLine(DivClass(string.Join(" ", text.Select(c => "\\u" + ((int)c).ToHex())), "fixed"));
+
             return sb.ToString();
         }
     }
