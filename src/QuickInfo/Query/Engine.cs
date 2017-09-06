@@ -56,32 +56,29 @@ namespace QuickInfo
                 foreach (var singleQuery in multipleQueries)
                 {
                     var result = Instance.GetSingleResponseWorker(singleQuery, request);
-                    if (!string.IsNullOrEmpty(result))
+                    if (string.IsNullOrEmpty(result))
                     {
-                        sb.AppendLine("<div class=\"answerBlock\">");
-                        sb.AppendLine(DivClass(singleQuery, "answerBlockHeader"));
-
-                        if (string.IsNullOrEmpty(result))
-                        {
-                            result = DivClass("No result.", "note");
-                        }
-
-                        if (!result.Contains("singleAnswerSection"))
-                        {
-                            result = DivClass(result, "singleAnswerSection");
-                        }
-                        else
-                        {
-                            result = Div(result);
-                        }
-
-                        sb.AppendLine(result);
-
-                        sb.AppendLine("</div>");
+                        result = DivClass("No results.", "note");
                     }
+
+                    sb.AppendLine("<div class=\"answerBlock\">");
+                    sb.AppendLine(DivClass(singleQuery, "answerBlockHeader"));
+
+                    if (!result.Contains("singleAnswerSection"))
+                    {
+                        result = DivClass(result, "singleAnswerSection");
+                    }
+                    else
+                    {
+                        result = Div(result);
+                    }
+
+                    sb.AppendLine(result);
+
+                    sb.AppendLine("</div>");
                 }
 
-                if (sb.Length == 0)
+                if (multipleQueries.Length == 0)
                 {
                     sb.AppendLine(DivClass("No results.", "note"));
                 }
@@ -272,6 +269,12 @@ namespace QuickInfo
             }
 
             var response = sb.ToString();
+
+            if (query.IsHelp)
+            {
+                response = DivClass(response, "singleAnswerSection");
+            }
+
             return response;
         }
     }
