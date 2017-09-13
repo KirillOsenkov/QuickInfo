@@ -51,7 +51,7 @@ namespace QuickInfo
                     string.Equals(invocation.Prefix, "rgb", StringComparison.OrdinalIgnoreCase))
                 {
                     list = Engine.TryGetStructure<SeparatedList>(invocation.ArgumentListParsed);
-                    if (list.Count != 3)
+                    if (list != null && list.Count != 3)
                     {
                         list = null;
                     }
