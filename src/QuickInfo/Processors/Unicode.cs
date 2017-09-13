@@ -11,6 +11,8 @@ namespace QuickInfo
 {
     public class Unicode : IProcessor
     {
+        const int MaxSymbolsToReturn = 60;
+
         public Unicode()
         {
             BuildUnicodeList();
@@ -106,7 +108,7 @@ namespace QuickInfo
             int hitcount = 0;
             foreach (var d in descriptions)
             {
-                if (hitcount > 20)
+                if (hitcount >= MaxSymbolsToReturn)
                 {
                     return RenderResultCards(resultCards);
                 }

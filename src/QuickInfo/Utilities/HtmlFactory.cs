@@ -123,6 +123,16 @@ namespace QuickInfo
             return Tag(content, "a", href, onclick);
         }
 
+        public static string A(string content, string hyperlink, string target = "_blank")
+        {
+            return Tag(content, "a", Attribute("href", hyperlink), Attribute("target", target));
+        }
+
+        public static string A(string hyperlink, string target = "_blank")
+        {
+            return Tag(hyperlink, "a", Attribute("href", hyperlink), Attribute("target", target));
+        }
+
         public static string Div(string content, params string[] attributes)
         {
             return Tag(content, "div", attributes);

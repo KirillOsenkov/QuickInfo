@@ -117,7 +117,7 @@ a {
     display: inline-block;
     border: 1px solid lightgray;
     background: lightyellow;
-    padding: 4px 6px;
+    padding: 6px 9px;
     box-shadow: rgba(200,200,200,0.4) 10px 10px 20px;
 }
 
@@ -131,4 +131,23 @@ a {
 
 .gray {
     color: gray;
+}
+
+.exception {
+    border: 1px solid lightgray;
+    background: lightyellow;
+    padding: 4px 6px;
+    box-shadow: rgba(200,200,200,0.4) 10px 10px 20px;
+    font-size: medium;
+}
+
+    .exception::before {
+        content: '❌';
+        margin: 8px;
+        font-size: xx-large;
+    }
+
+.exceptionStack {
+    white-space: pre-wrap;
+    font-family: Consolas, 'Lucida Console', 'Times New Roman', Times, serif;
 }

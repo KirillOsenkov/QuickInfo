@@ -17,7 +17,9 @@ namespace QuickInfo.Controllers
             }
             catch (Exception ex)
             {
-                result = Div(Escape(ex.ToString()));
+                var text = DivClass(Escape(ex.ToString()), "exceptionStack");
+                text = text + Div("<br/>Please open a new issue at " + A("https://github.com/KirillOsenkov/QuickInfo/issues/new") + " and paste the exception text above. Thanks and sorry for the inconvenience!");
+                result = DivClass(text, "exception");
             }
 
             Response.Headers.Add("Cache-Control", new[] { "no-cache" });
