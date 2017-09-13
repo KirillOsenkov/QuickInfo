@@ -177,7 +177,7 @@ namespace QuickInfo
 
             result.AppendLine(DivClass(Escape($"RGB({r},{g},{b}) = {hexColor}"), "fixed"));
 
-            result.AppendLine(GetSwatch(hexColor));
+            result.AppendLine(Div("", $"style=\"background:{hexColor};max-width:300px;height:50px\""));
 
             string knownColor = null;
             if (knownColorNames.TryGetValue(r + g * 256 + b * 65536, out knownColor))

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -219,7 +219,7 @@ namespace QuickInfo
             var info = UnicodeInfo.GetCharInfo(value);
 
             sb.AppendLine(TableStart("smallTable"));
-            sb.AppendLine(Tr(Td(Gray("Code point:")), Td(value.ToString())));
+            sb.AppendLine(Tr(Td(Gray("Code point:")), Td($"{value} (U+{value.ToHex()})")));
             sb.AppendLine(Tr(Td(Gray("Category:")), Td(CharUnicodeInfo.GetUnicodeCategory(ch).ToString())));
             sb.AppendLine(Tr(Td(Gray("Block:")), Td(info.Block)));
             sb.AppendLine(Tr(Td(Gray("Escape:")), Td(DivClass(GetEscapeString(value), "fixed"))));
