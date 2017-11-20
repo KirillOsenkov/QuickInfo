@@ -51,6 +51,11 @@ function onSearchChange() {
 
     inputBoxText = inputBox.value;
 
+    if (inputBoxText === "demo") {
+        startDemo();
+        return;
+    }
+
     if (inputBoxText.length > 0) {
         setTimeout(function (capturedText) {
             if (capturedText === inputBox.value) {
@@ -59,6 +64,54 @@ function onSearchChange() {
         }, 400, inputBoxText);
     } else {
         search("");
+    }
+}
+
+var currentDemoTerm = 0;
+var terms = [
+    "color",
+    "lightpink",
+    "lightpink|",
+    "lightpink|peachpuff",
+    "RGB(23,145,175)",
+    "rgb 23 145 175|rgb 0 191 255",
+    "rnd",
+    "rnd * 100",
+    "2520",
+    "3 * (4 + 5)",
+    "e^pi|pi^e",
+    "0x42a",
+    "guid",
+    "3.2 7 11 5.5 19.7 0.4",
+    "9,1,100,42,0,0,19",
+    "ascii",
+    "unicode cake",
+    "\\U0001F352",
+    "F0 9F 8D 87",
+    "3%2B2%2F(2%2B3)",
+    "167 lb",
+    "30 ounces to grams",
+    "75 f",
+    "26.2 miles",
+    "900 ft in yards",
+    "60mph",
+    "5 gallons in litres",
+    "1670 sq.ft",
+    "?"
+];
+
+function startDemo() {
+    currentDemoTerm = 0;
+    searchFor(terms[0]);
+    setTimeout(advanceDemo, 3000);
+}
+
+function advanceDemo() {
+    if (currentDemoTerm < terms.length) {
+        var term = terms[currentDemoTerm];
+        searchFor(term);
+        currentDemoTerm++;
+        setTimeout(advanceDemo, 1500);
     }
 }
 
