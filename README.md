@@ -1,7 +1,7 @@
 # http://quickinfo.io
 Extensible set of little one-off features that Google or Bing are missing, such as color and unit conversions, etc.
 
-![screenshot](https://github.com/KirillOsenkov/QuickInfo/raw/master/docs/ColorChart.png)
+![screenshot](https://github.com/KirillOsenkov/QuickInfo/raw/master/docs/Demo.gif)
 
 ## Motivation
 
