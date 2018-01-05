@@ -19,7 +19,8 @@ namespace QuickInfo
                     ("color", "Named color palette"),
                     ("red", "Named color"),
                     ("#FFC0CB", "Hex color"),
-                    ("rgb 23 145 175", "RGB")
+                    ("rgb 23 145 175", "RGB"),
+                    ("rgb(rnd*255, rnd*255, rnd*255)", "Random RGB color")
                 );
             }
 
