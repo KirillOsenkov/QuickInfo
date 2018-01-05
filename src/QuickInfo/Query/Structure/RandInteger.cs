@@ -3,11 +3,11 @@ using System.Text.RegularExpressions;
 
 namespace QuickInfo
 {
-    public class RandInteger : IStructureParser
+    public class RandomInteger : IStructureParser
     {
         private readonly Regex _regex = new Regex(@"^(?:rnd\*(\d+)|(\d+)\*rnd)$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private readonly Random _rnd = new Random();
-                                             
+
         public object TryParse(string query)
         {
             var trimmed = query.Trim();
@@ -23,7 +23,7 @@ namespace QuickInfo
                     return null;
                 }
                 else
-                {                    
+                {
                     return number <= 255 ? new Integer(_rnd.Next(number + 1)) : null;
                 }
             }

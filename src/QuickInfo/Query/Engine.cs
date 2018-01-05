@@ -35,7 +35,7 @@ namespace QuickInfo
             structureParsers.Add(new Double());
             structureParsers.Add(new SeparatedList(','));
             structureParsers.Add(new SeparatedList(' '));
-            structureParsers.Add(new RandInteger());
+            structureParsers.Add(new RandomInteger());
         }
 
         public static Engine Instance { get; } = new Engine();
