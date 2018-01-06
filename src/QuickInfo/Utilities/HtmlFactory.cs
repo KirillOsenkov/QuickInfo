@@ -27,6 +27,11 @@ namespace QuickInfo
             return Table(links.Select(l => Row(SearchLink(l.link), l.description)).ToArray());
         }
 
+        public static string NameValueTable(params (string key, string value)[] rows)
+        {
+            return Table(rows.Select(r => Row(Gray(r.key), r.value)).ToArray());
+        }
+
         public static string Table(params string[] rows)
         {
             if (rows == null || rows.Length == 0)

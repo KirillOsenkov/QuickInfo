@@ -8,7 +8,9 @@ namespace QuickInfo.Processors
     {
         private HashSet<string> triggerStrings = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
-            "utc"
+            "utc",
+            "time",
+            "time in utc"
         };
 
         public string GetResult(Query query)
