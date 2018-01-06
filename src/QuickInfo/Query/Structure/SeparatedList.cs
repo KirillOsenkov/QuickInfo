@@ -70,6 +70,11 @@ namespace QuickInfo
             if (query.IndexOf(separatorCharArray[0]) != -1)
             {
                 var parts = query.Split(separatorCharArray, StringSplitOptions.RemoveEmptyEntries);
+                if (parts.Length == 0)
+                {
+                    return null;
+                }
+
                 var parsed = parts.Select(p => Engine.Parse(p)).ToArray();
                 if (parsed.Any(p => p == null))
                 {
