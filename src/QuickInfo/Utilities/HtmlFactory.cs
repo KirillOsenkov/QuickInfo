@@ -148,6 +148,11 @@ namespace QuickInfo
             return Div(content, "class=\"" + className + "\"");
         }
 
+        public static string SectionHeader(string title)
+        {
+            return DivClass(title, "sectionHeader");
+        }
+
         public static string Attribute(string name, object value)
         {
             return name + "=\"" + Escape(Convert.ToString(value)) + "\"";
