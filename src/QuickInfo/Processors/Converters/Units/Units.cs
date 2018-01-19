@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Reflection;
 
 namespace QuickInfo
 {
@@ -52,6 +51,11 @@ namespace QuickInfo
         public static readonly Unit Mpg = new Unit("mpg", "miles/gallon");
         public static readonly Unit LitersPer100Km = new Unit("liters/100km", "l/100km");
 
+        public static readonly Unit EUR = new Unit("EUR", "Euro", "€");
+        public static readonly Unit USD = new Unit("USD", "United States Dollar", "$");
+        public static readonly Unit RUB = new Unit("RUB", "Russia ruble", "₽");
+        public static readonly Unit CZK = new Unit("CZK", "Czech Republic Koruna", "Kč");
+        
         public static readonly Conversion[] Conversions =
         {
             new Conversion(Pound, Kilogram, p => p * 0.45359237),
@@ -126,6 +130,19 @@ namespace QuickInfo
 
             new Conversion(Mpg, LitersPer100Km, p => 235.214583084785 / p),
             new Conversion(LitersPer100Km, Mpg, p => 235.214583084785 / p),
+
+            new Conversion(EUR, USD, p => Currency.Convert("EUR", "USD", p)),
+            new Conversion(EUR, RUB, p => Currency.Convert("EUR", "RUB", p)),
+            new Conversion(EUR, CZK, p => Currency.Convert("EUR", "CZK", p)),
+            new Conversion(USD, EUR, p => Currency.Convert("USD", "EUR", p)),
+            new Conversion(USD, RUB, p => Currency.Convert("USD", "RUB", p)),
+            new Conversion(USD, CZK, p => Currency.Convert("USD", "CZK", p)),
+            new Conversion(RUB, EUR, p => Currency.Convert("RUB", "EUR", p)),
+            new Conversion(RUB, USD, p => Currency.Convert("RUB", "USD", p)),
+            new Conversion(RUB, CZK, p => Currency.Convert("RUB", "CZK", p)),
+            new Conversion(CZK, EUR, p => Currency.Convert("CZK", "EUR", p)),
+            new Conversion(CZK, USD, p => Currency.Convert("CZK", "USD", p)),
+            new Conversion(CZK, RUB, p => Currency.Convert("CZK", "RUB", p))
         };
 
         private static Unit[] allUnits = null;
