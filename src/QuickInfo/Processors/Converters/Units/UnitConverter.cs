@@ -48,7 +48,13 @@ namespace QuickInfo
                     HelpTable
                     (
                         ("29 mpg", "")
-                    ));
+                    )) +
+                    DivClass("Currency converter", "sectionHeader") +
+                    HelpTable
+                    (
+                        ("150 EUR in USD", ""),
+                        ("4000$", "")
+                    );
             }
 
             var tuple = query.TryGetStructure<Tuple<Double, Unit>>();
