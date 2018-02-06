@@ -213,7 +213,7 @@ namespace QuickInfo
 
         private string GetResult(double value, Conversion conversion)
         {
-            return DivClass($"{value} {conversion.From.ToString()} = {conversion.Converter(value)} {conversion.To.ToString()}", "fixed");
+            return DivClass($"{value} {conversion.From.ToString()} = {conversion.Converter(value).ToString(conversion.Format)} {conversion.To.ToString()}", "fixed");
         }
     }
 }

@@ -91,10 +91,10 @@ namespace QuickInfo
             new Conversion(Knot, Kmh, p => p * 1.852),
             new Conversion(Kmh, Knot, p => p / 1.852),
 
-            new Conversion(Fahrenheit, Celsius, p => (p - 32) * 5 / 9),
-            new Conversion(Celsius, Fahrenheit, p => p * 9 / 5 + 32),
-            new Conversion(Kelvin, Celsius, p => p - 273.15),
-            new Conversion(Celsius, Kelvin, p => p + 273.15),
+            new Conversion(Fahrenheit, Celsius, p => (p - 32) * 5 / 9, "f1"),
+            new Conversion(Celsius, Fahrenheit, p => p * 9 / 5 + 32, "f1"),
+            new Conversion(Kelvin, Celsius, p => p - 273.15, "f2"),
+            new Conversion(Celsius, Kelvin, p => p + 273.15, "f2"),
 
             new Conversion(Gallon, Liter, p => p * 3.78541178),
             new Conversion(Liter, Gallon, p => p / 3.78541178),
@@ -131,12 +131,12 @@ namespace QuickInfo
             new Conversion(Mpg, LitersPer100Km, p => 235.214583084785 / p),
             new Conversion(LitersPer100Km, Mpg, p => 235.214583084785 / p),
 
-            new Conversion(EUR, USD, p => Currency.Convert("EUR", "USD", p)),
-            new Conversion(USD, EUR, p => Currency.Convert("USD", "EUR", p)),
-            new Conversion(EUR, RUB, p => Currency.Convert("EUR", "RUB", p)),
-            new Conversion(RUB, EUR, p => Currency.Convert("RUB", "EUR", p)),
-            new Conversion(EUR, CZK, p => Currency.Convert("EUR", "CZK", p)),
-            new Conversion(CZK, EUR, p => Currency.Convert("CZK", "EUR", p)),
+            new Conversion(EUR, USD, p => Currency.Convert("EUR", "USD", p), "n2"),
+            new Conversion(USD, EUR, p => Currency.Convert("USD", "EUR", p), "n2"),
+            new Conversion(EUR, RUB, p => Currency.Convert("EUR", "RUB", p), "n2"),
+            new Conversion(RUB, EUR, p => Currency.Convert("RUB", "EUR", p), "n2"),
+            new Conversion(EUR, CZK, p => Currency.Convert("EUR", "CZK", p), "n2"),
+            new Conversion(CZK, EUR, p => Currency.Convert("CZK", "EUR", p), "n2"),
         };
 
         private static Unit[] allUnits = null;
