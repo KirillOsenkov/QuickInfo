@@ -91,8 +91,8 @@ namespace QuickInfo
             new Conversion(Knot, Kmh, p => p * 1.852),
             new Conversion(Kmh, Knot, p => p / 1.852),
 
-            new Conversion(Fahrenheit, Celsius, p => (p - 32) * 5 / 9, "f1"),
-            new Conversion(Celsius, Fahrenheit, p => p * 9 / 5 + 32, "f1"),
+            new Conversion(Fahrenheit, Celsius, p => (p - 32) * 5 / 9, "f2"),
+            new Conversion(Celsius, Fahrenheit, p => p * 9 / 5 + 32, "f2"),
             new Conversion(Kelvin, Celsius, p => p - 273.15, "f2"),
             new Conversion(Celsius, Kelvin, p => p + 273.15, "f2"),
 
