@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using static QuickInfo.HtmlFactory;
@@ -51,9 +51,22 @@ namespace QuickInfo
             if (integerList != null && integerList.Count == originalList.Count)
             {
                 sb.AppendLine(Row("Hex to decimal:", Fixed(string.Join(", ", integerList.Select(l => l.ForceHexadecimalValue().ToString())))));
+
                 if (integerList.All(i => i.Kind == IntegerKind.Decimal))
                 {
-                    sb.AppendLine(Row("Decimal to hex:", Fixed(string.Join(", ", integerList.Select(l => l.Int32.ToHex())))));
+                    IEnumerable<string> hexList = null;
+                    string separator = ", ";
+                    if (integerList.All(i => i.Int32 >= 0 && i.Int32 < 256))
+                    {
+                        hexList = integerList.Select(l => l.Int32.ToHex().PadLeft(2, '0'));
+                        separator = " ";
+                    }
+                    else
+                    {
+                        hexList = integerList.Select(l => l.Int32.ToHex());
+                    }
+                    
+                    sb.AppendLine(Row("Decimal to hex:", Fixed(string.Join(separator, hexList))));
                 }
             }
 
