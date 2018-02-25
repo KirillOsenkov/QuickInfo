@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickInfo", "src\QuickInfo\QuickInfo.csproj", "{E0F36585-3E99-42DC-B19B-6A5EB56FECD4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickInfoWeb", "src\QuickInfoWeb\QuickInfoWeb.csproj", "{E0F36585-3E99-42DC-B19B-6A5EB56FECD4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
