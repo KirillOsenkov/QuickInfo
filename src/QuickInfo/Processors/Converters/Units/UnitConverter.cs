@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using static QuickInfo.NodeFactory;
 
@@ -10,51 +11,56 @@ namespace QuickInfo
         {
             if (query.IsHelp)
             {
-                return Div(
-                    DivClass("Temperature", "sectionHeader") +
-                    HelpTable
-                    (
-                        ("75 f", "")
-                    ) +
-                    DivClass("Weight", "sectionHeader") +
-                    HelpTable
-                    (
-                        ("167 lb", ""),
-                        ("30 ounces to grams", "")
-                    ) +
-                    DivClass("Distance", "sectionHeader") +
-                    HelpTable
-                    (
-                        ("26.2 miles", ""),
-                        ("900 ft in yards", "")
-                    ) +
-                    DivClass("Speed", "sectionHeader") +
-                    HelpTable
-                    (
-                        ("60 mph", "")
-                    ) +
-                    DivClass("Volume", "sectionHeader") +
-                    HelpTable
-                    (
-                        ("5 gallons in m3", "")
-                    ) +
-                    DivClass("Area", "sectionHeader") +
-                    HelpTable
-                    (
-                        ("1670 sq.ft", ""),
-                        ("10 acres in m2", "")
-                    ) +
-                    DivClass("Fuel efficiency", "sectionHeader") +
-                    HelpTable
-                    (
-                        ("29 mpg", "")
-                    )) +
-                    DivClass("Currency converter", "sectionHeader") +
-                    HelpTable
-                    (
-                        ("150 EUR in USD", ""),
-                        ("4000$", "")
-                    );
+                return new Node
+                {
+                    List = new List<object>
+                    {
+                        SectionHeader("Temperature"),
+                        HelpTable
+                        (
+                            ("75 f", "")
+                        ),
+                        SectionHeader("Weight"),
+                        HelpTable
+                        (
+                            ("167 lb", ""),
+                            ("30 ounces to grams", "")
+                        ),
+                        SectionHeader("Distance"),
+                        HelpTable
+                        (
+                            ("26.2 miles", ""),
+                            ("900 ft in yards", "")
+                        ),
+                        SectionHeader("Speed"),
+                        HelpTable
+                        (
+                            ("60 mph", "")
+                        ),
+                        SectionHeader("Volume"),
+                        HelpTable
+                        (
+                            ("5 gallons in m3", "")
+                        ),
+                        SectionHeader("Area"),
+                        HelpTable
+                        (
+                            ("1670 sq.ft", ""),
+                            ("10 acres in m2", "")
+                        ),
+                        SectionHeader("Fuel efficiency"),
+                        HelpTable
+                        (
+                            ("29 mpg", "")
+                        ),
+                        SectionHeader("Currency converter"),
+                        HelpTable
+                        (
+                            ("150 EUR in USD", ""),
+                            ("4000$", "")
+                        )
+                    }
+                };
             }
 
             var tuple = query.TryGetStructure<Tuple<Double, Unit>>();
@@ -190,30 +196,36 @@ namespace QuickInfo
             return sb.ToString();
         }
 
-        private string GetResult(double value, Unit unit)
+        private object GetResult(double value, Unit unit)
         {
-            var sb = new StringBuilder();
+            var list = new List<object>();
 
             foreach (var conversion in Units.Conversions)
             {
                 if (conversion.From == unit)
                 {
                     var result = GetResult(value, conversion);
-                    sb.Append(result);
+                    if (result != null)
+                    {
+                        list.Add(result);
+                    }
                 }
             }
 
-            if (sb.Length == 0)
+            if (list.Count == 0)
             {
                 return null;
             }
 
-            return sb.ToString();
+            return new Node
+            {
+                List = list
+            };
         }
 
-        private string GetResult(double value, Conversion conversion)
+        private object GetResult(double value, Conversion conversion)
         {
-            return DivClass($"{value} {conversion.From.ToString()} = {conversion.Converter(value).ToString(conversion.Format)} {conversion.To.ToString()}", "fixed");
+            return Fixed($"{value} {conversion.From.ToString()} = {conversion.Converter(value).ToString(conversion.Format)} {conversion.To.ToString()}");
         }
     }
 }

@@ -9,28 +9,46 @@ namespace QuickInfo
         {
             var result = new Node
             {
-                ["Kind"] = "Table",
-                ["Style"] = "Help",
-                ["List"] = entries.Select(nameValue => new Node
+                Kind = "Table",
+                Style = "Help",
+                List = entries.Select(nameValue => new Node
                 {
-                    ["Kind"] = "Row",
-                    ["List"] = new Node[]
+                    Kind = "Row",
+                    List = new Node[]
                     {
                         new Node
                         {
-                            ["Kind"] = "Cell",
-                            ["Text"] = nameValue.Item1,
-                            ["SearchLink"] = nameValue.Item1
+                            Kind = "Cell",
+                            Text = nameValue.Item1,
+                            SearchLink = nameValue.Item1
                         },
                         new Node
                         {
-                            ["Kind"] = "Cell",
-                            ["Text"] = nameValue.Item2
+                            Kind = "Cell",
+                            Text = nameValue.Item2
                         }
                     }
                 })
             };
             return result;
+        }
+
+        public static object SectionHeader(string text)
+        {
+            return new Node
+            {
+                Style = "SectionHeader",
+                Text = text
+            };
+        }
+
+        public static object Fixed(string text)
+        {
+            return new Node
+            {
+                Style = "Fixed",
+                Text = text
+            };
         }
     }
 
@@ -82,9 +100,16 @@ namespace QuickInfo
             set => this[nameof(Text)] = value;
         }
 
-        public IEnumerable<T> GetList<T>()
+        public string SearchLink
         {
-            return this["List"] as IEnumerable<T>;
+            get => this[nameof(SearchLink)] as string;
+            set => this[nameof(SearchLink)] = value;
+        }
+
+        public IEnumerable<object> List
+        {
+            get => this[nameof(List)] as IEnumerable<object>;
+            set => this[nameof(List)] = value;
         }
     }
 }

@@ -45,20 +45,49 @@ namespace QuickInfo
             {
                 return "table";
             }
+            else if (node.Kind == "ColumnHeader")
+            {
+                return "th";
+            }
 
             return null;
         }
 
         public string GetClass(Node node)
         {
+            if (node.Style == "SectionHeader")
+            {
+                return "sectionHeader";
+            }
+            else if (node.Style == "Fixed")
+            {
+                return "fixed";
+            }
+
             return null;
         }
 
         public string GetStyle(Node node)
         {
-            if (node.Style == "Color")
+            if (node.Style == "Color" && node.Kind == "Table")
             {
                 return "border-spacing: 10px";
+            }
+            else if (node.Style == "Ascii" && node.Kind == "Table")
+            {
+                return "font-size: 12pt";
+            }
+            else if (node.Style == "AsciiColumnHeaderCode" || node.Style == "AsciiColumnCode")
+            {
+                return "color: lightseagreen";
+            }
+            else if (node.Style == "AsciiColumnHeaderHex" || node.Style == "AsciiColumnHex")
+            {
+                return "color: lightgray";
+            }
+            else if (node.Style == "AsciiColumnChar")
+            {
+                return "column-width: 60px";
             }
 
             return null;
@@ -125,10 +154,25 @@ namespace QuickInfo
 
         private void RenderNode(Node node)
         {
-            var tag = GetTag(node);
-            using (Tag(tag, node))
+            string tag = GetTag(node);
+            var list = node.List;
+            var nodeClass = GetClass(node);
+            var nodeStyle = GetStyle(node);
+
+            if (tag == null)
             {
-                var list = node.GetList<IEnumerable<object>>();
+                if (list != null)
+                {
+                    tag = "div";
+                }
+                else if (nodeClass != null || nodeStyle != null)
+                {
+                    tag = "span";
+                }
+            }
+
+            using (Tag(tag, nodeClass, nodeStyle))
+            {
                 if (list != null)
                 {
                     foreach (var item in list)
@@ -138,8 +182,7 @@ namespace QuickInfo
                 }
                 else
                 {
-                    var searchLink = node["SearchLink"] as string;
-                    using (SearchLink(searchLink))
+                    using (SearchLink(node.SearchLink))
                     {
                         RenderText(node);
                     }

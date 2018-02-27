@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using static QuickInfo.NodeFactory;
 
@@ -22,43 +23,85 @@ namespace QuickInfo
             return null;
         }
 
-        private string AsciiTable()
+        private object AsciiTable()
         {
-            var sb = new StringBuilder();
-            sb.Append("<table style=\"font-size: 12pt\">");
             int columns = 8;
             int columnLength = 256 / columns;
 
-            sb.Append("<tr>");
-            var headers = Th("code", "style=\"color: lightseagreen\"") + Th("hex", "style=\"color: lightgray\"") + Th("char");
+            var headerRow = new List<object>();
+
             for (int i = 0; i < columns; i++)
             {
-                sb.Append(headers);
+                headerRow.Add(new Node
+                {
+                    Kind = "ColumnHeader",
+                    Text = "code",
+                    Style = "AsciiColumnHeaderCode"
+                });
+                headerRow.Add(new Node
+                {
+                    Kind = "ColumnHeader",
+                    Text = "hex",
+                    Style = "AsciiColumnHeaderHex"
+                });
+                headerRow.Add(new Node
+                {
+                    Kind = "ColumnHeader",
+                    Text = "char"
+                });
             }
 
-            sb.AppendLine("</tr>");
+            var rows = new List<object>();
+            rows.Add(new Node
+            {
+                Kind = "Row",
+                List = headerRow
+            });
+
+            var encoding = Encoding.GetEncoding("latin1");
 
             for (int i = 0; i < columnLength; i++)
             {
-                sb.Append("<tr>");
+                var row = new List<object>();
 
                 for (int column = 0; column < columns; column++)
                 {
                     int character = i + column * columnLength;
-                    var number = Td(character.ToString(), "style=\"color: lightseagreen\"");
-                    var hex = Td(character.ToHex(), "style=\"color: lightgray\"");
-                    var encoding = Encoding.GetEncoding("latin1");
+                    row.Add(new Node
+                    {
+                        Kind = "Cell",
+                        Style = "AsciiColumnCode",
+                        Text = character.ToString()
+                    });
+                    row.Add(new Node
+                    {
+                        Kind = "Cell",
+                        Style = "AsciiColumnHex",
+                        Text = character.ToHex()
+                    });
+
                     var text = encoding.GetString(new byte[] { (byte)character });
-                    var characterText = Td(Escape(text), "style=\"column-width: 60px\"");
-                    sb.Append(number + hex + characterText);
+                    row.Add(new Node
+                    {
+                        Kind = "Cell",
+                        Text = text,
+                        Style = "AsciiColumnChar"
+                    });
                 }
 
-                sb.AppendLine("</tr>");
+                rows.Add(new Node
+                {
+                    Kind = "Row",
+                    List = row
+                });
             }
 
-            sb.Append("</table>");
-
-            return sb.ToString();
+            return new Node
+            {
+                Kind = "Table",
+                Style = "Ascii",
+                List = rows
+            };
         }
     }
 }
