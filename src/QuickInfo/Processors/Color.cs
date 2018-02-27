@@ -24,7 +24,7 @@ namespace QuickInfo
                 );
             }
 
-            var input = query.OriginalInput.Trim();
+            var input = query.OriginalInputTrim;
 
             if (string.Equals(input, "color", StringComparison.OrdinalIgnoreCase) ||
                 string.Equals(input, "colors", StringComparison.OrdinalIgnoreCase))
@@ -129,12 +129,12 @@ namespace QuickInfo
             };
         }
 
-        private string GetResultFromHexString(string hexString)
+        private object GetResultFromHexString(string hexString)
         {
-            int r;
-            int g;
-            int b;
-            int a;
+            int r = 0;
+            int g = 0;
+            int b = 0;
+            int a = 0;
 
             if (hexString.Length == 3)
             {
@@ -148,7 +148,7 @@ namespace QuickInfo
                 g = int.Parse(hexString.Substring(2, 2), NumberStyles.AllowHexSpecifier);
                 b = int.Parse(hexString.Substring(4, 2), NumberStyles.AllowHexSpecifier);
             }
-            else
+            else if (hexString.Length == 8)
             {
                 a = int.Parse(hexString.Substring(0, 2), NumberStyles.AllowHexSpecifier);
                 r = int.Parse(hexString.Substring(2, 2), NumberStyles.AllowHexSpecifier);
@@ -159,58 +159,63 @@ namespace QuickInfo
             return GetResult(r, g, b);
         }
 
-        private string GetResult(int r, int g, int b)
+        private object GetResult(int r, int g, int b)
         {
             var hexColor = GetHexColor(r, g, b);
-            var result = new StringBuilder();
+            var result = new List<object>();
 
-            result.AppendLine(DivClass(Escape($"RGB({r},{g},{b}) = {hexColor}"), "fixed"));
+            result.Add(Fixed($"RGB({r},{g},{b}) = {hexColor}"));
 
-            result.AppendLine(Div("", $"style=\"background:{hexColor};max-width:300px;height:50px\""));
+            result.Add(new Node
+            {
+                Text = hexColor,
+                Style = "ColorSwatchLarge"
+            });
 
             string knownColor = null;
             if (knownColorNames.TryGetValue(r + g * 256 + b * 65536, out knownColor))
             {
-                result.AppendLine(DivClass(knownColor, "swatchName"));
+                result.Add(Text(knownColor));
             }
 
             var nearestColors = GetNearestColors(r, g, b).Take(11);
 
-            result.AppendLine("<div style='font-size: smaller'>");
-            result.AppendLine(SectionHeader("Closest named colors:"));
-            result.AppendLine(TableStart("smallTable"));
-            foreach (var nearestColor in nearestColors)
+            result.Add("<div style='font-size: smaller'>");
+            result.Add(SectionHeader("Closest named colors:"));
+
+            var table = new Node
             {
-                if (nearestColor == knownColor)
+                Kind = "Table",
+                List = nearestColors.Where(n => knownColor != n).Select(nearestColor =>
                 {
-                    continue;
-                }
-
-                var canvas = GetCanvas(nearestColor, 60, 16);
-                var hex = "#" + knownColors[nearestColor];
-                result.AppendLine
-                (
-                    Tr
-                    (
-                        Td(nearestColor) +
-                        Td(SearchLink(hex, hex)) +
-                        Td(SearchLink(canvas, hex))
-                    )
-                );
-            }
-
-            result.AppendLine("</table>");
-            result.AppendLine("</div>");
-
-            return result.ToString();
-        }
-
-        private static string GetCanvas(string hexColor, int width, int height, string additionalStyle = "")
-        {
-            return Tag("", "canvas",
-                Attribute("width", width),
-                Attribute("height", height),
-                Attribute("style", "background:" + hexColor + additionalStyle));
+                    var hex = "#" + knownColors[nearestColor];
+                    return new Node
+                    {
+                        Kind = "Row",
+                        List = new Node[]
+                        {
+                            new Node
+                            {
+                                Kind = "Cell",
+                            },
+                            new Node
+                            {
+                                Kind = "Cell",
+                                Text = hex,
+                                SearchLink = hex
+                            },
+                            new Node
+                            {
+                                Kind = "Cell",
+                                Style = "ColorSwatchSmall",
+                                Text = hex,
+                                SearchLink = hex
+                            }
+                        }
+                    };
+                })
+            };
+            return table;
         }
 
         private IEnumerable<string> GetNearestColors(int r, int g, int b)

@@ -5,6 +5,14 @@ namespace QuickInfo
 {
     public class NodeFactory
     {
+        public static object Text(string text)
+        {
+            return new Node
+            {
+                Text = text
+            };
+        }
+
         public static object HelpTable(params (string, string)[] entries)
         {
             var result = new Node

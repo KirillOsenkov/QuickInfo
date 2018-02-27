@@ -49,6 +49,11 @@ namespace QuickInfo
             {
                 return "th";
             }
+            else if (node.Style == "ColorSwatchLarge" ||
+                     node.Style == "ColorSwatchSmall")
+            {
+                return "div";
+            }
 
             return null;
         }
@@ -72,6 +77,14 @@ namespace QuickInfo
             if (node.Style == "Color" && node.Kind == "Table")
             {
                 return "border-spacing: 10px";
+            }
+            else if (node.Style == "ColorSwatchLarge")
+            {
+                return $"background:{node.Text};max-width:300px;height:50px";
+            }
+            else if (node.Style == "ColorSwatchSmall")
+            {
+                return $"background:{node.Text};max-width:60px;height:16px";
             }
             else if (node.Style == "Ascii" && node.Kind == "Table")
             {
