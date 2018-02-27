@@ -14,16 +14,19 @@ namespace QuickInfo
             "what is my ip"
         };
 
-        public string GetResult(Query query)
+        public object GetResult(Query query)
         {
             if (query.IsHelp)
             {
                 return HelpTable(("ip", "Your IP address"));
             }
 
-            if (triggers.Contains(query.OriginalInput.Trim()))
+            if (query is WebQuery webQuery)
             {
-                return Table(Row("Your IP address:", query.IpAddress));
+                if (triggers.Contains(query.OriginalInput.Trim()))
+                {
+                    return Table(Row("Your IP address:", webQuery.IpAddress));
+                }
             }
 
             return null;
