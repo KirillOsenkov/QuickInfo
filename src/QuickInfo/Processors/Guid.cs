@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using static QuickInfo.NodeFactory;
 
 namespace QuickInfo
@@ -25,8 +24,11 @@ namespace QuickInfo
             if (triggerStrings.Contains(query.OriginalInput))
             {
                 var guid = Guid.NewGuid();
-                return DivClass(guid.ToString("D"), "fixed") +
-                       DivClass(guid.ToString("D").ToUpperInvariant(), "fixed");
+                return new[]
+                {
+                    Fixed(guid.ToString("D")),
+                    Fixed(guid.ToString("D").ToUpperInvariant())
+                };
             }
 
             return null;

@@ -30,27 +30,25 @@ namespace QuickInfo
             return null;
         }
 
-        private string GetResult(SeparatedList originalList, IReadOnlyList<Double> numbersList)
+        private object GetResult(SeparatedList originalList, IReadOnlyList<Double> numbersList)
         {
-            var sb = new StringBuilder();
-
             var list = numbersList.Select(l => l.Value).ToList();
 
-            sb.AppendLine(TableStart());
-            sb.AppendLine(Row("Sum:", Fixed(list.Sum().ToString())));
-            sb.AppendLine(Row("Product:", Fixed(list.Aggregate(1.0, (n, m) => n * m).ToString())));
-            sb.AppendLine(Row("Average:", Fixed(list.Average().ToString())));
-            sb.AppendLine(Row("Min:", Fixed(list.Min().ToString())));
-            sb.AppendLine(Row("Max:", Fixed(list.Max().ToString())));
-            sb.AppendLine(Row("Count:", Fixed(list.Count().ToString())));
-
-            list.Sort();
-            sb.AppendLine(Row("Sorted:", Fixed(string.Join(", ", list))));
+            var pairs = new List<(string, string)>
+            {
+                ("Sum:", list.Sum().ToString()),
+                ("Product:", list.Aggregate(1.0, (n, m) => n * m).ToString()),
+                ("Average:", list.Average().ToString()),
+                ("Min:", list.Min().ToString()),
+                ("Max:", list.Max().ToString()),
+                ("Count:", list.Count().ToString()),
+                ("Sorted:", string.Join(", ", list.OrderBy(s => s)))
+            };
 
             var integerList = originalList.GetStructuresOfType<Integer>();
             if (integerList != null && integerList.Count == originalList.Count)
             {
-                sb.AppendLine(Row("Hex to decimal:", Fixed(string.Join(", ", integerList.Select(l => l.ForceHexadecimalValue().ToString())))));
+                pairs.Add(("Hex to decimal:", string.Join(", ", integerList.Select(l => l.ForceHexadecimalValue().ToString()))));
 
                 if (integerList.All(i => i.Kind == IntegerKind.Decimal))
                 {
@@ -65,14 +63,12 @@ namespace QuickInfo
                     {
                         hexList = integerList.Select(l => l.Int32.ToHex());
                     }
-                    
-                    sb.AppendLine(Row("Decimal to hex:", Fixed(string.Join(separator, hexList))));
+
+                    pairs.Add(("Decimal to hex:", string.Join(separator, hexList)));
                 }
             }
 
-            sb.AppendLine("</table>");
-
-            return sb.ToString();
+            return NameValueTable(pairs.ToArray());
         }
     }
 }

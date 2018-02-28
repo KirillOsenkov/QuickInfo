@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using static QuickInfo.NodeFactory;
 
 namespace QuickInfo.Processors
@@ -75,19 +74,19 @@ namespace QuickInfo.Processors
             return null;
         }
 
-        private static string RenderAll()
+        private static object RenderAll()
         {
-            var sb = new StringBuilder();
+            var list = new List<object>();
 
-            sb.AppendLine(SectionHeader("HTTP status codes:"));
+            list.Add(SectionHeader("HTTP status codes:"));
 
             var rows = from kvp in httpStatusCodes
                        let code = kvp.Key.ToString()
-                       select (SearchLink(code, code), kvp.Value);
+                       select (code, kvp.Value);
 
-            sb.AppendLine(NameValueTable(rows.ToArray()));
+            list.Add(NameValueTable(rows.ToArray()));
 
-            return sb.ToString();
+            return list;
         }
     }
 }

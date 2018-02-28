@@ -315,25 +315,25 @@ namespace QuickInfo.Processors
 
             if (emoticons.ContainsKey(input))
             {
-                return Table(Row(string.Empty, emoticons[input]));
+                return Text(emoticons[input]);
             }
 
             return null;
         }
         
-        private string RenderAll()
+        private object RenderAll()
         {
-            var sb = new StringBuilder();
+            var list = new List<object>();
 
-            sb.AppendLine(SectionHeader("Emoticons:"));
+            list.Add(SectionHeader("Emoticons:"));
 
             var rows = from kvp in emoticons
                        let description = kvp.Key
-                       select (SearchLink(description, description), kvp.Value);
+                       select (description, kvp.Value);
 
-            sb.AppendLine(NameValueTable(rows.ToArray()));
+            list.Add(NameValueTable(rows.ToArray()));
 
-            return sb.ToString();
+            return list;
         }
     }
 }

@@ -15,10 +15,16 @@ namespace QuickInfo
 
         public static object HelpTable(params (string, string)[] entries)
         {
+            var table = NameValueTable(entries);
+            table.Style = "Help";
+            return table;
+        }
+
+        public static Node NameValueTable(params (string, string)[] entries)
+        {
             var result = new Node
             {
                 Kind = "Table",
-                Style = "Help",
                 List = entries.Select(nameValue => new Node
                 {
                     Kind = "Row",

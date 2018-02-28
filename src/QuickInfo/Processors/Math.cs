@@ -65,7 +65,7 @@ namespace QuickInfo
                 }
                 catch (Exception ex)
                 {
-                    return Div(ex.ToString());
+                    return Fixed(ex.ToString());
                 }
 
                 if (output.ToString() == query.OriginalInput.Trim())
@@ -74,7 +74,7 @@ namespace QuickInfo
                     return null;
                 }
 
-                return Div(Escape($"{output}"));
+                return Fixed($"{output}");
             }
 
             return null;
