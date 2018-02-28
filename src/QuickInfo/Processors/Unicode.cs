@@ -100,11 +100,11 @@ namespace QuickInfo
             return null;
         }
 
-        private string LookupUnicodeCharacter(string input)
+        private object LookupUnicodeCharacter(string input)
         {
             // naive linear lookup is about 70-80 ms
             // TODO: optimize this?
-            List<string> resultCards = new List<string>();
+            List<object> resultCards = new List<object>();
             int hitcount = 0;
             foreach (var d in descriptions)
             {
@@ -123,7 +123,7 @@ namespace QuickInfo
             return RenderResultCards(resultCards);
         }
 
-        private string RenderResultCards(List<string> resultCards)
+        private object RenderResultCards(List<object> resultCards)
         {
             if (resultCards.Count == 0)
             {
@@ -135,13 +135,13 @@ namespace QuickInfo
                 return resultCards[0];
             }
 
-            var sb = new StringBuilder();
+            var list = new List<object>();
             foreach (var card in resultCards)
             {
-                sb.AppendLine(DivClass(card, "answerSection"));
+                list.Add(card);
             }
 
-            return sb.ToString();
+            return list;
         }
 
         private Dictionary<int, string> descriptions = new Dictionary<int, string>();
@@ -169,7 +169,7 @@ namespace QuickInfo
             }
         }
 
-        private string GetResult(byte[] bytes)
+        private object GetResult(byte[] bytes)
         {
             string text;
             try
@@ -200,39 +200,43 @@ namespace QuickInfo
                 (number < 0xd800 || number > 0xdfff); // surrogate code points
         }
 
-        private string GetResult(int value)
+        private object GetResult(int value)
         {
-            var sb = new StringBuilder();
             char ch = (char)value;
+
+            var result = new List<object>();
 
             bool isSurrogate = char.IsSurrogate(ch);
             string text = null;
             if (!isSurrogate)
             {
                 text = char.ConvertFromUtf32(value);
-                sb.AppendLine(DivClass(Escape(text), "charSample"));
+                result.Add(Text(text));
             }
 
             if (descriptions.TryGetValue(value, out string description))
             {
-                sb.AppendLine(Div(description));
+                result.Add(Text(description));
             }
 
             var info = UnicodeInfo.GetCharInfo(value);
 
-            sb.AppendLine(TableStart("smallTable"));
-            sb.AppendLine(Tr(Td(Gray("Code point:")), Td($"{value} (U+{value.ToHex()})")));
-            sb.AppendLine(Tr(Td(Gray("Category:")), Td(CharUnicodeInfo.GetUnicodeCategory(ch).ToString())));
-            sb.AppendLine(Tr(Td(Gray("Block:")), Td(info.Block)));
-            sb.AppendLine(Tr(Td(Gray("Escape:")), Td(DivClass(GetEscapeString(value), "fixed"))));
+            var pairs = new List<(string, string)>
+            {
+                ("Code point:", $"{value} (U+{value.ToHex()})"),
+                ("Category:", CharUnicodeInfo.GetUnicodeCategory(ch).ToString()),
+                ("Block:", info.Block),
+                ("Escape:", GetEscapeString(value))
+            };
+
             if (text != null)
             {
-                sb.AppendLine(Tr(Td(Gray("UTF-8:")), Td(GetUtf8(text))));
+                pairs.Add(("UTF-8:", GetUtf8(text)));
             }
 
-            sb.AppendLine("</table>");
+            result.Add(NameValueTable(pairs.ToArray()));
 
-            return sb.ToString();
+            return result;
         }
 
         private static string GetEscapeString(int value)
@@ -249,23 +253,22 @@ namespace QuickInfo
 
         private static string GetUtf8(string text)
         {
-            return DivClass(string.Join(" ", Encoding.UTF8.GetBytes(text).Select(b => b.ToString("X"))), "fixed");
+            return string.Join(" ", Encoding.UTF8.GetBytes(text).Select(b => b.ToString("X")));
         }
 
-        private string GetResult(string text)
+        private object GetResult(string text)
         {
             if (text.Length == 2 && char.IsHighSurrogate(text[0]) && char.IsLowSurrogate(text[1]))
             {
                 return GetResult(char.ConvertToUtf32(text[0], text[1]));
             }
 
-            var sb = new StringBuilder();
-            sb.AppendLine(DivClass(Escape(text), "charSample"));
+            var list = new List<object>();
+            list.Add(text);
+            list.Add(string.Join(" ", text.EnumerateCodePoints().Select(c => GetEscapeString(c))));
+            list.Add(GetUtf8(text));
 
-            sb.AppendLine(DivClass(string.Join(" ", text.EnumerateCodePoints().Select(c => SearchLink(GetEscapeString(c)))), "fixed"));
-            sb.AppendLine(DivClass(GetUtf8(text), "fixed"));
-
-            return sb.ToString();
+            return list;
         }
     }
 }

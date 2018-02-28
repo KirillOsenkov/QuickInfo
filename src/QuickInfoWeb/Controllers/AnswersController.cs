@@ -103,7 +103,7 @@ namespace QuickInfo.Controllers
             var query = new WebQuery(input);
             query.Request = request;
 
-            List<(string processorName, object resultText)> results = engine.GetResults(query);
+            List<(string processorName, object resultNode)> results = engine.GetResults(query);
 
             if (results.Count == 0)
             {
@@ -112,14 +112,14 @@ namespace QuickInfo.Controllers
 
             if (results.Count == 1)
             {
-                var html = HtmlRenderer.Render(results[0].resultText);
+                var html = HtmlRenderer.RenderObject(results[0].resultNode);
                 return html;
             }
 
             var sb = new StringBuilder();
             foreach (var result in results)
             {
-                var toAppend = HtmlRenderer.Render(result.resultText);
+                var toAppend = HtmlRenderer.RenderObject(result.resultNode);
 
                 if (!toAppend.Contains("answerSection"))
                 {

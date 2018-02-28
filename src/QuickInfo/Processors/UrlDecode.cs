@@ -29,11 +29,9 @@ namespace QuickInfo
             return null;
         }
 
-        private string GetResult(string input)
+        private object GetResult(string input)
         {
-            var sb = new StringBuilder();
-            sb.AppendLine(Div("URL decoded: " + WebUtility.UrlDecode(input)));
-            return sb.ToString();
+            return Text("URL decoded: " + WebUtility.UrlDecode(input));
         }
     }
 }
