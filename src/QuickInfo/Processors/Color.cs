@@ -114,16 +114,16 @@ namespace QuickInfo
 
             return new Node
             {
-                ["Kind"] = "Table",
-                ["Style"] = "Color",
-                ["List"] = swatches.Select(row => new Node
+                Kind = "Table",
+                Style = "Color",
+                List = swatches.Select(row => new Node
                 {
-                    ["Kind"] = "Row",
-                    ["List"] = row.Select(swatch => new Node
+                    Kind = "Row",
+                    List = row.Select(swatch => new Node
                     {
-                        ["Kind"] = "Cell",
-                        ["Style"] = "Color",
-                        ["Text"] = swatch
+                        Kind = "Cell",
+                        Style = "Color",
+                        Text = swatch
                     })
                 })
             };
@@ -175,12 +175,11 @@ namespace QuickInfo
             string knownColor = null;
             if (knownColorNames.TryGetValue(r + g * 256 + b * 65536, out knownColor))
             {
-                result.Add(Text(knownColor));
+                result.Add(Paragraph(knownColor));
             }
 
             var nearestColors = GetNearestColors(r, g, b).Take(11);
 
-            result.Add("<div style='font-size: smaller'>");
             result.Add(SectionHeader("Closest named colors:"));
 
             var table = new Node
@@ -197,6 +196,7 @@ namespace QuickInfo
                             new Node
                             {
                                 Kind = "Cell",
+                                Text = nearestColor
                             },
                             new Node
                             {
@@ -215,7 +215,9 @@ namespace QuickInfo
                     };
                 })
             };
-            return table;
+            result.Add(table);
+
+            return result;
         }
 
         private IEnumerable<string> GetNearestColors(int r, int g, int b)

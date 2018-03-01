@@ -10,7 +10,7 @@ namespace QuickInfo.Tests
         public void TestColorTable()
         {
             T("color",
-                @"<table style=""border-spacing: 10px"">
+@"<table style=""border-spacing: 10px"">
   <tr>
     <td>
       <a href=""?Black"" onclick=""searchFor(&quot;Black&quot;);return false;"">
@@ -21,6 +21,13 @@ namespace QuickInfo.Tests
         Black</div>
     </td>
     <td>");
+        }
+
+        [Fact]
+        public void TestColor()
+        {
+            T("red",
+@"");
         }
 
         private void T(string input, string expectedHtml)

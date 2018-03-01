@@ -6,15 +6,22 @@ namespace QuickInfo
 {
     public class HtmlRenderer
     {
-        private static ITextWriter writer;
+        private ITextWriter writer;
 
         private static HtmlRenderer Instance { get; } = new HtmlRenderer();
 
         public static string RenderObject(object result)
         {
+            return Instance.RenderInstance(result);
+        }
+
+        private string RenderInstance(object instance)
+        {
             writer = new StringBuilderTextWriter();
-            Instance.Render(result);
-            return writer.ToString();
+            Render(instance);
+            var result = writer.ToString();
+            writer = null;
+            return result;
         }
 
         private void Render(object result)
@@ -27,8 +34,22 @@ namespace QuickInfo
                 case string s:
                     Write(s);
                     break;
+                case IEnumerable<object> list:
+                    RenderList(list);
+                    break;
                 default:
                     throw new NotImplementedException("Can't render " + result);
+            }
+        }
+
+        private void RenderList(IEnumerable<object> list)
+        {
+            using (Tag("div"))
+            {
+                foreach (var item in list)
+                {
+                    Render(item);
+                }
             }
         }
 
@@ -52,6 +73,10 @@ namespace QuickInfo
             }
             else if (node.Style == "ColorSwatchLarge" ||
                      node.Style == "ColorSwatchSmall")
+            {
+                return "div";
+            }
+            else if (node.Kind == "Paragraph")
             {
                 return "div";
             }
@@ -109,7 +134,12 @@ namespace QuickInfo
 
         public string GetText(Node node)
         {
-            return null;
+            if (node.Style == "ColorSwatchLarge" || node.Style == "ColorSwatchSmall")
+            {
+                return null;
+            }
+
+            return node.Text;
         }
 
         public void RenderText(Node node)
@@ -131,7 +161,12 @@ namespace QuickInfo
                 return;
             }
 
-            Write(text);
+            text = GetText(node);
+
+            if (text != null)
+            {
+                Write(text);
+            }
         }
 
         public void Write(string text)
@@ -214,10 +249,14 @@ namespace QuickInfo
             return Tag(tag, GetClass(node), GetStyle(node));
         }
 
-        private IDisposable Tag(string tag, string tagClass, string tagStyle, params (string, string)[] attributes)
+        private IDisposable Tag(string tag, string tagClass = null, string tagStyle = null, params (string, string)[] attributes)
         {
-            writer.WriteLine(HtmlFactory.TagStart(tag, tagClass, tagStyle, attributes));
-            writer.Indent();
+            if (tag != null)
+            {
+                writer.WriteLine(HtmlFactory.TagStart(tag, tagClass, tagStyle, attributes));
+                writer.Indent();
+            }
+
             return new TagDisposable(tag, writer);
         }
 
@@ -234,8 +273,11 @@ namespace QuickInfo
 
             public void Dispose()
             {
-                writer.Unindent();
-                writer.WriteLine(HtmlFactory.TagEnd(tag));
+                if (tag != null)
+                {
+                    writer.Unindent();
+                    writer.WriteLine(HtmlFactory.TagEnd(tag));
+                }
             }
         }
     }

@@ -13,6 +13,15 @@ namespace QuickInfo
             };
         }
 
+        public static object Paragraph(string text)
+        {
+            return new Node
+            {
+                Text = text,
+                Kind = "Paragraph"
+            };
+        }
+
         public static object HelpTable(params (string, string)[] entries)
         {
             var table = NameValueTable(entries);

@@ -6,6 +6,8 @@ namespace QuickInfo
 {
     public interface ITextWriter
     {
+        bool WasLineBreakWritten { get; set; }
+
         void Write(string text);
         void WriteLine(string text);
         void Indent();
@@ -16,6 +18,8 @@ namespace QuickInfo
     {
         private readonly StringBuilder sb;
 
+        public bool WasLineBreakWritten { get; set; }
+
         public StringBuilderTextWriter()
         {
             sb = new StringBuilder();
@@ -23,8 +27,17 @@ namespace QuickInfo
 
         public void Write(string text)
         {
+            if (text == null)
+            {
+                return;
+            }
+
             WriteIndent();
             sb.Append(text);
+            if (text.Contains("\n"))
+            {
+                WasLineBreakWritten = true;
+            }
         }
 
         private List<string> indentCache = new List<string>();
@@ -61,8 +74,14 @@ namespace QuickInfo
 
         public void WriteLine(string text)
         {
+            if (text == null)
+            {
+                return;
+            }
+
             WriteIndent();
             sb.AppendLine(text);
+            WasLineBreakWritten = true;
         }
 
         private int indent = 0;
