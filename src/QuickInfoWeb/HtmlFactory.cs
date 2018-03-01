@@ -22,6 +22,11 @@ namespace QuickInfo
             return WebUtility.UrlEncode(text);
         }
 
+        public static string EscapeAttributeValue(string text)
+        {
+            return Escape(text);
+        }
+
         public static string HelpTable(params (string link, string description)[] links)
         {
             return Table(links.Select(l => Row(SearchLink(l.link), l.description)).ToArray());

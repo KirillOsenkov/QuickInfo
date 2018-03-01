@@ -10,15 +10,26 @@ namespace QuickInfo.Tests
         public void TestColorTable()
         {
             T("color",
-                @"");
+                @"<table style=""border-spacing: 10px"">
+  <tr>
+    <td>
+      <a href=""?Black"" onclick=""searchFor(&quot;Black&quot;);return false;"">
+        <div class=""swatch"" style=""background:Black"">
+        </div>
+      </a>
+      <div class=""swatchName"">
+        Black</div>
+    </td>
+    <td>");
         }
 
         private void T(string input, string expectedHtml)
         {
             var engine = new Engine();
             var query = new Query(input);
-            var actualResult = engine.GetResults(query).First().resultText;
-            Assert.Equal(expectedHtml, actualResult);
+            var answerNode = engine.GetResults(query).First().resultText;
+            var actualResult = HtmlRenderer.RenderObject(answerNode);
+            Assert.Contains(expectedHtml, actualResult);
         }
     }
 }

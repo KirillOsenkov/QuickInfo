@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace QuickInfo
 {
@@ -150,9 +151,9 @@ namespace QuickInfo
                 return null;
             }
 
-            var href = HtmlFactory.Attribute("href", "?" + HtmlFactory.UrlEncode(hyperlink));
-            var onclick = HtmlFactory.Attribute("onclick", "searchFor(\"" + HtmlFactory.JsEscape(hyperlink) + "\");return false;");
-            return Tag("a", tagClass: null, tagStyle: null, (href, onclick));
+            var href = "?" + hyperlink;
+            var onclick = "searchFor(\"" + HtmlFactory.JsEscape(hyperlink) + "\");return false;";
+            return Tag("a", tagClass: null, tagStyle: null, ("href", href), ("onclick", onclick));
         }
 
         public IDisposable DivClass(string tagClass)
@@ -216,6 +217,7 @@ namespace QuickInfo
         private IDisposable Tag(string tag, string tagClass, string tagStyle, params (string, string)[] attributes)
         {
             writer.WriteLine(HtmlFactory.TagStart(tag, tagClass, tagStyle, attributes));
+            writer.Indent();
             return new TagDisposable(tag, writer);
         }
 
@@ -232,6 +234,7 @@ namespace QuickInfo
 
             public void Dispose()
             {
+                writer.Unindent();
                 writer.WriteLine(HtmlFactory.TagEnd(tag));
             }
         }
