@@ -14,11 +14,9 @@ namespace QuickInfo.Tests
   <tr>
     <td>
       <a href=""?Black"" onclick=""searchFor(&quot;Black&quot;);return false;"">
-        <div class=""swatch"" style=""background:Black"">
-        </div>
+        <div class=""swatch"" style=""background:Black""></div>
       </a>
-      <div class=""swatchName"">
-        Black</div>
+      <div class=""swatchName"">Black</div>
     </td>
     <td>");
         }
