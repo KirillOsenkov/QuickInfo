@@ -13,7 +13,7 @@ namespace QuickInfo
             };
         }
 
-        public static object Paragraph(string text)
+        public static Node Paragraph(string text)
         {
             return new Node
             {
@@ -61,11 +61,19 @@ namespace QuickInfo
             return new Node
             {
                 Style = "SectionHeader",
-                Text = text
+                Text = text,
+                Kind = "Paragraph"
             };
         }
 
-        public static object Fixed(string text)
+        public static object FixedParagraph(string text)
+        {
+            var node = Fixed(text);
+            node.Kind = "Paragraph";
+            return node;
+        }
+
+        public static Node Fixed(string text)
         {
             return new Node
             {

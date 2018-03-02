@@ -27,7 +27,20 @@ namespace QuickInfo.Tests
         public void TestColor()
         {
             T("red",
-@"");
+@"<div class=""fixed"">RGB(255,0,0) = #F00</div>
+  <div style=""background:#F00;max-width:300px;height:50px""></div>
+  <div class=""swatchName"">Red</div>
+  <div class=""sectionHeader"">Closest named colors:</div>
+  <table>
+    <tr>
+      <td>Crimson</td>
+      <td><a href=""?%23DC143C"" onclick=""searchFor(&quot;#DC143C&quot;);return false;"">#DC143C</a>
+      </td>
+      <td><a href=""?%23DC143C"" onclick=""searchFor(&quot;#DC143C&quot;);return false;""><div style=""background:#DC143C;width:60px;height:16px""></div>
+        </a>
+      </td>
+    </tr>
+    <tr>");
         }
 
         private void T(string input, string expectedHtml)

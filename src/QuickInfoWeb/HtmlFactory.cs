@@ -72,7 +72,7 @@ namespace QuickInfo
             string attributeList = "";
             if (attributes.Length > 0)
             {
-                attributeList = " " + string.Join(' ', attributes.Select(pair => pair.Item1 + "=\"" + Escape(pair.Item2) + "\""));
+                attributeList = " " + string.Join(' ', attributes.Select(pair => pair.Item1 + "=\"" + EscapeAttributeValue(pair.Item2) + "\""));
             }
 
             return $"<{tag}{tagClass}{tagStyle}{attributeList}>";

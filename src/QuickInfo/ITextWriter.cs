@@ -9,7 +9,7 @@ namespace QuickInfo
         bool WasLineBreakWritten { get; set; }
 
         void Write(string text);
-        void WriteLine(string text);
+        void WriteLine(string text = null);
         void Indent();
         void Unindent();
     }
@@ -72,13 +72,9 @@ namespace QuickInfo
             return result;
         }
 
-        public void WriteLine(string text)
+        public void WriteLine(string text = null)
         {
-            if (text == null)
-            {
-                return;
-            }
-
+            text = text ?? "";
             WriteIndent();
             sb.AppendLine(text);
             WasLineBreakWritten = true;

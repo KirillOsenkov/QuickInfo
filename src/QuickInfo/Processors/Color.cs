@@ -164,7 +164,7 @@ namespace QuickInfo
             var hexColor = GetHexColor(r, g, b);
             var result = new List<object>();
 
-            result.Add(Fixed($"RGB({r},{g},{b}) = {hexColor}"));
+            result.Add(FixedParagraph($"RGB({r},{g},{b}) = {hexColor}"));
 
             result.Add(new Node
             {
@@ -175,7 +175,9 @@ namespace QuickInfo
             string knownColor = null;
             if (knownColorNames.TryGetValue(r + g * 256 + b * 65536, out knownColor))
             {
-                result.Add(Paragraph(knownColor));
+                var swatchName = Paragraph(knownColor);
+                swatchName.Style = "ColorSwatchName";
+                result.Add(swatchName);
             }
 
             var nearestColors = GetNearestColors(r, g, b).Take(11);

@@ -42,6 +42,58 @@ namespace QuickInfo
             }
         }
 
+        private void RenderNode(Node node)
+        {
+            string tag = GetTag(node);
+            var list = node.List;
+            var nodeClass = GetClass(node);
+            var nodeStyle = GetStyle(node);
+
+            if (tag == null)
+            {
+                if (list != null)
+                {
+                    tag = "div";
+                }
+                else if (nodeClass != null || nodeStyle != null)
+                {
+                    tag = "span";
+                }
+            }
+
+            bool multilineContent = list != null;
+            using (Tag(tag, nodeClass, nodeStyle, multilineContent))
+            {
+                if (list != null)
+                {
+                    foreach (var item in list)
+                    {
+                        Render(item);
+                    }
+                }
+                else
+                {
+                    RenderContent(node);
+                }
+            }
+        }
+
+        private void RenderContent(Node node)
+        {
+            using (SearchLink(node.SearchLink, multilineContent: false))
+            {
+                if (node.Style == "ColorSwatchSmall")
+                {
+                    using (Tag("div", tagStyle: $"background:{node.Text};width:60px;height:16px", multilineContent: false))
+                    {
+                        return;
+                    }
+                }
+
+                RenderText(node);
+            }
+        }
+
         private void RenderList(IEnumerable<object> list)
         {
             using (Tag("div"))
@@ -94,6 +146,10 @@ namespace QuickInfo
             {
                 return "fixed";
             }
+            else if (node.Style == "ColorSwatchName")
+            {
+                return "swatchName";
+            }
 
             return null;
         }
@@ -107,10 +163,6 @@ namespace QuickInfo
             else if (node.Style == "ColorSwatchLarge")
             {
                 return $"background:{node.Text};max-width:300px;height:50px";
-            }
-            else if (node.Style == "ColorSwatchSmall")
-            {
-                return $"background:{node.Text};max-width:60px;height:16px";
             }
             else if (node.Style == "Ascii" && node.Kind == "Table")
             {
@@ -179,16 +231,16 @@ namespace QuickInfo
             writer.WriteLine(text);
         }
 
-        public IDisposable SearchLink(string hyperlink)
+        public IDisposable SearchLink(string hyperlink, bool multilineContent = true)
         {
             if (hyperlink == null)
             {
                 return null;
             }
 
-            var href = "?" + hyperlink;
+            var href = "?" + HtmlFactory.UrlEncode(hyperlink);
             var onclick = "searchFor(\"" + HtmlFactory.JsEscape(hyperlink) + "\");return false;";
-            return Tag("a", tagClass: null, tagStyle: null, ("href", href), ("onclick", onclick));
+            return Tag("a", tagClass: null, tagStyle: null, multilineContent: multilineContent, ("href", href), ("onclick", onclick));
         }
 
         public IDisposable DivClass(string tagClass)
@@ -201,44 +253,6 @@ namespace QuickInfo
             writer.Write(HtmlFactory.SearchLink(content, hyperlink));
         }
 
-        private void RenderNode(Node node)
-        {
-            string tag = GetTag(node);
-            var list = node.List;
-            var nodeClass = GetClass(node);
-            var nodeStyle = GetStyle(node);
-
-            if (tag == null)
-            {
-                if (list != null)
-                {
-                    tag = "div";
-                }
-                else if (nodeClass != null || nodeStyle != null)
-                {
-                    tag = "span";
-                }
-            }
-
-            using (Tag(tag, nodeClass, nodeStyle))
-            {
-                if (list != null)
-                {
-                    foreach (var item in list)
-                    {
-                        Render(item);
-                    }
-                }
-                else
-                {
-                    using (SearchLink(node.SearchLink))
-                    {
-                        RenderText(node);
-                    }
-                }
-            }
-        }
-
         private IDisposable Tag(string tag, Node node)
         {
             if (tag == null)
@@ -249,11 +263,17 @@ namespace QuickInfo
             return Tag(tag, GetClass(node), GetStyle(node));
         }
 
-        private IDisposable Tag(string tag, string tagClass = null, string tagStyle = null, params (string, string)[] attributes)
+        private IDisposable Tag(string tag, string tagClass = null, string tagStyle = null, bool multilineContent = true, params (string, string)[] attributes)
         {
             if (tag != null)
             {
-                writer.WriteLine(HtmlFactory.TagStart(tag, tagClass, tagStyle, attributes));
+                var tagStart = HtmlFactory.TagStart(tag, tagClass, tagStyle, attributes);
+                if (multilineContent)
+                {
+                    tagStart += Environment.NewLine;
+                }
+
+                writer.Write(tagStart);
                 writer.Indent();
             }
 
