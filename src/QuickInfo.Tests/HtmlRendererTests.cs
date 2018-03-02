@@ -25,7 +25,7 @@ namespace QuickInfo.Tests
         public void TestColor()
         {
             T("red",
-@"<div class=""fixed"">RGB(255,0,0) = #F00</div>
+@"<div class=""fixed"" style=""font-size:larger"">RGB(255,0,0) = #F00</div>
   <div style=""background:#F00;max-width:300px;height:50px""></div>
   <div class=""swatchName"">Red</div>
   <div class=""sectionHeader"">Closest named colors:</div>

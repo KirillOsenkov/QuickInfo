@@ -11,6 +11,11 @@ namespace QuickInfo
 
         public Engine(params Assembly[] assemblies)
         {
+            if (assemblies.Length == 0)
+            {
+                assemblies = new[] { typeof(Engine).Assembly };
+            }
+
             foreach (var assembly in assemblies)
             {
                 var processorTypes = assembly
