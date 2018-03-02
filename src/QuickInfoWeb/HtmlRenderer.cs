@@ -94,6 +94,35 @@ namespace QuickInfo
             }
         }
 
+        public void RenderText(Node node)
+        {
+            var text = node.Text;
+
+            if (node.Kind == "Cell" && node.Style == "Color")
+            {
+                WriteLine();
+
+                using (SearchLink(text))
+                {
+                    using (Tag("div", tagClass: "swatch", tagStyle: "background:" + text, multilineContent: false)) { }
+                }
+
+                using (DivClass("swatchName", multilineContent: false))
+                {
+                    Write(text);
+                }
+
+                return;
+            }
+
+            text = GetText(node);
+
+            if (text != null)
+            {
+                Write(text);
+            }
+        }
+
         private void RenderList(IEnumerable<object> list)
         {
             using (Tag("div"))
@@ -194,39 +223,12 @@ namespace QuickInfo
             return node.Text;
         }
 
-        public void RenderText(Node node)
-        {
-            var text = node.Text;
-
-            if (node.Kind == "Cell" && node.Style == "Color")
-            {
-                using (SearchLink(text))
-                {
-                    using (Tag("div", tagClass: "swatch", tagStyle: "background:" + text)) { }
-                }
-
-                using (DivClass("swatchName"))
-                {
-                    Write(text);
-                }
-
-                return;
-            }
-
-            text = GetText(node);
-
-            if (text != null)
-            {
-                Write(text);
-            }
-        }
-
         public void Write(string text)
         {
             writer.Write(text);
         }
 
-        public void WriteLine(string text)
+        public void WriteLine(string text = null)
         {
             writer.WriteLine(text);
         }
@@ -243,9 +245,9 @@ namespace QuickInfo
             return Tag("a", tagClass: null, tagStyle: null, multilineContent: multilineContent, ("href", href), ("onclick", onclick));
         }
 
-        public IDisposable DivClass(string tagClass)
+        public IDisposable DivClass(string tagClass, bool multilineContent = true)
         {
-            return Tag("div", tagClass, tagStyle: null);
+            return Tag("div", tagClass, tagStyle: null, multilineContent: multilineContent);
         }
 
         public void RenderSearchLink(string content, string hyperlink)
