@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Net.Http;
 
 namespace QuickInfo
-{        
+{
     public static class Currency
     {
         private const string Endpoint = @"https://api.fixer.io/latest";
@@ -20,7 +20,7 @@ namespace QuickInfo
             var pair = new CurrencyPair(from, to);
             var rate = _cache.GetOrCreate(
                 pair,
-                e => 
+                e =>
                 {
                     e.SetAbsoluteExpiration(TimeSpan.FromDays(1));
                     return GetRate(from, to);

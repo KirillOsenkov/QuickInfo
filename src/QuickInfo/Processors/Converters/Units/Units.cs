@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 
 namespace QuickInfo
 {
@@ -55,7 +55,7 @@ namespace QuickInfo
         public static readonly Unit USD = new Unit("USD", "United States Dollar", "$");
         public static readonly Unit RUB = new Unit("RUB", "Russia ruble", "₽");
         public static readonly Unit CZK = new Unit("CZK", "Czech Republic Koruna", "Kč");
-        
+
         public static readonly Conversion[] Conversions =
         {
             new Conversion(Pound, Kilogram, p => p * 0.45359237),

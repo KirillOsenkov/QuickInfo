@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -321,7 +321,7 @@ namespace QuickInfo.Processors
 
             return null;
         }
-        
+
         private object RenderAll()
         {
             var list = new List<object>();

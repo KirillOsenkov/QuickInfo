@@ -1,4 +1,4 @@
-﻿namespace QuickInfo
+namespace QuickInfo
 {
     public interface IStructureParser
     {

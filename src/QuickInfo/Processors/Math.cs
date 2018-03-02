@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using GuiLabs.MathParser;
 using static QuickInfo.NodeFactory;
 
