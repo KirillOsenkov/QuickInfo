@@ -211,12 +211,14 @@ namespace QuickInfo
             if (!isSurrogate)
             {
                 text = char.ConvertFromUtf32(value);
-                result.Add(Text(text));
+                var answer = Answer(text);
+                answer.Style = "CharSample";
+                result.Add(answer);
             }
 
             if (descriptions.TryGetValue(value, out string description))
             {
-                result.Add(Text(description));
+                result.Add(Answer(description));
             }
 
             var info = UnicodeInfo.GetCharInfo(value);
@@ -234,7 +236,7 @@ namespace QuickInfo
                 pairs.Add(("UTF-8:", GetUtf8(text)));
             }
 
-            result.Add(NameValueTable(pairs.ToArray()));
+            result.Add(NameValueTable(null, right => right.Style = "Fixed", entries: pairs.ToArray()));
 
             return result;
         }
@@ -264,9 +266,17 @@ namespace QuickInfo
             }
 
             var list = new List<object>();
-            list.Add(text);
-            list.Add(string.Join(" ", text.EnumerateCodePoints().Select(c => GetEscapeString(c))));
-            list.Add(GetUtf8(text));
+            var answer = Answer(text);
+            answer.Style = "CharSample";
+            list.Add(answer);
+            foreach (var codepoint in text.EnumerateCodePoints().Select(c => GetEscapeString(c)))
+            {
+                var link = Fixed(codepoint);
+                link.SearchLink = codepoint;
+                list.Add(link);
+            }
+
+            list.Add(FixedParagraph(GetUtf8(text)));
 
             return list;
         }

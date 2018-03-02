@@ -36,7 +36,9 @@ namespace QuickInfo.Controllers
 
         private static readonly char[] multipleQuerySeparator = new[] { '|' };
 
-        public static Engine Instance { get; } = new Engine();
+        public static Engine Instance { get; } = new Engine(
+            typeof(Engine).Assembly,
+            typeof(Ip).Assembly);
 
         public string GetResponse(Engine engine, string input, HttpRequest request = null)
         {
@@ -92,7 +94,7 @@ namespace QuickInfo.Controllers
                     result = DivClass($"No results. {SearchLink("Enter ? for help.", "?")}", "note");
                 }
 
-                result = DivClass(result, "answersList");
+                result = DivClass(Environment.NewLine + result, "answersList");
 
                 return result;
             }
@@ -129,7 +131,7 @@ namespace QuickInfo.Controllers
                     }
                     else
                     {
-                        toAppend = DivClass(toAppend, "answerSection");
+                        toAppend = "  " + DivClass(Environment.NewLine + "    " + toAppend + "  ", "answerSection");
                     }
                 }
 

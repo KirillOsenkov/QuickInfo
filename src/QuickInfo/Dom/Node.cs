@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace QuickInfo
@@ -24,33 +25,39 @@ namespace QuickInfo
 
         public static object HelpTable(params (string, string)[] entries)
         {
-            var table = NameValueTable(entries);
+            var table = NameValueTable(left => left.SearchLink = left.Text, entries: entries);
             table.Style = "Help";
             return table;
         }
 
-        public static Node NameValueTable(params (string, string)[] entries)
+        public static Node NameValueTable(
+            Action<Node> leftCellInitializer = null,
+            Action<Node> rightCellInitializer = null,
+            params (string, string)[] entries)
         {
             var result = new Node
             {
                 Kind = "Table",
-                List = entries.Select(nameValue => new Node
+                List = entries.Select(nameValue =>
                 {
-                    Kind = "Row",
-                    List = new Node[]
+                    var leftNode = new Node
                     {
-                        new Node
-                        {
-                            Kind = "Cell",
-                            Text = nameValue.Item1,
-                            SearchLink = nameValue.Item1
-                        },
-                        new Node
-                        {
-                            Kind = "Cell",
-                            Text = nameValue.Item2
-                        }
-                    }
+                        Kind = "Cell",
+                        Style = "Label",
+                        Text = nameValue.Item1
+                    };
+                    var rightNode = new Node
+                    {
+                        Kind = "Cell",
+                        Text = nameValue.Item2
+                    };
+                    leftCellInitializer?.Invoke(leftNode);
+                    rightCellInitializer?.Invoke(rightNode);
+                    return new Node
+                    {
+                        Kind = "Row",
+                        List = new Node[] {leftNode, rightNode}
+                    };
                 })
             };
             return result;
@@ -63,6 +70,16 @@ namespace QuickInfo
                 Style = "SectionHeader",
                 Text = text,
                 Kind = "Paragraph"
+            };
+        }
+
+        public static Node Answer(string text)
+        {
+            return new Node
+            {
+                Text = text,
+                Kind = "Paragraph",
+                Style = "MainAnswer"
             };
         }
 

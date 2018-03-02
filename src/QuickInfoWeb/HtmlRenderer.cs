@@ -32,7 +32,11 @@ namespace QuickInfo
                     RenderNode(node);
                     break;
                 case string s:
-                    Write(s);
+                    using (Tag("div", tagClass: "mainAnswerText", multilineContent: false))
+                    {
+                        Write(s);
+                    }
+
                     break;
                 case IEnumerable<object> list:
                     RenderList(list);
@@ -179,6 +183,18 @@ namespace QuickInfo
             {
                 return "swatchName";
             }
+            else if (node.Style == "MainAnswer")
+            {
+                return "mainAnswerText";
+            }
+            else if (node.Style == "Label")
+            {
+                return "gray";
+            }
+            else if (node.Style == "CharSample")
+            {
+                return "charSample";
+            }
 
             return null;
         }
@@ -208,6 +224,10 @@ namespace QuickInfo
             else if (node.Style == "AsciiColumnChar")
             {
                 return "column-width: 60px";
+            }
+            else if (node.Style == "Fixed")
+            {
+                return "font-size:larger";
             }
 
             return null;

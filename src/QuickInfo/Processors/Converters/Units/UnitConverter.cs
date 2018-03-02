@@ -154,20 +154,20 @@ namespace QuickInfo
             return null;
         }
 
-        private string GetResult(double value, Unit unit, Unit toUnit)
+        private object GetResult(double value, Unit unit, Unit toUnit)
         {
-            var sb = new StringBuilder();
+            var list = new List<object>();
 
             foreach (var conversion in Units.Conversions)
             {
                 if (conversion.From == unit && conversion.To == toUnit)
                 {
                     var result = GetResult(value, conversion);
-                    sb.Append(result);
+                    list.Add(result);
                 }
             }
 
-            if (sb.Length == 0)
+            if (list.Count == 0)
             {
                 Conversion first = null;
                 Conversion second = null;
@@ -189,11 +189,11 @@ namespace QuickInfo
                 if (first != null && second != null && first.To == second.From)
                 {
                     var composite = new Conversion(first.From, second.To, v => second.Converter(first.Converter(v)));
-                    sb.Append(GetResult(value, composite));
+                    list.Add(GetResult(value, composite));
                 }
             }
 
-            return sb.ToString();
+            return list;
         }
 
         private object GetResult(double value, Unit unit)
@@ -225,7 +225,7 @@ namespace QuickInfo
 
         private object GetResult(double value, Conversion conversion)
         {
-            return Fixed($"{value} {conversion.From.ToString()} = {conversion.Converter(value).ToString(conversion.Format)} {conversion.To.ToString()}");
+            return FixedParagraph($"{value} {conversion.From.ToString()} = {conversion.Converter(value).ToString(conversion.Format)} {conversion.To.ToString()}");
         }
     }
 }

@@ -65,7 +65,7 @@ namespace QuickInfo
                 }
                 catch (Exception ex)
                 {
-                    return Fixed(ex.ToString());
+                    return FixedParagraph(ex.ToString());
                 }
 
                 if (output.ToString() == query.OriginalInput.Trim())
@@ -74,7 +74,7 @@ namespace QuickInfo
                     return null;
                 }
 
-                return Fixed($"{output}");
+                return FixedParagraph($"{output}");
             }
 
             return null;

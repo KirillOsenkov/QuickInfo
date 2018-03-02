@@ -26,8 +26,8 @@ namespace QuickInfo
                 var guid = Guid.NewGuid();
                 return new[]
                 {
-                    Fixed(guid.ToString("D")),
-                    Fixed(guid.ToString("D").ToUpperInvariant())
+                    FixedParagraph(guid.ToString("D")),
+                    FixedParagraph(guid.ToString("D").ToUpperInvariant())
                 };
             }
 

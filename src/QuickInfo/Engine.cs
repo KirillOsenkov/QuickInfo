@@ -9,13 +9,17 @@ namespace QuickInfo
     {
         private List<IProcessor> processors = new List<IProcessor>();
 
-        public Engine()
+        public Engine(params Assembly[] assemblies)
         {
-            var assembly = typeof(Engine).GetTypeInfo().Assembly;
-            var processorTypes = assembly.GetTypes()
-                .Where(t => t.GetTypeInfo().ImplementedInterfaces.Contains(typeof(IProcessor)));
+            foreach (var assembly in assemblies)
+            {
+                var processorTypes = assembly
+                    .GetTypes()
+                    .Where(t => t.GetTypeInfo().ImplementedInterfaces.Contains(typeof(IProcessor)));
+                processors.AddRange(processorTypes.Select(t => (IProcessor)Activator.CreateInstance(t)));
+            }
 
-            processors.AddRange(processorTypes.Select(t => (IProcessor)Activator.CreateInstance(t)).OrderBy(p => p.GetType().Name));
+            processors.Sort((l, r) => string.CompareOrdinal(l.GetType().Name, r.GetType().Name));
         }
 
         public IEnumerable<IProcessor> Processors => processors;

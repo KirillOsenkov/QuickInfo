@@ -303,7 +303,8 @@ namespace QuickInfo.Processors
             {
                 return HelpTable(
                     ("shrug", emoticons["shrug"]),
-                    ("1/8", emoticons["1/8"])
+                    ("1/8", emoticons["1/8"]),
+                    ("smile", "List all emoticons")
                 );
             }
 
@@ -331,7 +332,7 @@ namespace QuickInfo.Processors
                        let description = kvp.Key
                        select (description, kvp.Value);
 
-            list.Add(NameValueTable(rows.ToArray()));
+            list.Add(NameValueTable(entries: rows.ToArray()));
 
             return list;
         }

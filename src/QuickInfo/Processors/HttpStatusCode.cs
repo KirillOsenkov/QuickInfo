@@ -57,7 +57,9 @@ namespace QuickInfo.Processors
         {
             if (query.IsHelp)
             {
-                return HelpTable(("101", httpStatusCodes[101]));
+                return HelpTable(
+                    ("101", httpStatusCodes[101]),
+                    ("http", "All http status codes"));
             }
 
             if (query.OriginalInput.Equals("http", StringComparison.InvariantCultureIgnoreCase))
@@ -68,7 +70,7 @@ namespace QuickInfo.Processors
             var structure = query.TryGetStructure<Integer>();
             if (structure != null && httpStatusCodes.ContainsKey(structure.Int32))
             {
-                return HelpTable(($"{structure.Int32}", httpStatusCodes[structure.Int32]));
+                return Answer($"http code {structure.Int32}: {httpStatusCodes[structure.Int32]}");
             }
 
             return null;
@@ -84,7 +86,7 @@ namespace QuickInfo.Processors
                        let code = kvp.Key.ToString()
                        select (code, kvp.Value);
 
-            list.Add(NameValueTable(rows.ToArray()));
+            list.Add(NameValueTable(entries: rows.ToArray()));
 
             return list;
         }

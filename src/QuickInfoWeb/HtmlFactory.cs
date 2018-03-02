@@ -45,7 +45,7 @@ namespace QuickInfo
             }
 
             var sb = new StringBuilder();
-            sb.AppendLine(TableStart("smallTable"));
+            sb.AppendLine(TableStart());
             foreach (var row in rows)
             {
                 sb.AppendLine(row);

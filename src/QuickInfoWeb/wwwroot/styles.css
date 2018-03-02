@@ -38,7 +38,7 @@ a {
 
 #outputDiv {
     margin: 20px;
-    font-size: 16pt;
+    font-size: medium;
 }
 
 .swatch {
@@ -127,8 +127,8 @@ a {
     font-size: 72px;
 }
 
-.smallTable {
-    font-size: medium;
+.mainAnswerText {
+    font-size: larger;
 }
 
 .gray {

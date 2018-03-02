@@ -68,7 +68,7 @@ namespace QuickInfo
                 }
             }
 
-            return NameValueTable(pairs.ToArray());
+            return NameValueTable(null, right => right.Style = "Fixed", pairs.ToArray());
         }
     }
 }
