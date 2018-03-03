@@ -9,6 +9,10 @@ namespace QuickInfo
     {
         private List<IProcessor> processors = new List<IProcessor>();
 
+        public Engine() : this(new[] { typeof(Engine).Assembly })
+        {
+        }
+
         public Engine(params Assembly[] assemblies)
         {
             if (assemblies.Length == 0)
@@ -24,6 +28,18 @@ namespace QuickInfo
                 processors.AddRange(processorTypes.Select(t => (IProcessor)Activator.CreateInstance(t)));
             }
 
+            SortProcessors();
+        }
+
+        public Engine(params Type[] types)
+        {
+            var instances = types.Select(t => (IProcessor)Activator.CreateInstance(t));
+            processors.AddRange(instances);
+            SortProcessors();
+        }
+
+        private void SortProcessors()
+        {
             processors.Sort((l, r) => string.CompareOrdinal(l.GetType().Name, r.GetType().Name));
         }
 
