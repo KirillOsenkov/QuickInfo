@@ -47,6 +47,16 @@ I kept catching myself, _how do I generate a random Guid from command line_? _Wh
 
 So I got into the mindset of "does this question have a single, well defined, computable answer"? "Can I type the question into a simple search box and expect a computer to give an immediate result?" Turns out, this class of questions is more expansive than one might think. I'm thinking of adding ToString() syntax for DateTime, string.Format cheat sheet, some man pages that I often look up, basically make carefully curated information easily accessible from a simple search box. I think it'll be beneficial to centralize all these little lookup utilities and make it so I can customize and extend it to fit my needs.
 
+## API and architecture
+
+The core library of answers is in QuickInfo.dll, available as a NuGet package here: https://nuget.org/packages/GuiLabs.QuickInfo. There are multiple front-ends such as QuickInfoWeb (that powers http://quickinfo.io) and Info.exe (console app). Here's how the console app instantiates the engine and gets the answers for the search string:
+https://github.com/KirillOsenkov/QuickInfo/blob/6b5b0ace7e43e1b281a30f0dcf20af3edefc9149/src/Info/Program.cs#L11-L31
+
+The result objects returned from the API are an abstract object model:
+https://github.com/KirillOsenkov/QuickInfo/blob/master/src/QuickInfo/Dom/Node.cs
+
+Basically Node has a set of attributes (name/value pairs) and an optional List of child nodes. HtmlRenderer in QuickInfoWeb project then renders Html responses by visiting the Node tree of the results. ConsoleRenderer in the Info.exe console app visits the Node tree and just prints it to the console.
+
 ## Contributing
 
 Feel free to open issues to suggest/propose ideas. If you want to contribute a PR, please open an issue first so we can discuss. I will consider accepting high quality pull requests, however in each case I will decide whether the PR adds a solution that fits the spirit of what I want to achieve. Sorry if I decline too specific or exotic functionality. I also can't add answers that won't be useful to the majority of users.
