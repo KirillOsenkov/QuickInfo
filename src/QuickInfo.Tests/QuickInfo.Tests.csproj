@@ -11,7 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Info\Info.csproj" />
     <ProjectReference Include="..\QuickInfoWeb\QuickInfoWeb.csproj" />
     <ProjectReference Include="..\QuickInfo\QuickInfo.csproj" />
   </ItemGroup>

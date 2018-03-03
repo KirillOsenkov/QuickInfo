@@ -45,7 +45,7 @@ namespace QuickInfo.Tests
         {
             var engine = new Engine();
             var query = new Query(input);
-            var answerNode = engine.GetResults(query).First().resultText;
+            var answerNode = engine.GetResults(query).First().resultNode;
             var actualResult = HtmlRenderer.RenderObject(answerNode);
             Assert.Contains(expectedHtml, actualResult);
         }

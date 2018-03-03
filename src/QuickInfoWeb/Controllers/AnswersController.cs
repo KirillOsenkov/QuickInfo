@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -105,16 +106,16 @@ namespace QuickInfo.Controllers
             var query = new WebQuery(input);
             query.Request = request;
 
-            List<(string processorName, object resultNode)> results = engine.GetResults(query);
+            var results = engine.GetResults(query);
 
-            if (results.Count == 0)
+            if (!results.Any())
             {
                 return null;
             }
 
-            if (results.Count == 1)
+            if (results.Count() == 1)
             {
-                var html = HtmlRenderer.RenderObject(results[0].resultNode);
+                var html = HtmlRenderer.RenderObject(results.First().resultNode);
                 return html;
             }
 

@@ -29,9 +29,9 @@ namespace QuickInfo
 
         public IEnumerable<IProcessor> Processors => processors;
 
-        public List<(string processorName, object resultText)> GetResults(Query query)
+        public IEnumerable<(string processorName, object resultNode)> GetResults(Query query)
         {
-            List<(string processorName, object resultText)> results = new List<(string, object)>();
+            List<(string processorName, object resultNode)> results = new List<(string, object)>();
             foreach (var processor in Processors)
             {
                 var result = processor.GetResult(query);
