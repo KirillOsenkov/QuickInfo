@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using static QuickInfo.NodeFactory;
 
-namespace QuickInfo.Processors
+namespace QuickInfo
 {
     public class DateTime : IProcessor
     {

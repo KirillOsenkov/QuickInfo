@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using static QuickInfo.NodeFactory;
 
-namespace QuickInfo.Processors
+namespace QuickInfo
 {
     public sealed class Emoticons : IProcessor
     {

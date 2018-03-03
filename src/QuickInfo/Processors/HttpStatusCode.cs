@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using static QuickInfo.NodeFactory;
 
-namespace QuickInfo.Processors
+namespace QuickInfo
 {
     public class HttpStatusCode : IProcessor
     {
