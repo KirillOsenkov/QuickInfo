@@ -1,6 +1,8 @@
 # http://quickinfo.io
 Extensible set of little one-off features that Google or Bing are missing, such as color and unit conversions, etc.
 
+[![NuGet package](https://img.shields.io/nuget/v/GuiLabs.QuickInfo.svg)](https://nuget.org/packages/GuiLabs.QuickInfo)
+
 ![screenshot](https://github.com/KirillOsenkov/QuickInfo/raw/master/docs/Demo.gif)
 
 ## Motivation
@@ -44,6 +46,16 @@ It all started when I caught myself using the Windows Calc to convert a hex colo
 I kept catching myself, _how do I generate a random Guid from command line_? _Which is a good unit-converter app without ads_? _What is 130000 * (96 - 36) / 192_? I've realized that there are apps and websites to answer all these, but it will take me longer to find a good app than to calculate the answer myself.
 
 So I got into the mindset of "does this question have a single, well defined, computable answer"? "Can I type the question into a simple search box and expect a computer to give an immediate result?" Turns out, this class of questions is more expansive than one might think. I'm thinking of adding ToString() syntax for DateTime, string.Format cheat sheet, some man pages that I often look up, basically make carefully curated information easily accessible from a simple search box. I think it'll be beneficial to centralize all these little lookup utilities and make it so I can customize and extend it to fit my needs.
+
+## API and architecture
+
+The core library of answers is in QuickInfo.dll, available as a NuGet package here: https://nuget.org/packages/GuiLabs.QuickInfo. There are multiple front-ends such as QuickInfoWeb (that powers http://quickinfo.io) and Info.exe (console app). Here's how the console app instantiates the engine and gets the answers for the search string:
+https://github.com/KirillOsenkov/QuickInfo/blob/6b5b0ace7e43e1b281a30f0dcf20af3edefc9149/src/Info/Program.cs#L11-L31
+
+The result objects returned from the API are an abstract object model:
+https://github.com/KirillOsenkov/QuickInfo/blob/master/src/QuickInfo/Dom/Node.cs
+
+Basically Node has a set of attributes (name/value pairs) and an optional List of child nodes. HtmlRenderer in QuickInfoWeb project then renders Html responses by visiting the Node tree of the results. ConsoleRenderer in the Info.exe console app visits the Node tree and just prints it to the console.
 
 ## Contributing
 
