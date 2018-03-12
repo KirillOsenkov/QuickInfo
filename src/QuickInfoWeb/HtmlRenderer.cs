@@ -17,11 +17,14 @@ namespace QuickInfo
 
         private string RenderInstance(object instance)
         {
-            writer = new StringBuilderTextWriter();
-            Render(instance);
-            var result = writer.ToString();
-            writer = null;
-            return result;
+            lock (this)
+            {
+                writer = new StringBuilderTextWriter();
+                Render(instance);
+                var result = writer.ToString();
+                writer = null;
+                return result;
+            }
         }
 
         private void Render(object result)

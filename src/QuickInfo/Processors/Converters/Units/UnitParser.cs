@@ -31,6 +31,17 @@ namespace QuickInfo
                 }
             }
 
+            var foot = query.IndexOf('\'');
+            var inch = query.IndexOf('"');
+            if (foot > 0 && inch > foot + 1 && inch == query.Length - 1)
+            {
+                if (int.TryParse(query.Substring(0, foot), out var feet) &&
+                    int.TryParse(query.Substring(foot + 1, inch - foot - 1), out var inches))
+                {
+                    return Tuple.Create(new Double(feet * 12 + inches), Units.Inch);
+                }
+            }
+
             return null;
         }
 

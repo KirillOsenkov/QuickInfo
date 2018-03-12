@@ -25,6 +25,7 @@ namespace QuickInfo
             Add(new Prefix("unicode ", "char ", "emoji "));
             Add(new Integer());
             Add(new Double());
+            Add(new InfixOperator("+"));
             Add(new SeparatedList(','));
             Add(new SeparatedList(' '));
             Add(new RandomInteger());
@@ -50,6 +51,11 @@ namespace QuickInfo
             if (instance is T)
             {
                 return (T)instance;
+            }
+
+            if (typeof(T) == typeof(Tuple<Double, Unit>) && instance is Tuple<Integer, Unit> intUnit)
+            {
+                return (T)(object)Tuple.Create((double)intUnit.Item1.Value, intUnit.Item2);
             }
 
             if (typeof(T) == typeof(byte[]))

@@ -68,6 +68,20 @@ namespace QuickInfo
                 };
             }
 
+            var plus = query.TryGetStructure<InfixOperator>();
+            if (plus != null && plus.OperatorText == "+")
+            {
+                var left = StructureParser.TryGetStructure<Tuple<Double, Unit>>(plus.Left);
+                var right = StructureParser.TryGetStructure<Tuple<Double, Unit>>(plus.Right);
+                if (left != null && right != null)
+                {
+                    if (left.Item2 == right.Item2)
+                    {
+                        return GetResult(left.Item1.Value + right.Item1.Value, left.Item2);
+                    }
+                }
+            }
+
             var tuple = query.TryGetStructure<Tuple<Double, Unit>>();
             if (tuple != null)
             {
