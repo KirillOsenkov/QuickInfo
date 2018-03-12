@@ -68,7 +68,10 @@ namespace QuickInfo
             }
 
             var structure = query.TryGetStructure<Integer>();
-            if (structure != null && httpStatusCodes.ContainsKey(structure.Int32))
+            if (structure != null &&
+                structure.Value >= 100 &&
+                structure.Value <= 505 &&
+                httpStatusCodes.ContainsKey(structure.Int32))
             {
                 return Answer($"http code {structure.Int32}: {httpStatusCodes[structure.Int32]}");
             }
