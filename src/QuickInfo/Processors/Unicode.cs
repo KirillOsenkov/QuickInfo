@@ -13,6 +13,9 @@ namespace QuickInfo
     {
         const int MaxSymbolsToReturn = 60;
 
+        private Dictionary<int, string> descriptions = new Dictionary<int, string>();
+        private (string, int)[] index;
+
         public Unicode()
         {
             BuildUnicodeList();
@@ -23,7 +26,7 @@ namespace QuickInfo
             if (query.IsHelp)
             {
                 return HelpTable(
-                    ("char cherries", "Lookup a unicode char/emoji"),
+                    ("cherries", "Lookup a unicode char/emoji"),
                     ("\\U0001F352", "Lookup char"),
                     ("\\U0001F347 \\U0001F352", "Lookup multiple chars"),
                     ("🍒", "Show char info"),
@@ -97,6 +100,18 @@ namespace QuickInfo
                 }
             }
 
+            var positions = SortedSearch.FindItems(index, input.SplitIntoWords(), t => t.Item1, t => t.Item2);
+            if (positions.Any())
+            {
+                var characters = positions
+                    .OrderBy(i => i)
+                    .Take(MaxSymbolsToReturn)
+                    .Select(i => GetResult(i))
+                    .ToArray();
+
+                return characters;
+            }
+
             return null;
         }
 
@@ -135,16 +150,8 @@ namespace QuickInfo
                 return resultCards[0];
             }
 
-            var list = new List<object>();
-            foreach (var card in resultCards)
-            {
-                list.Add(card);
-            }
-
-            return list;
+            return resultCards;
         }
-
-        private Dictionary<int, string> descriptions = new Dictionary<int, string>();
 
         private void BuildUnicodeList()
         {
@@ -167,6 +174,8 @@ namespace QuickInfo
                     }
                 }
             }
+
+            index = SortedSearch.CreateIndex(descriptions.Select(kvp => (kvp.Value, kvp.Key)), s => s.SplitIntoWords());
         }
 
         private object GetResult(byte[] bytes)

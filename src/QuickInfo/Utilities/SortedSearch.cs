@@ -137,24 +137,21 @@ namespace QuickInfo
             return high;
         }
 
-        public static (string, int)[] CreateIndex<T>(IEnumerable<T> list, Func<T, IEnumerable<string>> fieldsGetter)
+        public static (string, int)[] CreateIndex<T>(IEnumerable<(T, int)> list, Func<T, IEnumerable<string>> fieldsGetter)
         {
-            var result = new List<(string, int)>(list.Count());
+            var result = new List<(string, int)>();
 
-            int index = 0;
             foreach (var item in list)
             {
-                var fields = fieldsGetter(item);
+                var fields = fieldsGetter(item.Item1);
                 foreach (var field in fields)
                 {
                     var key = field;
                     if (!string.IsNullOrEmpty(key))
                     {
-                        result.Add((key, index));
+                        result.Add((key, item.Item2));
                     }
                 }
-
-                index++;
             }
 
             result.Sort((left, right) => StringComparer.OrdinalIgnoreCase.Compare(left.Item1, right.Item1));

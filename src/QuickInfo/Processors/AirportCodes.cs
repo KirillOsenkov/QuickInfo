@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using static QuickInfo.NodeFactory;
@@ -10,7 +11,7 @@ namespace QuickInfo
 
         public AirportCodes()
         {
-            airportsIndex = SortedSearch.CreateIndex(data, a => GetFields(a));
+            airportsIndex = SortedSearch.CreateIndex(data.Select((t, i) => (t, i)), a => GetFields(a));
         }
 
         public object GetResult(Query query)
@@ -22,6 +23,10 @@ namespace QuickInfo
             }
 
             var queryString = query.OriginalInputTrim;
+            if (string.Equals(queryString, "color", StringComparison.OrdinalIgnoreCase))
+            {
+                return null;
+            }
 
             if (queryString.Length == 3 && queryString.IsSingleWord())
             {
@@ -52,18 +57,18 @@ namespace QuickInfo
             }
 
             var positions = SortedSearch.FindItems(airportsIndex, words, t => t.Item1, t => t.Item2);
-            if (!positions.Any())
+            if (positions.Any())
             {
-                return null;
+                var airports = positions
+                    .OrderBy(i => i)
+                    .Take(10)
+                    .Select(i => Airport(i))
+                    .ToArray();
+
+                return airports;
             }
 
-            var airports = positions
-                .OrderBy(i => i)
-                .Take(10)
-                .Select(i => Airport(i))
-                .ToArray();
-
-            return airports;
+            return null;
         }
 
         private object Airport(int index)
