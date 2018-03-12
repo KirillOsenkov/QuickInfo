@@ -51,18 +51,18 @@ namespace QuickInfo
         public static readonly Unit Mpg = new Unit("mpg", "miles/gallon");
         public static readonly Unit LitersPer100Km = new Unit("liters/100km", "l/100km");
 
-        public static readonly Unit Nanosecond = new Unit("ns", "nanosecond", "nanoseconds");
-        public static readonly Unit Microsecond = new Unit("μs", "microsecond", "microseconds");
-        public static readonly Unit Millisecond = new Unit("ms", "millisecond", "milliseconds");
-        public static readonly Unit Second = new Unit("s", "second", "seconds");
-        public static readonly Unit Minute = new Unit("m", "minute", "minutes");
-        public static readonly Unit Hour = new Unit("h", "hour", "hours");
-        public static readonly Unit Day = new Unit("day", "days");
-        public static readonly Unit Week = new Unit("week", "weeks");
-        public static readonly Unit Month = new Unit("month", "months");
-        public static readonly Unit Year = new Unit("year", "years");
-        public static readonly Unit Century = new Unit("century", "centuries");
-        public static readonly Unit Millennium = new Unit("millennium", "millennia");
+        public static readonly Unit Nanosecond = new Unit("ns", "nanoseconds", "nanosecond");
+        public static readonly Unit Microsecond = new Unit("μs", "microseconds", "microsecond");
+        public static readonly Unit Millisecond = new Unit("ms", "milliseconds", "millisecond");
+        public static readonly Unit Second = new Unit("s", "seconds", "second");
+        public static readonly Unit Minute = new Unit("m", "minutes", "minute");
+        public static readonly Unit Hour = new Unit("h", "hours", "hour");
+        public static readonly Unit Day = new Unit("days", "day");
+        public static readonly Unit Week = new Unit("weeks", "week");
+        public static readonly Unit Month = new Unit("months", "month");
+        public static readonly Unit Year = new Unit("years", "year");
+        public static readonly Unit Century = new Unit("centuries", "century");
+        public static readonly Unit Millennium = new Unit("millennia", "millennium");
 
         public static readonly Unit EUR = new Unit("EUR", "Euro", "€");
         public static readonly Unit USD = new Unit("USD", "United States Dollar", "$");
