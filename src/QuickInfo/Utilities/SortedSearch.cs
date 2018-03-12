@@ -34,21 +34,21 @@ namespace QuickInfo
             return bounds;
         }
 
-        public static IEnumerable<T> FindItems<T>(IList<T> list, IEnumerable<string> words, Func<T, string> keySelector)
+        public static IEnumerable<U> FindItems<T, U>(IList<T> list, IEnumerable<string> words, Func<T, string> keySelector, Func<T, U> itemSelector)
         {
-            var hits = new HashSet<T>();
+            var hits = new HashSet<U>();
             bool firstWord = true;
             foreach (var word in words)
             {
                 var bounds = FindBounds(list, word, keySelector);
                 if (bounds.high < bounds.low)
                 {
-                    return Array.Empty<T>();
+                    return Array.Empty<U>();
                 }
 
                 var hitsForWord = Enumerable
                     .Range(bounds.low, bounds.high - bounds.low + 1)
-                    .Select(i => list[i]);
+                    .Select(i => itemSelector(list[i]));
                 if (firstWord)
                 {
                     hits.UnionWith(hitsForWord);

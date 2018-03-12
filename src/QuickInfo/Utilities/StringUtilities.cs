@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Numerics;
 
 namespace QuickInfo
@@ -119,6 +120,11 @@ namespace QuickInfo
         public static IEnumerable<string> SplitIntoWords(this string text)
         {
             return text.Split(space, StringSplitOptions.RemoveEmptyEntries);
+        }
+
+        public static bool IsSingleWord(this string word)
+        {
+            return word.All(c => char.IsLetter(c));
         }
     }
 }

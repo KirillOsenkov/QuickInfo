@@ -22,24 +22,42 @@ namespace QuickInfo
             }
 
             var queryString = query.OriginalInputTrim;
-            //if (queryString.Length == 3)
-            //{
-            //    int index = SortedSearch.FindItem(data, queryString, t => t.code);
-            //    if (index >= 0 && index < data.Length)
-            //    {
-            //        return Airport(index);
-            //    }
-            //}
 
-            var positions = SortedSearch.FindItems(airportsIndex, queryString.SplitIntoWords(), t => t.Item1);
+            if (queryString.Length == 3 && queryString.IsSingleWord())
+            {
+                int index = SortedSearch.FindItem(data, queryString, t => t.code);
+                if (index >= 0 && index < data.Length)
+                {
+                    return Airport(index);
+                }
+            }
+
+            if (queryString.Length >= 3)
+            {
+                var airports = GetAirports(queryString.SplitIntoWords());
+                if (airports != null)
+                {
+                    return airports;
+                }
+            }
+
+            return null;
+        }
+
+        private object GetAirports(IEnumerable<string> words)
+        {
+            if (words.Count() > 4)
+            {
+                return null;
+            }
+
+            var positions = SortedSearch.FindItems(airportsIndex, words, t => t.Item1, t => t.Item2);
             if (!positions.Any())
             {
                 return null;
             }
 
             var airports = positions
-                .Select(p => p.Item2)
-                .Distinct()
                 .OrderBy(i => i)
                 .Take(10)
                 .Select(i => Airport(i))
