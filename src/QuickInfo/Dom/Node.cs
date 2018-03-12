@@ -98,6 +98,18 @@ namespace QuickInfo
                 Text = text
             };
         }
+
+        public static Node Hyperlink(string link, string text = null)
+        {
+            text = text ?? link;
+
+            return new Node
+            {
+                Text = text,
+                Kind = "Hyperlink",
+                Link = link
+            };
+        }
     }
 
     public class Node
@@ -146,6 +158,12 @@ namespace QuickInfo
         {
             get => this[nameof(Text)] as string;
             set => this[nameof(Text)] = value;
+        }
+
+        public string Link
+        {
+            get => this[nameof(Link)] as string;
+            set => this[nameof(Link)] = value;
         }
 
         public string SearchLink

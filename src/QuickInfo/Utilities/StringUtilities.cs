@@ -114,5 +114,11 @@ namespace QuickInfo
                 yield return array[row, column];
             }
         }
+
+        private static readonly char[] space = new[] { ' ' };
+        public static IEnumerable<string> SplitIntoWords(this string text)
+        {
+            return text.Split(space, StringSplitOptions.RemoveEmptyEntries);
+        }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace QuickInfo
 {
@@ -16,23 +17,57 @@ namespace QuickInfo
 
         public static int FindItem<T>(IList<T> list, string word, Func<T, string> keySelector)
         {
-            var search = new SortedSearch(i => keySelector(list[i]), list.Count);
-            int low;
-            int high;
-            search.FindBounds(word, out low, out high);
+            var bounds = FindBounds(list, word, keySelector);
 
-            if (high < low)
+            if (bounds.high < bounds.low)
             {
                 return -1;
             }
 
-            return low;
+            return bounds.low;
         }
 
-        public void FindBounds(string word, out int low, out int high)
+        private static (int low, int high) FindBounds<T>(IList<T> list, string word, Func<T, string> keySelector)
         {
-            low = 0;
-            high = this.count - 1;
+            var search = new SortedSearch(i => keySelector(list[i]), list.Count);
+            var bounds = search.FindBounds(word);
+            return bounds;
+        }
+
+        public static IEnumerable<T> FindItems<T>(IList<T> list, IEnumerable<string> words, Func<T, string> keySelector)
+        {
+            var hits = new HashSet<T>();
+            bool firstWord = true;
+            foreach (var word in words)
+            {
+                var bounds = FindBounds(list, word, keySelector);
+                if (bounds.high < bounds.low)
+                {
+                    return Array.Empty<T>();
+                }
+
+                var hitsForWord = Enumerable
+                    .Range(bounds.low, bounds.high - bounds.low + 1)
+                    .Select(i => list[i]);
+                if (firstWord)
+                {
+                    hits.UnionWith(hitsForWord);
+                }
+                else
+                {
+                    hits.IntersectWith(hitsForWord);
+                }
+
+                firstWord = false;
+            }
+
+            return hits;
+        }
+
+        public (int low, int high) FindBounds(string word)
+        {
+            var low = 0;
+            var high = this.count - 1;
             word = word.ToUpperInvariant();
 
             for (int charIndex = 0; charIndex < word.Length; charIndex++)
@@ -53,6 +88,8 @@ namespace QuickInfo
                     break;
                 }
             }
+
+            return (low, high);
         }
 
         private int FindLetterStart(int low, int high, char ch, int index)
@@ -98,6 +135,31 @@ namespace QuickInfo
             }
 
             return high;
+        }
+
+        public static (string, int)[] CreateIndex<T>(IEnumerable<T> list, Func<T, IEnumerable<string>> fieldsGetter)
+        {
+            var result = new List<(string, int)>(list.Count());
+
+            int index = 0;
+            foreach (var item in list)
+            {
+                var fields = fieldsGetter(item);
+                foreach (var field in fields)
+                {
+                    var key = field;
+                    if (!string.IsNullOrEmpty(key))
+                    {
+                        result.Add((key, index));
+                    }
+                }
+
+                index++;
+            }
+
+            result.Sort((left, right) => StringComparer.OrdinalIgnoreCase.Compare(left.Item1, right.Item1));
+
+            return result.ToArray();
         }
     }
 }

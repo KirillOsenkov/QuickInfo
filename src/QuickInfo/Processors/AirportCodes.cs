@@ -1,10 +1,18 @@
 using System.Collections.Generic;
+using System.Linq;
 using static QuickInfo.NodeFactory;
 
 namespace QuickInfo
 {
     public class AirportCodes : IProcessor
     {
+        private (string, int)[] airportsIndex;
+
+        public AirportCodes()
+        {
+            airportsIndex = SortedSearch.CreateIndex(data, a => GetFields(a));
+        }
+
         public object GetResult(Query query)
         {
             if (query.IsHelp)
@@ -14,16 +22,30 @@ namespace QuickInfo
             }
 
             var queryString = query.OriginalInputTrim;
-            if (queryString.Length == 3)
+            //if (queryString.Length == 3)
+            //{
+            //    int index = SortedSearch.FindItem(data, queryString, t => t.code);
+            //    if (index >= 0 && index < data.Length)
+            //    {
+            //        return Airport(index);
+            //    }
+            //}
+
+            var positions = SortedSearch.FindItems(airportsIndex, queryString.SplitIntoWords(), t => t.Item1);
+            if (!positions.Any())
             {
-                int index = SortedSearch.FindItem(data, queryString, t => t.code);
-                if (index >= 0 && index < data.Length)
-                {
-                    return Airport(index);
-                }
+                return null;
             }
 
-            return null;
+            var airports = positions
+                .Select(p => p.Item2)
+                .Distinct()
+                .OrderBy(i => i)
+                .Take(10)
+                .Select(i => Airport(i))
+                .ToArray();
+
+            return airports;
         }
 
         private object Airport(int index)
@@ -48,8 +70,51 @@ namespace QuickInfo
 
             result.Add(location);
             result.Add(Answer("Airport code: " + airport.code.ToUpperInvariant()));
+            var link = "https://airportcod.es/#airport/" + airport.code;
+            result.Add(Hyperlink(link));
 
             return result;
+        }
+
+        private IEnumerable<string> GetFields((string code, string name, string englishName, string state, string country, string city1, string city2, string city3) a)
+        {
+            yield return a.code;
+
+            if (a.city1 != "")
+            {
+                yield return a.city1;
+            }
+
+            if (a.city2 != "")
+            {
+                yield return a.city2;
+            }
+
+            if (a.city3 != "")
+            {
+                yield return a.city3;
+            }
+
+            if (a.state != "")
+            {
+                yield return a.state;
+            }
+
+            if (a.country != "")
+            {
+                yield return a.country;
+            }
+
+            var name = a.englishName;
+            if (name == "")
+            {
+                name = a.name;
+            }
+
+            foreach (var word in name.SplitIntoWords())
+            {
+                yield return word;
+            }
         }
 
         // taken from the awesome https://airportcod.es/ with permission from Lynn Fisher:

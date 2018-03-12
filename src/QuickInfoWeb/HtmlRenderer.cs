@@ -66,7 +66,14 @@ namespace QuickInfo
             }
 
             bool multilineContent = list != null;
-            using (Tag(tag, nodeClass, nodeStyle, multilineContent))
+            var attributes = new List<(string, string)>();
+            if (node.Link != null)
+            {
+                attributes.Add(("href", node.Link));
+                attributes.Add(("target", "_blank"));
+            }
+
+            using (Tag(tag, nodeClass, nodeStyle, multilineContent, attributes.ToArray()))
             {
                 if (list != null)
                 {
@@ -164,6 +171,10 @@ namespace QuickInfo
             else if (node.Kind == "Paragraph")
             {
                 return "div";
+            }
+            else if (node.Kind == "Hyperlink")
+            {
+                return "a";
             }
 
             return null;
