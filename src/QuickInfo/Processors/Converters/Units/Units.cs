@@ -51,6 +51,19 @@ namespace QuickInfo
         public static readonly Unit Mpg = new Unit("mpg", "miles/gallon");
         public static readonly Unit LitersPer100Km = new Unit("liters/100km", "l/100km");
 
+        public static readonly Unit Nanosecond = new Unit("ns", "nanosecond", "nanoseconds");
+        public static readonly Unit Microsecond = new Unit("μs", "microsecond", "microseconds");
+        public static readonly Unit Millisecond = new Unit("ms", "millisecond", "milliseconds");
+        public static readonly Unit Second = new Unit("s", "second", "seconds");
+        public static readonly Unit Minute = new Unit("m", "minute", "minutes");
+        public static readonly Unit Hour = new Unit("h", "hour", "hours");
+        public static readonly Unit Day = new Unit("day", "days");
+        public static readonly Unit Week = new Unit("week", "weeks");
+        public static readonly Unit Month = new Unit("month", "months");
+        public static readonly Unit Year = new Unit("year", "years");
+        public static readonly Unit Century = new Unit("century", "centuries");
+        public static readonly Unit Millennium = new Unit("millennium", "millennia");
+
         public static readonly Unit EUR = new Unit("EUR", "Euro", "€");
         public static readonly Unit USD = new Unit("USD", "United States Dollar", "$");
         public static readonly Unit RUB = new Unit("RUB", "Russia ruble", "₽");
@@ -130,6 +143,29 @@ namespace QuickInfo
 
             new Conversion(Mpg, LitersPer100Km, p => 235.214583084785 / p),
             new Conversion(LitersPer100Km, Mpg, p => 235.214583084785 / p),
+
+            new Conversion(Nanosecond, Second, p => p / 1000000000.0),
+            new Conversion(Second, Nanosecond, p => p * 1000000000.0),
+            new Conversion(Microsecond, Second, p => p / 1000000.0),
+            new Conversion(Second, Microsecond, p => p * 1000000.0),
+            new Conversion(Millisecond, Second, p => p / 1000.0),
+            new Conversion(Second, Millisecond, p => p * 1000.0),
+            new Conversion(Minute, Second, p => p * 60.0),
+            new Conversion(Second, Minute, p => p / 60.0),
+            new Conversion(Hour, Second, p => p * 60.0 * 60.0),
+            new Conversion(Second, Hour, p => p / 60.0 / 60.0),
+            new Conversion(Day, Second, p => p * 60.0 * 60.0 * 24.0),
+            new Conversion(Second, Day, p => p / 60.0 / 60.0 / 24.0),
+            new Conversion(Week, Second, p => p * 60.0 * 60.0 * 24.0 * 7.0),
+            new Conversion(Second, Week, p => p / 60.0 / 60.0 / 24.0 / 7.0),
+            new Conversion(Month, Second, p => p * 60.0 * 60.0 * 24.0 * 30.0),
+            new Conversion(Second, Month, p => p / 60.0 / 60.0 / 24.0 / 30.0),
+            new Conversion(Year, Second, p => p * 60.0 * 60.0 * 24.0 * 365.0),
+            new Conversion(Second, Year, p => p / 60.0 / 60.0 / 24.0 / 365.0),
+            new Conversion(Century, Second, p => p * 60.0 * 60.0 * 24.0 * 365.0 * 100.0),
+            new Conversion(Second, Century, p => p / 60.0 / 60.0 / 24.0 / 365.0 / 100.0),
+            new Conversion(Millennium, Second, p => p * 60.0 * 60.0 * 24.0 * 365.0 * 1000.0),
+            new Conversion(Second, Millennium, p => p / 60.0 / 60.0 / 24.0 / 365.0 / 1000.0),
 
             new Conversion(EUR, USD, p => Currency.Convert("EUR", "USD", p), "n2"),
             new Conversion(USD, EUR, p => Currency.Convert("USD", "EUR", p), "n2"),

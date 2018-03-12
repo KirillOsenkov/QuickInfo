@@ -37,6 +37,11 @@ namespace QuickInfo
                         (
                             ("60 mph", "")
                         ),
+                        SectionHeader("Time"),
+                        HelpTable
+                        (
+                            ("127 hours in days", "")
+                        ),
                         SectionHeader("Volume"),
                         HelpTable
                         (
@@ -57,7 +62,7 @@ namespace QuickInfo
                         HelpTable
                         (
                             ("150 EUR in USD", ""),
-                            ("4000$", "")
+                            ("$4000", "")
                         )
                     }
                 };
