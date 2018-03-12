@@ -15,24 +15,41 @@ namespace QuickInfo
 
             foreach (var keyword in keywords)
             {
+                Double number = null;
                 if (query.EndsWith(keyword.Key, StringComparison.OrdinalIgnoreCase))
                 {
-                    var parsed = StructureParser.Parse(query.Substring(0, query.Length - keyword.Key.Length));
-                    var number = StructureParser.TryGetStructure<Double>(parsed);
-                    if (number != null)
-                    {
-                        if (StructureParser.TryGetStructure<Integer>(parsed) is Integer i && i.Kind == IntegerKind.Hexadecimal)
-                        {
-                            // don't allow hex numbers with units
-                            continue;
-                        }
+                    number = TryParseUnitValue(query, 0, query.Length - keyword.Key.Length);
+                }
+                else if (IsPrefixUnit(keyword.Key) && query.StartsWith(keyword.Key))
+                {
+                    number = TryParseUnitValue(query, keyword.Key.Length, query.Length - keyword.Key.Length);
+                }
 
-                        return Tuple.Create(number, keyword.Value);
-                    }
+                if (number != null)
+                {
+                    return Tuple.Create(number, keyword.Value);
                 }
             }
 
             return null;
+        }
+
+        public static bool IsPrefixUnit(string unitName) => unitName == "$";
+
+        private static Double TryParseUnitValue(string query, int start, int length)
+        {
+            var parsed = StructureParser.Parse(query.Substring(start, length));
+            var number = StructureParser.TryGetStructure<Double>(parsed);
+            if (number != null)
+            {
+                if (StructureParser.TryGetStructure<Integer>(parsed) is Integer i && i.Kind == IntegerKind.Hexadecimal)
+                {
+                    // don't allow hex numbers with units
+                    return null;
+                }
+            }
+
+            return number;
         }
 
         public static object Parse(string unitName)
