@@ -64,14 +64,7 @@ namespace QuickInfo.Controllers
                     sb.AppendLine("<div class=\"answerBlock\">");
                     sb.AppendLine(DivClass(singleQuery, "answerBlockHeader"));
 
-                    if (!result.Contains("singleAnswerSection"))
-                    {
-                        result = DivClass(result, "singleAnswerSection");
-                    }
-                    else
-                    {
-                        result = Div(result);
-                    }
+                    result = DivClass(result, "singleAnswerSection");
 
                     sb.AppendLine(result);
 
@@ -124,26 +117,13 @@ namespace QuickInfo.Controllers
             {
                 var toAppend = HtmlRenderer.RenderObject(result.resultNode);
 
-                if (!toAppend.Contains("answerSection"))
-                {
-                    if (query.IsHelp)
-                    {
-                        toAppend = DivClass(toAppend, "singleAnswerSection");
-                    }
-                    else
-                    {
-                        toAppend = "  " + DivClass(Environment.NewLine + "    " + toAppend + "  ", "answerSection");
-                    }
-                }
+                toAppend = DivClass(toAppend, "singleAnswerSection");
 
-                if (query.IsHelp)
-                {
-                    toAppend = DivClass(result.processorName, "answerBlockHeader") + toAppend;
+                toAppend = DivClass(result.processorName, "answerBlockHeader") + toAppend;
 
-                    toAppend = DivClass(
-                        toAppend,
-                        "answerBlock");
-                }
+                toAppend = DivClass(
+                    toAppend,
+                    "answerBlock");
 
                 sb.AppendLine(toAppend);
             }

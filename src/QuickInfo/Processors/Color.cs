@@ -211,7 +211,7 @@ namespace QuickInfo
                                 Kind = "Cell",
                                 Style = "ColorSwatchSmall",
                                 Text = hex,
-                                SearchLink = hex
+                                SearchLink = nearestColor
                             }
                         }
                     };
