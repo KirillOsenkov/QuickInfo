@@ -1,4 +1,4 @@
-﻿body {
+body {
     font-family: Segoe UI, Tahoma, Helvetica, sans-serif;
     box-sizing: border-box;
     padding: 0px;
@@ -111,6 +111,7 @@ a {
 .sectionHeader {
     border-bottom: 1px solid lightgray;
     margin-top: 10px;
+    margin-bottom: 10px;
     color: gray;
     font-size: large;
 }
