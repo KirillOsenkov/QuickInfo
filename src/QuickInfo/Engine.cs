@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
@@ -50,11 +51,19 @@ namespace QuickInfo
             List<(string processorName, object resultNode)> results = new List<(string, object)>();
             foreach (var processor in Processors)
             {
+                //var sw = Stopwatch.StartNew();
+
                 var result = processor.GetResult(query);
                 if (result != null)
                 {
                     results.Add((processor.GetType().Name, result));
                 }
+
+                //var elapsed = sw.Elapsed.ToString(@"s\.fffff");
+                //if (elapsed != "0.00000")
+                //{
+                //    results.Add(("Timing for: " + processor.GetType().Name, $"{processor.GetType().Name}: {elapsed}"));
+                //}
             }
 
             return results;
