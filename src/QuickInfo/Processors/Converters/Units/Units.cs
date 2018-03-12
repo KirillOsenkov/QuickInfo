@@ -64,10 +64,13 @@ namespace QuickInfo
         public static readonly Unit Century = new Unit("centuries", "century");
         public static readonly Unit Millennium = new Unit("millennia", "millennium");
 
-        public static readonly Unit EUR = new Unit("EUR", "Euro", "€");
-        public static readonly Unit USD = new Unit("USD", "United States Dollar", "$");
-        public static readonly Unit RUB = new Unit("RUB", "Russia ruble", "₽");
+        public static readonly Unit EUR = new Unit("EUR", "Euro", "euros", "€");
+        public static readonly Unit USD = new Unit("USD", "United States Dollar", "dollars", "$");
+        public static readonly Unit RUB = new Unit("RUB", "Russia ruble", "rubles", "₽");
         public static readonly Unit CZK = new Unit("CZK", "Czech Republic Koruna", "Kč");
+        public static readonly Unit ILS = new Unit("ILS", "Israeli new shekel", "shekel", "₪");
+        public static readonly Unit CAD = new Unit("CAD", "Canadian Dollar");
+        public static readonly Unit CHF = new Unit("CHF", "Swiss Franc");
 
         public static readonly Conversion[] Conversions =
         {
@@ -173,6 +176,12 @@ namespace QuickInfo
             new Conversion(RUB, EUR, p => Currency.Convert("RUB", "EUR", p), "n2"),
             new Conversion(EUR, CZK, p => Currency.Convert("EUR", "CZK", p), "n2"),
             new Conversion(CZK, EUR, p => Currency.Convert("CZK", "EUR", p), "n2"),
+            new Conversion(EUR, ILS, p => Currency.Convert("EUR", "ILS", p), "n2"),
+            new Conversion(ILS, EUR, p => Currency.Convert("ILS", "EUR", p), "n2"),
+            new Conversion(EUR, CAD, p => Currency.Convert("EUR", "CAD", p), "n2"),
+            new Conversion(CAD, EUR, p => Currency.Convert("CAD", "EUR", p), "n2"),
+            new Conversion(EUR, CHF, p => Currency.Convert("EUR", "CHF", p), "n2"),
+            new Conversion(CHF, EUR, p => Currency.Convert("CHF", "EUR", p), "n2"),
         };
 
         private static Unit[] allUnits = null;
