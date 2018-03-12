@@ -22,24 +22,24 @@ namespace QuickInfo
                     ("LAX", "Airport code"));
             }
 
-            var queryString = query.OriginalInputTrim;
-            if (string.Equals(queryString, "color", StringComparison.OrdinalIgnoreCase))
+            var input = query.OriginalInputTrim;
+            if (string.Equals(input, "color", StringComparison.OrdinalIgnoreCase))
             {
                 return null;
             }
 
-            if (queryString.Length == 3 && queryString.IsSingleWord())
+            if (input.Length == 3 && input.IsSingleWord())
             {
-                int index = SortedSearch.FindItem(data, queryString, t => t.code);
+                int index = SortedSearch.FindItem(data, input, t => t.code);
                 if (index >= 0 && index < data.Length)
                 {
                     return Airport(index);
                 }
             }
 
-            if (queryString.Length >= 3)
+            if (input.Length >= 3)
             {
-                var airports = GetAirports(queryString.SplitIntoWords());
+                var airports = GetAirports(input.SplitIntoWords());
                 if (airports != null)
                 {
                     return airports;

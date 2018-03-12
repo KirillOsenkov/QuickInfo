@@ -1,4 +1,4 @@
-﻿function onPageLoad() {
+function onPageLoad() {
     window.onresize = onWindowResize;
     window.onpopstate = onPopState;
 
@@ -15,6 +15,12 @@
     inputBox.oninput = function () {
         onSearchChange();
     };
+
+    var query = document.location.search;
+    if (query === "?demo") {
+        startDemo();
+        return;
+    }
 
     searchFromCurrentUrl();
 }
@@ -85,7 +91,7 @@ var terms = [
     "3.2 7 11 5.5 19.7 0.4",
     "9,1,100,42,0,0,19",
     "ascii",
-    "unicode cake",
+    "cake",
     "\\U0001F352",
     "F0 9F 8D 87",
     "3%2B2%2F(2%2B3)",
@@ -107,11 +113,17 @@ function startDemo() {
 }
 
 function advanceDemo() {
+
+    if (!inputBox.value) {
+        // stop the demo when the user clears the search text
+        return;
+    }
+
     if (currentDemoTerm < terms.length) {
         var term = terms[currentDemoTerm];
         searchFor(term);
         currentDemoTerm++;
-        setTimeout(advanceDemo, 1500);
+        setTimeout(advanceDemo, 2000);
     }
 }
 

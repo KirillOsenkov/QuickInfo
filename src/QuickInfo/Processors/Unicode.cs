@@ -35,6 +35,10 @@ namespace QuickInfo
             }
 
             var input = query.OriginalInput;
+            if (string.Equals(input, "color", StringComparison.OrdinalIgnoreCase))
+            {
+                return null;
+            }
 
             if (input.Length == 1)
             {
