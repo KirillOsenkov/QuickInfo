@@ -21,6 +21,12 @@ namespace QuickInfo
                     var number = StructureParser.TryGetStructure<Double>(parsed);
                     if (number != null)
                     {
+                        if (StructureParser.TryGetStructure<Integer>(parsed) is Integer i && i.Kind == IntegerKind.Hexadecimal)
+                        {
+                            // don't allow hex numbers with units
+                            continue;
+                        }
+
                         return Tuple.Create(number, keyword.Value);
                     }
                 }
