@@ -32,7 +32,7 @@ namespace QuickInfo
         public static readonly Unit Gallon = new Unit("gallon", "gallons");
         public static readonly Unit Quart = new Unit("quart", "quarts");
         public static readonly Unit Pint = new Unit("pint");
-        public static readonly Unit FluidOunce = new Unit("fl.oz.", "fl.oz");
+        public static readonly Unit FluidOunce = new Unit("fl.oz.", "fl.oz", "fluid ounce", "fluid ounces");
         public static readonly Unit Liter = new Unit("l", "liter", "liters", "litre", "litres");
         public static readonly Unit Milliliter = new Unit("ml", "milliliter", "milliliters", "millilitre", "millilitres");
         public static readonly Unit CubicMeter = new Unit("m³", "m3");

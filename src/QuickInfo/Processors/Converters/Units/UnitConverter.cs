@@ -212,6 +212,11 @@ namespace QuickInfo
                 }
             }
 
+            if (list.Count == 0)
+            {
+                return null;
+            }
+
             return list;
         }
 
