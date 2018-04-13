@@ -1,4 +1,3 @@
-using System;
 using QuickInfo;
 
 namespace Info
