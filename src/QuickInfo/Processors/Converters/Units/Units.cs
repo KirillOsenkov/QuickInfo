@@ -128,6 +128,8 @@ namespace QuickInfo
             new Conversion(Liter, CubicFoot, p => p / 28.3168466),
             new Conversion(CubicInch, Liter, p => p * 0.01638706),
             new Conversion(Liter, CubicInch, p => p / 0.01638706),
+            new Conversion(FluidOunce, Milliliter, p => p / 0.0338140227),
+            new Conversion(Milliliter, FluidOunce, p => p * 0.0338140227),
 
             new Conversion(SquareKilometer, SquareMeter, p => p * 1000000),
             new Conversion(SquareMeter, SquareKilometer, p => p / 1000000),
