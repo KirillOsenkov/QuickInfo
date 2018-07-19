@@ -15,7 +15,7 @@ namespace QuickInfo
         public static readonly Unit Millimeter = new Unit("mm", "millimeter", "millimetre", "millimeters", "millimetres");
         public static readonly Unit Inch = new Unit("in", "inch", "inches", "\"");
         public static readonly Unit Foot = new Unit("ft", "foot", "feet", "'");
-        public static readonly Unit Mile = new Unit("miles", "mile");
+        public static readonly Unit Mile = new Unit("miles", "mile", "mi");
         public static readonly Unit Yard = new Unit("yd", "yard", "yards");
         public static readonly Unit Meter = new Unit("m", "meter", "metre", "meters", "metres");
 
