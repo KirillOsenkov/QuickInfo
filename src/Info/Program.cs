@@ -1,3 +1,4 @@
+using System;
 using QuickInfo;
 
 namespace Info
@@ -24,8 +25,18 @@ namespace Info
             );
             var query = new Query(commandLine);
             var answers = engine.GetResults(query);
+            bool first = true;
             foreach (var answer in answers)
             {
+                if (first)
+                {
+                    first = false;
+                }
+                else
+                {
+                    Console.WriteLine();
+                }
+
                 ConsoleRenderer.RenderObject(answer.processorName, answer.resultNode);
             }
         }

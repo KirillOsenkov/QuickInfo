@@ -51,8 +51,18 @@ namespace Info
 
         private void RenderList(IEnumerable<object> list)
         {
+            bool first = true;
             foreach (var item in list)
             {
+                if (first)
+                {
+                    first = false;
+                }
+                else
+                {
+                    WriteLine("");
+                }
+
                 Render(item);
             }
         }
