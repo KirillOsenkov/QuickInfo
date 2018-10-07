@@ -174,6 +174,16 @@ namespace QuickInfo
             return Div(content, "class=\"" + className + "\"");
         }
 
+        public static string SpanStyle(string text, string style = null)
+        {
+            if (style == null)
+            {
+                return text;
+            }
+
+            return Tag(text, "span", "style=\"" + style + "\"");
+        }
+
         public static string SectionHeader(string title)
         {
             return DivClass(title, "sectionHeader");

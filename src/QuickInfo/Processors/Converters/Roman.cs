@@ -22,7 +22,7 @@ namespace QuickInfo
                 return ToRoman(integer.Int32);
             }
 
-            if (query.OriginalInput.Length > 0 && query.OriginalInput.Length < 14 && query.OriginalInput.All(c => digits.Contains(c)))
+            if (query.OriginalInput.Length > 0 && query.OriginalInput.Length < 17 && query.OriginalInput.All(c => digits.Contains(c)))
             {
                 return ParseRoman(query.OriginalInput).ToString();
             }

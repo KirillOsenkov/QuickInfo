@@ -107,14 +107,15 @@ namespace QuickInfo.Controllers
 
             if (results.Count() == 1)
             {
-                var html = HtmlRenderer.RenderObject(results.First().resultNode);
+                var first = results.First();
+                var html = HtmlRenderer.RenderObject(first.resultNode, first.processorName);
                 return html;
             }
 
             var sb = new StringBuilder();
             foreach (var result in results)
             {
-                var toAppend = HtmlRenderer.RenderObject(result.resultNode);
+                var toAppend = HtmlRenderer.RenderObject(result.resultNode, result.processorName);
 
                 toAppend = DivClass(toAppend, "singleAnswerSection");
 

@@ -9,24 +9,24 @@ namespace QuickInfo
 
         private static HtmlRenderer Instance { get; } = new HtmlRenderer();
 
-        public static string RenderObject(object result)
+        public static string RenderObject(object result, string processorName = null)
         {
-            return Instance.RenderInstance(result);
+            return Instance.RenderInstance(result, processorName);
         }
 
-        private string RenderInstance(object instance)
+        private string RenderInstance(object instance, string processorName = null)
         {
             lock (this)
             {
                 writer = new StringBuilderTextWriter();
-                Render(instance);
+                Render(instance, processorName);
                 var result = writer.ToString();
                 writer = null;
                 return result;
             }
         }
 
-        private void Render(object result)
+        private void Render(object result, string processorName = null)
         {
             switch (result)
             {
@@ -36,7 +36,7 @@ namespace QuickInfo
                 case string s:
                     using (Tag("div", tagClass: "mainAnswerText", multilineContent: false))
                     {
-                        Write(s);
+                        Write(WrapMainText(s, processorName));
                     }
 
                     break;
@@ -46,6 +46,16 @@ namespace QuickInfo
                 default:
                     throw new NotImplementedException("Can't render " + result);
             }
+        }
+
+        private string WrapMainText(string text, string processorName)
+        {
+            if (processorName == "Roman")
+            {
+                return HtmlFactory.SpanStyle(text, "font-family: Times New Roman,serif");
+            }
+
+            return text;
         }
 
         private void RenderNode(Node node)
