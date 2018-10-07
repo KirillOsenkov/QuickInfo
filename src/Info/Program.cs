@@ -16,6 +16,7 @@ namespace Info
                 typeof(Emoticons),
                 typeof(Factor),
                 typeof(Hex),
+                typeof(Roman),
                 typeof(HttpStatusCode),
                 typeof(QuickInfo.Math),
                 typeof(NumberList),
