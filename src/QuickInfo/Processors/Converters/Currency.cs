@@ -9,7 +9,7 @@ namespace QuickInfo
 {
     public static class Currency
     {
-        private const string Endpoint = @"https://api.fixer.io/latest";
+        private const string Endpoint = @"http://data.fixer.io/api/latest";
 
         private static readonly MemoryCacheOptions _options = new MemoryCacheOptions();
         private static readonly MemoryCache _cache = new MemoryCache(_options);
