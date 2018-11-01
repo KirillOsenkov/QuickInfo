@@ -31,11 +31,23 @@ namespace QuickInfo
 
         private static double GetRate(string from, string to)
         {
-            var endpoint = $"{Endpoint}?base={from.ToUpper()}&symbols={to.ToUpper()}";
+            from = from.ToUpper();
+            to = to.ToUpper();
+
+            var endpoint = $"{Endpoint}?symbols={from},{to}";
             var result = _httpClient.GetStringAsync(endpoint).Result;
             var rate = JsonConvert.DeserializeObject<CurrencyRate>(result);
+            var rates = rate.Rates;
 
-            return rate.Rates.FirstOrDefault().Value;
+            if (rates == null || rates.Count != 2)
+            {
+                return 0;
+            }
+
+            var first = rates[from];
+            var second = rates[to];
+
+            return second / first;
         }
     }
 
