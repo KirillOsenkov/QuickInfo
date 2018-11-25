@@ -7,6 +7,7 @@
 
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
+    <UserSecretsId>e3468143-b296-4d84-bf13-fbb967464d99</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
