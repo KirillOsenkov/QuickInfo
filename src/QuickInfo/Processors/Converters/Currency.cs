@@ -15,6 +15,8 @@ namespace QuickInfo
         private static readonly MemoryCache _cache = new MemoryCache(_options);
         private static readonly HttpClient _httpClient = new HttpClient();
 
+        public static string FixerIOAccessKey { get; set; }
+
         public static double Convert(string from, string to, double value)
         {
             var pair = new CurrencyPair(from, to);
@@ -34,7 +36,20 @@ namespace QuickInfo
             from = from.ToUpper();
             to = to.ToUpper();
 
-            var endpoint = $"{Endpoint}?symbols={from},{to}";
+            if (string.IsNullOrEmpty(FixerIOAccessKey))
+            {
+                FixerIOAccessKey =
+                    Environment.GetEnvironmentVariable("FixerIOAccessKey") ??
+                    Environment.GetEnvironmentVariable("APPSETTING_FixerIOAccessKey");
+            }
+
+            if (string.IsNullOrEmpty(FixerIOAccessKey))
+            {
+                // can't call the fixer.io API without the access key anyway
+                return 0;
+            }
+
+            var endpoint = $"{Endpoint}?access_key={FixerIOAccessKey}&symbols={from},{to}";
             var result = _httpClient.GetStringAsync(endpoint).Result;
             var rate = JsonConvert.DeserializeObject<CurrencyRate>(result);
             var rates = rate.Rates;
