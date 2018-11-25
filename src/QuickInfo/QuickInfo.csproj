@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -19,10 +19,8 @@
     <Authors>Kirill Osenkov</Authors>
     <Owners>Kirill Osenkov</Owners>
     <Copyright>© Kirill Osenkov. All rights reserved.</Copyright>
-    <LicenseUrl>https://github.com/KirillOsenkov/QuickInfo/blob/master/LICENSE</LicenseUrl>
     <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
     <Description>Quick Info library of instant answers</Description>
-    <PackageLicenseUrl>https://github.com/KirillOsenkov/QuickInfo/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/KirillOsenkov/QuickInfo</PackageProjectUrl>
     <RepositoryUrl>https://github.com/KirillOsenkov/QuickInfo</RepositoryUrl>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
