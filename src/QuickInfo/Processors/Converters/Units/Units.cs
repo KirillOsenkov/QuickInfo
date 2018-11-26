@@ -71,6 +71,13 @@ namespace QuickInfo
         public static readonly Unit ILS = new Unit("ILS", "Israeli new shekel", "shekel", "₪");
         public static readonly Unit CAD = new Unit("CAD", "Canadian Dollar");
         public static readonly Unit CHF = new Unit("CHF", "Swiss Franc");
+        public static readonly Unit RON = new Unit("RON", "Romanian Leu");
+        public static readonly Unit AUD = new Unit("AUD", "Australian Dollar");
+        public static readonly Unit PLN = new Unit("PLN", "Polish Zloty");
+        public static readonly Unit HUF = new Unit("HUF", "Hungarian Forint");
+        public static readonly Unit JPY = new Unit("JPY", "Japanese Yen");
+        public static readonly Unit CNY = new Unit("CNY", "Chinese Yuan");
+        public static readonly Unit GBP = new Unit("GBP", "Pound Sterling");
 
         public static readonly Conversion[] Conversions =
         {
@@ -184,6 +191,34 @@ namespace QuickInfo
             new Conversion(CAD, EUR, p => Currency.Convert("CAD", "EUR", p), "n2"),
             new Conversion(EUR, CHF, p => Currency.Convert("EUR", "CHF", p), "n2"),
             new Conversion(CHF, EUR, p => Currency.Convert("CHF", "EUR", p), "n2"),
+            new Conversion(RON, EUR, p => Currency.Convert("RON", "EUR", p), "n2"),
+            new Conversion(EUR, RON, p => Currency.Convert("EUR", "RON", p), "n2"),
+            new Conversion(USD, RON, p => Currency.Convert("USD", "RON", p), "n2"),
+            new Conversion(RON, USD, p => Currency.Convert("RON", "USD", p), "n2"),
+            new Conversion(AUD, EUR, p => Currency.Convert("AUD", "EUR", p), "n2"),
+            new Conversion(EUR, AUD, p => Currency.Convert("EUR", "AUD", p), "n2"),
+            new Conversion(USD, AUD, p => Currency.Convert("USD", "AUD", p), "n2"),
+            new Conversion(AUD, USD, p => Currency.Convert("AUD", "USD", p), "n2"),
+            new Conversion(PLN, EUR, p => Currency.Convert("PLN", "EUR", p), "n2"),
+            new Conversion(EUR, PLN, p => Currency.Convert("EUR", "PLN", p), "n2"),
+            new Conversion(USD, PLN, p => Currency.Convert("USD", "PLN", p), "n2"),
+            new Conversion(PLN, USD, p => Currency.Convert("PLN", "USD", p), "n2"),
+            new Conversion(HUF, EUR, p => Currency.Convert("HUF", "EUR", p), "n2"),
+            new Conversion(EUR, HUF, p => Currency.Convert("EUR", "HUF", p), "n2"),
+            new Conversion(USD, HUF, p => Currency.Convert("USD", "HUF", p), "n2"),
+            new Conversion(HUF, USD, p => Currency.Convert("HUF", "USD", p), "n2"),
+            new Conversion(JPY, EUR, p => Currency.Convert("JPY", "EUR", p), "n2"),
+            new Conversion(EUR, JPY, p => Currency.Convert("EUR", "JPY", p), "n2"),
+            new Conversion(USD, JPY, p => Currency.Convert("USD", "JPY", p), "n2"),
+            new Conversion(JPY, USD, p => Currency.Convert("JPY", "USD", p), "n2"),
+            new Conversion(CNY, EUR, p => Currency.Convert("CNY", "EUR", p), "n2"),
+            new Conversion(EUR, CNY, p => Currency.Convert("EUR", "CNY", p), "n2"),
+            new Conversion(USD, CNY, p => Currency.Convert("USD", "CNY", p), "n2"),
+            new Conversion(CNY, USD, p => Currency.Convert("CNY", "USD", p), "n2"),
+            new Conversion(GBP, EUR, p => Currency.Convert("GBP", "EUR", p), "n2"),
+            new Conversion(EUR, GBP, p => Currency.Convert("EUR", "GBP", p), "n2"),
+            new Conversion(USD, GBP, p => Currency.Convert("USD", "GBP", p), "n2"),
+            new Conversion(GBP, USD, p => Currency.Convert("GBP", "USD", p), "n2"),
         };
 
         private static Unit[] allUnits = null;

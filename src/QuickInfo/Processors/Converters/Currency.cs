@@ -9,13 +9,11 @@ namespace QuickInfo
 {
     public static class Currency
     {
-        private const string Endpoint = @"http://data.fixer.io/api/latest";
+        private const string Endpoint = @"https://api.exchangeratesapi.io/latest";
 
         private static readonly MemoryCacheOptions _options = new MemoryCacheOptions();
         private static readonly MemoryCache _cache = new MemoryCache(_options);
         private static readonly HttpClient _httpClient = new HttpClient();
-
-        public static string FixerIOAccessKey { get; set; }
 
         public static double Convert(string from, string to, double value)
         {
@@ -36,33 +34,19 @@ namespace QuickInfo
             from = from.ToUpper();
             to = to.ToUpper();
 
-            if (string.IsNullOrEmpty(FixerIOAccessKey))
-            {
-                FixerIOAccessKey =
-                    Environment.GetEnvironmentVariable("FixerIOAccessKey") ??
-                    Environment.GetEnvironmentVariable("APPSETTING_FixerIOAccessKey");
-            }
-
-            if (string.IsNullOrEmpty(FixerIOAccessKey))
-            {
-                // can't call the fixer.io API without the access key anyway
-                return 0;
-            }
-
-            var endpoint = $"{Endpoint}?access_key={FixerIOAccessKey}&symbols={from},{to}";
+            var endpoint = $"{Endpoint}?base={from}&symbols={to}";
             var result = _httpClient.GetStringAsync(endpoint).Result;
             var rate = JsonConvert.DeserializeObject<CurrencyRate>(result);
             var rates = rate.Rates;
 
-            if (rates == null || rates.Count != 2)
+            if (rates == null || rates.Count != 1)
             {
                 return 0;
             }
 
-            var first = rates[from];
-            var second = rates[to];
+            var rateValue = rates[to];
 
-            return second / first;
+            return rateValue;
         }
     }
 
