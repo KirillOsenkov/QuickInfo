@@ -79,7 +79,7 @@ namespace QuickInfo
 
             var hashPrefix = query.TryGetStructure<Prefix>();
             if (hashPrefix != null &&
-                hashPrefix.PrefixString == "#")
+                (hashPrefix.PrefixString == "#" || hashPrefix.PrefixString == "0x"))
             {
                 var remainderString = hashPrefix.RemainderString;
                 if (remainderString.Length == 3 || remainderString.Length == 6 || remainderString.Length == 8)
