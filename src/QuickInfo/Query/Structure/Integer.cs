@@ -1,3 +1,4 @@
+using System;
 using System.Numerics;
 
 namespace QuickInfo
@@ -37,6 +38,23 @@ namespace QuickInfo
                 var hexString = Int32.ToString();
                 hexString.TryParseHex(out int hexNumber);
                 return hexNumber;
+            }
+        }
+
+        public bool TryGetInt32(out int int32)
+        {
+            try
+            {
+                checked
+                {
+                    int32 = (int)Value;
+                    return true;
+                }
+            }
+            catch
+            {
+                int32 = 0;
+                return false;
             }
         }
 

@@ -17,9 +17,9 @@ namespace QuickInfo
             }
 
             var integer = query.TryGetStructure<Integer>();
-            if (integer != null && integer.Int32 > 0 && integer.Int32 < 5000)
+            if (integer != null && integer.TryGetInt32(out int int32) && int32 > 0 && int32 < 5000)
             {
-                return ToRoman(integer.Int32);
+                return ToRoman(int32);
             }
 
             if (query.OriginalInput.Length > 0 && query.OriginalInput.Length < 17 && query.OriginalInput.All(c => digits.Contains(c)))
