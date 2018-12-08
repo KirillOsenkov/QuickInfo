@@ -66,11 +66,14 @@ namespace QuickInfo
             if (value.Kind == IntegerKind.Hexadecimal)
             {
                 string hex = bigInteger.ToString("X");
-                yield return FixedParagraph($"0x{hex} = {bigInteger}");
-
-                if (bigInteger < 0)
+                if (value.OriginalText != null && hex.Length == value.OriginalText.Length)
                 {
-                    string positiveHex = "0" + hex;
+                    yield return FixedParagraph($"0x{hex} = {bigInteger}");
+                }
+
+                if (bigInteger < 0 && value.OriginalText != null)
+                {
+                    string positiveHex = "0" + value.OriginalText.ToUpperInvariant();
                     if (StringUtilities.TryParseHex(positiveHex, out BigInteger positive))
                     {
                         yield return FixedParagraph($"0x{positiveHex} = {positive}");

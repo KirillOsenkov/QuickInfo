@@ -15,7 +15,10 @@ namespace QuickInfo
             }
 
             var integer = query.TryGetStructure<Integer>();
-            if (integer != null && integer.Value > -10000000 && integer.Value < 10000000)
+            if (integer != null &&
+                integer.Kind != IntegerKind.Hexadecimal &&
+                integer.Value > 0 &&
+                integer.Value < 100000000)
             {
                 return GetResult((int)integer.Value);
             }

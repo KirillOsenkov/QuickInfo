@@ -14,6 +14,7 @@ namespace QuickInfo
         public BigInteger Value { get; }
         public IntegerKind Kind { get; private set; }
         public int Int32 => (int)Value;
+        public string OriginalText { get; set; }
 
         public Integer()
         {
@@ -73,14 +74,25 @@ namespace QuickInfo
                 return new Integer(result);
             }
 
-            if (trimmed.TryParseHex(out result) ||
-                (trimmed.Length > 2 &&
-                 trimmed.StartsWith("0x")))
+            if (trimmed.TryParseHex(out result))
+            {
+                return new Integer(result)
+                {
+                    Kind = IntegerKind.Hexadecimal,
+                    OriginalText = trimmed
+                };
+            }
+
+            if (trimmed.Length > 2 && trimmed.StartsWith("0x"))
             {
                 trimmed = trimmed.Substring(2);
                 if (trimmed.TryParseHex(out result))
                 {
-                    return new Integer(result) { Kind = IntegerKind.Hexadecimal };
+                    return new Integer(result)
+                    {
+                        Kind = IntegerKind.Hexadecimal,
+                        OriginalText = trimmed
+                    };
                 }
             }
 

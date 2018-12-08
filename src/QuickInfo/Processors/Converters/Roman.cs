@@ -17,7 +17,11 @@ namespace QuickInfo
             }
 
             var integer = query.TryGetStructure<Integer>();
-            if (integer != null && integer.TryGetInt32(out int int32) && int32 > 0 && int32 < 5000)
+            if (integer != null &&
+                integer.TryGetInt32(out int int32) &&
+                integer.Kind != IntegerKind.Hexadecimal &&
+                int32 > 0 &&
+                int32 < 5000)
             {
                 return ToRoman(int32);
             }
