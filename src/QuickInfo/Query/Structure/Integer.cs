@@ -75,10 +75,13 @@ namespace QuickInfo
 
             if (trimmed.TryParseHex(out result) ||
                 (trimmed.Length > 2 &&
-                 trimmed.StartsWith("0x") &&
-                 trimmed.Substring(2).TryParseHex(out result)))
+                 trimmed.StartsWith("0x")))
             {
-                return new Integer(result) { Kind = IntegerKind.Hexadecimal };
+                trimmed = trimmed.Substring(2);
+                if (trimmed.TryParseHex(out result))
+                {
+                    return new Integer(result) { Kind = IntegerKind.Hexadecimal };
+                }
             }
 
             return null;

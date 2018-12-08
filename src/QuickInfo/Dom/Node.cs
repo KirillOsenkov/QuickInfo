@@ -83,6 +83,11 @@ namespace QuickInfo
             };
         }
 
+        public static Node[] Answers(params string[] lines)
+        {
+            return lines.Select(Answer).ToArray();
+        }
+
         public static object FixedParagraph(string text)
         {
             var node = Fixed(text);

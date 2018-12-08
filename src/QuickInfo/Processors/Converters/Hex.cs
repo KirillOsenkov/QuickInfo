@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Numerics;
 using static QuickInfo.NodeFactory;
 
@@ -19,7 +20,7 @@ namespace QuickInfo
             var integer = query.TryGetStructure<Integer>();
             if (integer != null)
             {
-                return GetResult(integer.Value);
+                return GetResult(integer);
             }
 
             var separatedList = query.TryGetStructure<SeparatedList>();
@@ -33,14 +34,14 @@ namespace QuickInfo
                     {
                         if (keyword1 == "hex" && separatedList.Count == 2)
                         {
-                            return GetResult(number.Value);
+                            return GetResult(number);
                         }
 
                         if (separatedList.Count == 3 &&
                             (keyword1 == "in" || keyword1 == "to") &&
                             separatedList.TryGetStructure<Keyword>(2) == "hex")
                         {
-                            return GetResult(number.Value);
+                            return GetResult(number);
                         }
                     }
                 }
@@ -50,7 +51,7 @@ namespace QuickInfo
                     var keyword1 = separatedList.TryGetStructure<Keyword>(0);
                     if (number != null && keyword1 != null && keyword1 == "hex" && separatedList.Count == 2)
                     {
-                        return GetResult(number.Value);
+                        return GetResult(number);
                     }
                 }
             }
@@ -58,9 +59,28 @@ namespace QuickInfo
             return null;
         }
 
-        private string GetResult(BigInteger value)
+        private IEnumerable<object> GetResult(Integer value)
         {
-            return $"{value} = 0x{value.ToString("X")}";
+            BigInteger bigInteger = value.Value;
+
+            if (value.Kind == IntegerKind.Hexadecimal)
+            {
+                string hex = bigInteger.ToString("X");
+                yield return FixedParagraph($"0x{hex} = {bigInteger}");
+
+                if (bigInteger < 0)
+                {
+                    string positiveHex = "0" + hex;
+                    if (StringUtilities.TryParseHex(positiveHex, out BigInteger positive))
+                    {
+                        yield return FixedParagraph($"0x{positiveHex} = {positive}");
+                    }
+                }
+            }
+            else
+            {
+                yield return FixedParagraph($"{bigInteger} = 0x{bigInteger.ToString("X")}");
+            }
         }
     }
 }

@@ -80,13 +80,13 @@ namespace QuickInfo
 
         public static bool TryParseHex(this string s, out int result)
         {
-            bool success = int.TryParse("0" + s, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out result);
+            bool success = int.TryParse(s, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out result);
             return success;
         }
 
         public static bool TryParseHex(this string s, out BigInteger result)
         {
-            bool success = BigInteger.TryParse("0" + s, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out result);
+            bool success = BigInteger.TryParse(s, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out result);
             return success;
         }
 
