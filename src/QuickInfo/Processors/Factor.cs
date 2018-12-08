@@ -7,6 +7,8 @@ namespace QuickInfo
 {
     public class Factor : IProcessor
     {
+        private const int Max = 100_000_000;
+
         public object GetResult(Query query)
         {
             if (query.IsHelp)
@@ -18,7 +20,7 @@ namespace QuickInfo
             if (integer != null &&
                 integer.Kind != IntegerKind.Hexadecimal &&
                 integer.Value > 0 &&
-                integer.Value < 100000000)
+                integer.Value < Max)
             {
                 return GetResult((int)integer.Value);
             }
@@ -33,7 +35,7 @@ namespace QuickInfo
                 number = -number;
             }
 
-            if (number < 4 || number > 10000000)
+            if (number < 4 || number > Max)
             {
                 return null;
             }
