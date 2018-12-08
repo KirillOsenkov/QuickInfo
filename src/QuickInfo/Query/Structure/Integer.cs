@@ -71,7 +71,10 @@ namespace QuickInfo
             BigInteger result = 0;
             if (BigInteger.TryParse(trimmed, out result))
             {
-                return new Integer(result);
+                return new Integer(result)
+                {
+                    OriginalText = trimmed
+                };
             }
 
             if (trimmed.TryParseHex(out result))

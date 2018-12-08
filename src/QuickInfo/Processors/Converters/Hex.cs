@@ -66,7 +66,8 @@ namespace QuickInfo
             if (value.Kind == IntegerKind.Hexadecimal)
             {
                 string hex = bigInteger.ToString("X");
-                if (value.OriginalText != null && hex.Length == value.OriginalText.Length)
+                if (value.OriginalText != null &&
+                    hex.TrimStart('0').ToUpperInvariant() == value.OriginalText.TrimStart('0').ToUpperInvariant())
                 {
                     yield return FixedParagraph($"0x{hex} = {bigInteger}");
                 }
