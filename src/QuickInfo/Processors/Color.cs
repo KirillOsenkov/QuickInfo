@@ -375,7 +375,7 @@ namespace QuickInfo
             { 14524637, "Plum" },
             { 15130800, "PowderBlue" },
             { 8388736, "Purple" },
-            { 6697881, "RebeccaPurple" },
+            { 10040166, "RebeccaPurple" },
             { 255, "Red" },
             { 9408444, "RosyBrown" },
             { 14772545, "RoyalBlue" },
