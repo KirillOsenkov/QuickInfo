@@ -5,6 +5,8 @@ Extensible set of little one-off features that Google or Bing are missing, such 
 
 ![screenshot](https://github.com/KirillOsenkov/QuickInfo/raw/master/docs/Demo.gif)
 
+Demo: [http://quickinfo.io/?demo](http://quickinfo.io/?demo)
+
 ## Motivation
 
 There is a class of search engine queries that search engines aren't great at without dedicated support. These queries have exactly one well-defined answer that is computable or readily available. Search engines by default just show a list of (often poor quality and full of ads) websites instead of showing the answer directly as you type.
