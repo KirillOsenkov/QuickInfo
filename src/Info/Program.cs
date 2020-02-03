@@ -21,6 +21,7 @@ namespace Info
                 typeof(QuickInfo.Math),
                 typeof(NumberList),
                 typeof(RandomGuid),
+                typeof(Unicode),
                 typeof(UnitConverter),
                 typeof(UrlDecode)
             );
