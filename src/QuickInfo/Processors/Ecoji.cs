@@ -18,7 +18,9 @@ namespace QuickInfo
             if (query.IsHelp)
             {
                 return HelpTable(
-                    ("ecoji abc", Encode("abc"))
+                    ("ecoji Hello", Encode("Hello")),
+                    ("decode 🏯🔩🚗🌷", "Hello"),
+                    ("decoji 🏯🔩🚗🌷", "Hello")
                 );
             }
 
