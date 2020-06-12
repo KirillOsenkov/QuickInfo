@@ -7,11 +7,12 @@ using static QuickInfo.HtmlFactory;
 
 namespace QuickInfo.Controllers
 {
+    [ApiController]
     [Route("api/[controller]")]
-    public class AnswersController : Controller
+    public class AnswersController : ControllerBase
     {
         [HttpGet]
-        public string Get(string query)
+        public string Get([FromQuery] string query)
         {
             string result = null;
             try
@@ -40,7 +41,7 @@ namespace QuickInfo.Controllers
             typeof(Engine).Assembly,
             typeof(Ip).Assembly);
 
-        public string GetResponse(Engine engine, string input, HttpRequest request = null)
+        private string GetResponse(Engine engine, string input, HttpRequest request = null)
         {
             if (string.IsNullOrEmpty(input))
             {
@@ -93,7 +94,7 @@ namespace QuickInfo.Controllers
             }
         }
 
-        public string GetSingleResponseWorker(Engine engine, string input, HttpRequest request = null)
+        private string GetSingleResponseWorker(Engine engine, string input, HttpRequest request = null)
         {
             var query = new WebQuery(input);
             query.Request = request;

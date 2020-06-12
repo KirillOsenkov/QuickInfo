@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <DefaultNamespace>QuickInfo</DefaultNamespace>
   </PropertyGroup>
 
@@ -15,8 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Ecoji" Version="1.0.0" />
     <PackageReference Include="GuiLabs.MathParser" Version="1.0.9" />
-    <PackageReference Include="Microsoft.AspNetCore.All" />
     <PackageReference Include="UnicodeInformation" Version="2.4.0" />
   </ItemGroup>
 

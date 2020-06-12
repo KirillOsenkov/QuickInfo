@@ -43,6 +43,8 @@ namespace QuickInfo
                 case IEnumerable<object> list:
                     RenderList(list);
                     break;
+                case null:
+                    break;
                 default:
                     throw new NotImplementedException("Can't render " + result);
             }
