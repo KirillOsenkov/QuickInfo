@@ -15,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Ecoji" Version="1.0.0" />
     <PackageReference Include="GuiLabs.MathParser" Version="1.0.9" />
     <PackageReference Include="UnicodeInformation" Version="2.4.0" />
   </ItemGroup>

@@ -8,11 +8,6 @@ namespace QuickInfo
 {
     public sealed class EcojiEncoder : IProcessor
     {
-        private readonly HashSet<string> triggers = new HashSet<string>
-        {
-            "ecoji"
-        };
-
         public object GetResult(Query query)
         {
             if (query.IsHelp)
@@ -24,7 +19,7 @@ namespace QuickInfo
                 );
             }
 
-            var input = query.OriginalInput.Trim();
+            var input = query.OriginalInput.TrimStart();
             if (input.StartsWith("ecoji "))
             {
                 var text = input.Substring(6);
@@ -55,7 +50,7 @@ namespace QuickInfo
         {
             try
             {
-                return Ecoji.Decode(text, Encoding.UTF8);
+                return Ecoji.DecodeUtf8(text);
             }
             catch
             {
