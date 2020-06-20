@@ -9,10 +9,10 @@
   <ItemGroup>
     <PackageReference Include="Ecoji" Version="1.2.1" />
     <PackageReference Include="GuiLabs.MathParser" Version="1.0.9" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="3.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="3.1.5" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.5" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="UnicodeInformation" Version="2.4.0" />
+    <PackageReference Include="UnicodeInformation" Version="2.5.0" />
   </ItemGroup>
 
   <PropertyGroup>

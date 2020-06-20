@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <PackageReference Include="GuiLabs.MathParser" Version="1.0.9" />
-    <PackageReference Include="UnicodeInformation" Version="2.4.0" />
+    <PackageReference Include="UnicodeInformation" Version="2.5.0" />
   </ItemGroup>
 
   <ItemGroup>
