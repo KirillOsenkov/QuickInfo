@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -11,26 +10,36 @@ namespace QuickInfo
     {
         private const string Endpoint = @"https://api.exchangeratesapi.io/latest";
 
-        private static readonly MemoryCacheOptions _options = new MemoryCacheOptions();
-        private static readonly MemoryCache _cache = new MemoryCache(_options);
         private static readonly HttpClient _httpClient = new HttpClient();
+
+        private static readonly Dictionary<string, double> currencyCache = new Dictionary<string, double>();
+        private static System.DateTime currencyCacheCreated = System.DateTime.UtcNow;
 
         public static double Convert(string from, string to, double value)
         {
-            var pair = new CurrencyPair(from, to);
-            var rate = _cache.GetOrCreate(
-                pair,
-                e =>
-                {
-                    e.SetAbsoluteExpiration(TimeSpan.FromDays(1));
-                    return GetRate(from, to);
-                });
-
+            var rate = GetRate(from, to);
             return rate * value;
         }
 
         private static double GetRate(string from, string to)
         {
+            string cacheKey = from + to;
+            double rateValue;
+
+            lock (currencyCache)
+            {
+                if ((System.DateTime.UtcNow - currencyCacheCreated) > TimeSpan.FromDays(1))
+                {
+                    currencyCache.Clear();
+                    currencyCacheCreated = System.DateTime.UtcNow;
+                }
+
+                if (currencyCache.TryGetValue(cacheKey, out rateValue))
+                {
+                    return rateValue;
+                }
+            }
+
             from = from.ToUpper();
             to = to.ToUpper();
 
@@ -44,7 +53,12 @@ namespace QuickInfo
                 return 0;
             }
 
-            var rateValue = rates[to];
+            rateValue = rates[to];
+
+            lock (currencyCache)
+            {
+                currencyCache[cacheKey] = rateValue;
+            }
 
             return rateValue;
         }
