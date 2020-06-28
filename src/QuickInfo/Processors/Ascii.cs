@@ -34,19 +34,19 @@ namespace QuickInfo
             {
                 headerRow.Add(new Node
                 {
-                    Kind = "ColumnHeader",
+                    Kind = NodeKinds.ColumnHeader,
                     Text = "code",
-                    Style = "AsciiColumnHeaderCode"
+                    Style = NodeStyles.AsciiColumnHeaderCode
                 });
                 headerRow.Add(new Node
                 {
-                    Kind = "ColumnHeader",
+                    Kind = NodeKinds.ColumnHeader,
                     Text = "hex",
-                    Style = "AsciiColumnHeaderHex"
+                    Style = NodeStyles.AsciiColumnHeaderHex
                 });
                 headerRow.Add(new Node
                 {
-                    Kind = "ColumnHeader",
+                    Kind = NodeKinds.ColumnHeader,
                     Text = "char"
                 });
             }
@@ -54,7 +54,7 @@ namespace QuickInfo
             var rows = new List<object>();
             rows.Add(new Node
             {
-                Kind = "Row",
+                Kind = NodeKinds.Row,
                 List = headerRow
             });
 
@@ -69,37 +69,37 @@ namespace QuickInfo
                     int character = i + column * columnLength;
                     row.Add(new Node
                     {
-                        Kind = "Cell",
-                        Style = "AsciiColumnCode",
+                        Kind = NodeKinds.Cell,
+                        Style = NodeStyles.AsciiColumnCode,
                         Text = character.ToString()
                     });
                     row.Add(new Node
                     {
-                        Kind = "Cell",
-                        Style = "AsciiColumnHex",
+                        Kind = NodeKinds.Cell,
+                        Style = NodeStyles.AsciiColumnHex,
                         Text = character.ToHex()
                     });
 
                     var text = encoding.GetString(new byte[] { (byte)character });
                     row.Add(new Node
                     {
-                        Kind = "Cell",
+                        Kind = NodeKinds.Cell,
                         Text = text,
-                        Style = "AsciiColumnChar"
+                        Style = NodeStyles.AsciiColumnChar
                     });
                 }
 
                 rows.Add(new Node
                 {
-                    Kind = "Row",
+                    Kind = NodeKinds.Row,
                     List = row
                 });
             }
 
             return new Node
             {
-                Kind = "Table",
-                Style = "Ascii",
+                Kind = NodeKinds.Table,
+                Style = NodeStyles.Ascii,
                 List = rows
             };
         }

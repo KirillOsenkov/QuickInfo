@@ -107,7 +107,7 @@ namespace QuickInfo
         {
             using (SearchLink(node.SearchLink, multilineContent: false))
             {
-                if (node.Style == "ColorSwatchSmall")
+                if (node.Style == NodeStyles.ColorSwatchSmall)
                 {
                     using (Tag("div", tagStyle: $"background:{node.Text};width:60px;height:16px", multilineContent: false))
                     {
@@ -123,7 +123,7 @@ namespace QuickInfo
         {
             var text = node.Text;
 
-            if (node.Kind == "Cell" && node.Style == "Color")
+            if (node.Kind == NodeKinds.Cell && node.Style == NodeStyles.Color)
             {
                 WriteLine();
 
@@ -161,32 +161,32 @@ namespace QuickInfo
 
         public string GetTag(Node node)
         {
-            if (node.Kind == "Row")
+            if (node.Kind == NodeKinds.Row)
             {
                 return "tr";
             }
-            else if (node.Kind == "Cell")
+            else if (node.Kind == NodeKinds.Cell)
             {
                 return "td";
             }
-            else if (node.Kind == "Table")
+            else if (node.Kind == NodeKinds.Table)
             {
                 return "table";
             }
-            else if (node.Kind == "ColumnHeader")
+            else if (node.Kind == NodeKinds.ColumnHeader)
             {
                 return "th";
             }
-            else if (node.Style == "ColorSwatchLarge" ||
-                     node.Style == "ColorSwatchSmall")
+            else if (node.Style == NodeStyles.ColorSwatchLarge ||
+                     node.Style == NodeStyles.ColorSwatchSmall)
             {
                 return "div";
             }
-            else if (node.Kind == "Paragraph")
+            else if (node.Kind == NodeKinds.Paragraph)
             {
                 return "div";
             }
-            else if (node.Kind == "Hyperlink")
+            else if (node.Kind == NodeKinds.Hyperlink)
             {
                 return "a";
             }
@@ -196,27 +196,27 @@ namespace QuickInfo
 
         public string GetClass(Node node)
         {
-            if (node.Style == "SectionHeader")
+            if (node.Style == NodeStyles.SectionHeader)
             {
                 return "sectionHeader";
             }
-            else if (node.Style == "Fixed")
+            else if (node.Style == NodeStyles.Fixed)
             {
                 return "fixed";
             }
-            else if (node.Style == "ColorSwatchName")
+            else if (node.Style == NodeStyles.ColorSwatchName)
             {
                 return "swatchName";
             }
-            else if (node.Style == "MainAnswer")
+            else if (node.Style == NodeStyles.MainAnswer)
             {
                 return "mainAnswerText";
             }
-            else if (node.Style == "Label")
+            else if (node.Style == NodeStyles.Label)
             {
                 return "gray";
             }
-            else if (node.Style == "CharSample")
+            else if (node.Style == NodeStyles.CharSample)
             {
                 return "charSample";
             }
@@ -226,31 +226,31 @@ namespace QuickInfo
 
         public string GetStyle(Node node)
         {
-            if (node.Style == "Color" && node.Kind == "Table")
+            if (node.Style == NodeStyles.Color && node.Kind == NodeKinds.Table)
             {
                 return "border-spacing: 10px";
             }
-            else if (node.Style == "ColorSwatchLarge")
+            else if (node.Style == NodeStyles.ColorSwatchLarge)
             {
                 return $"background:{node.Text};max-width:300px;height:50px";
             }
-            else if (node.Style == "Ascii" && node.Kind == "Table")
+            else if (node.Style == NodeStyles.Ascii && node.Kind == NodeKinds.Table)
             {
                 return "font-size: 12pt";
             }
-            else if (node.Style == "AsciiColumnHeaderCode" || node.Style == "AsciiColumnCode")
+            else if (node.Style == NodeStyles.AsciiColumnHeaderCode || node.Style == NodeStyles.AsciiColumnCode)
             {
                 return "color: lightseagreen";
             }
-            else if (node.Style == "AsciiColumnHeaderHex" || node.Style == "AsciiColumnHex")
+            else if (node.Style == NodeStyles.AsciiColumnHeaderHex || node.Style == NodeStyles.AsciiColumnHex)
             {
                 return "color: lightgray";
             }
-            else if (node.Style == "AsciiColumnChar")
+            else if (node.Style == NodeStyles.AsciiColumnChar)
             {
                 return "column-width: 60px";
             }
-            else if (node.Style == "Fixed")
+            else if (node.Style == NodeStyles.Fixed)
             {
                 return "font-size:larger";
             }
@@ -260,7 +260,7 @@ namespace QuickInfo
 
         public string GetText(Node node)
         {
-            if (node.Style == "ColorSwatchLarge" || node.Style == "ColorSwatchSmall")
+            if (node.Style == NodeStyles.ColorSwatchLarge || node.Style == NodeStyles.ColorSwatchSmall)
             {
                 return null;
             }

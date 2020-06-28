@@ -113,15 +113,15 @@ namespace QuickInfo
 
             return new Node
             {
-                Kind = "Table",
-                Style = "Color",
+                Kind = NodeKinds.Table,
+                Style = NodeStyles.Color,
                 List = swatches.Select(row => new Node
                 {
-                    Kind = "Row",
+                    Kind = NodeKinds.Row,
                     List = row.Select(swatch => new Node
                     {
-                        Kind = "Cell",
-                        Style = "Color",
+                        Kind = NodeKinds.Cell,
+                        Style = NodeStyles.Color,
                         Text = swatch
                     })
                 })
@@ -168,14 +168,14 @@ namespace QuickInfo
             result.Add(new Node
             {
                 Text = hexColor,
-                Style = "ColorSwatchLarge"
+                Style = NodeStyles.ColorSwatchLarge
             });
 
             string knownColor = null;
             if (knownColorNames.TryGetValue(r + g * 256 + b * 65536, out knownColor))
             {
                 var swatchName = Paragraph(knownColor);
-                swatchName.Style = "ColorSwatchName";
+                swatchName.Style = NodeStyles.ColorSwatchName;
                 result.Add(swatchName);
             }
 
@@ -185,30 +185,30 @@ namespace QuickInfo
 
             var table = new Node
             {
-                Kind = "Table",
+                Kind = NodeKinds.Table,
                 List = nearestColors.Where(n => knownColor != n).Select(nearestColor =>
                 {
                     var hex = "#" + knownColors[nearestColor];
                     return new Node
                     {
-                        Kind = "Row",
+                        Kind = NodeKinds.Row,
                         List = new Node[]
                         {
                             new Node
                             {
-                                Kind = "Cell",
+                                Kind = NodeKinds.Cell,
                                 Text = nearestColor
                             },
                             new Node
                             {
-                                Kind = "Cell",
+                                Kind = NodeKinds.Cell,
                                 Text = hex,
                                 SearchLink = hex
                             },
                             new Node
                             {
-                                Kind = "Cell",
-                                Style = "ColorSwatchSmall",
+                                Kind = NodeKinds.Cell,
+                                Style = NodeStyles.ColorSwatchSmall,
                                 Text = hex,
                                 SearchLink = nearestColor
                             }

@@ -14,6 +14,7 @@ namespace QuickInfo
 
         private Dictionary<int, string> descriptions = new Dictionary<int, string>();
         private (string, int)[] index;
+        private UnicodeBlock[] blocks;
 
         public Unicode()
         {
@@ -47,6 +48,11 @@ namespace QuickInfo
             if (input.Length == 2 && char.IsHighSurrogate(input[0]) && char.IsLowSurrogate(input[1]))
             {
                 return GetResult(char.ConvertToUtf32(input[0], input[1]));
+            }
+
+            if (string.Equals(input, "Unicode", StringComparison.OrdinalIgnoreCase))
+            {
+                return blocks.Select(b => SearchLink(b.Name)).ToArray();
             }
 
             var prefix = query.TryGetStructure<Prefix>();
@@ -115,7 +121,21 @@ namespace QuickInfo
                 return characters;
             }
 
+            foreach (var block in blocks)
+            {
+                if (block.Name.IndexOf(input, StringComparison.OrdinalIgnoreCase) != -1)
+                {
+                    return ListBlock(block);
+                }
+            }
+
             return null;
+        }
+
+        private object ListBlock(UnicodeBlock block)
+        {
+            var characters = block.CodePointRange.Select(i => GetResult(i)).ToArray();
+            return characters;
         }
 
         private object LookupUnicodeCharacter(string input)
@@ -158,7 +178,7 @@ namespace QuickInfo
 
         private void BuildUnicodeList()
         {
-            var blocks = UnicodeInfo.GetBlocks();
+            blocks = UnicodeInfo.GetBlocks();
 
             foreach (var block in blocks)
             {
@@ -224,7 +244,7 @@ namespace QuickInfo
             {
                 text = char.ConvertFromUtf32(value);
                 var answer = Answer(text);
-                answer.Style = "CharSample";
+                answer.Style = NodeStyles.CharSample;
                 result.Add(answer);
             }
 
@@ -235,11 +255,12 @@ namespace QuickInfo
 
             var info = UnicodeInfo.GetCharInfo(value);
 
+            var blockLink = info.Block;
             var pairs = new List<(string, string)>
             {
                 ("Code point:", $"{value} (U+{value.ToHex()})"),
                 ("Category:", CharUnicodeInfo.GetUnicodeCategory(ch).ToString()),
-                ("Block:", info.Block),
+                ("Block:", blockLink),
                 ("Escape:", GetEscapeString(value))
             };
 
@@ -248,7 +269,14 @@ namespace QuickInfo
                 pairs.Add(("UTF-8:", GetUtf8(text)));
             }
 
-            result.Add(NameValueTable(null, right => right.Style = "Fixed", entries: pairs.ToArray()));
+            result.Add(NameValueTable(null, right =>
+            {
+                right.Style = NodeStyles.Fixed;
+                if (right.Text == blockLink)
+                {
+                    right.SearchLink = blockLink;
+                }
+            }, entries: pairs.ToArray()));
 
             return result;
         }
@@ -279,7 +307,7 @@ namespace QuickInfo
 
             var list = new List<object>();
             var answer = Answer(text);
-            answer.Style = "CharSample";
+            answer.Style = NodeStyles.CharSample;
             list.Add(answer);
             foreach (var codepoint in text.EnumerateCodePoints().Select(c => GetEscapeString(c)))
             {

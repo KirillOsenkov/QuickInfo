@@ -19,14 +19,14 @@ namespace QuickInfo
             return new Node
             {
                 Text = text,
-                Kind = "Paragraph"
+                Kind = NodeKinds.Paragraph
             };
         }
 
         public static object HelpTable(params (string, string)[] entries)
         {
             var table = NameValueTable(left => left.SearchLink = left.Text, entries: entries);
-            table.Style = "Help";
+            table.Style = NodeStyles.Help;
             return table;
         }
 
@@ -37,25 +37,25 @@ namespace QuickInfo
         {
             var result = new Node
             {
-                Kind = "Table",
+                Kind = NodeKinds.Table,
                 List = entries.Select(nameValue =>
                 {
                     var leftNode = new Node
                     {
-                        Kind = "Cell",
-                        Style = "Label",
+                        Kind = NodeKinds.Cell,
+                        Style = NodeStyles.Label,
                         Text = nameValue.Item1
                     };
                     var rightNode = new Node
                     {
-                        Kind = "Cell",
+                        Kind = NodeKinds.Cell,
                         Text = nameValue.Item2
                     };
                     leftCellInitializer?.Invoke(leftNode);
                     rightCellInitializer?.Invoke(rightNode);
                     return new Node
                     {
-                        Kind = "Row",
+                        Kind = NodeKinds.Row,
                         List = new Node[] {leftNode, rightNode}
                     };
                 })
@@ -67,9 +67,9 @@ namespace QuickInfo
         {
             return new Node
             {
-                Style = "SectionHeader",
+                Style = NodeStyles.SectionHeader,
                 Text = text,
-                Kind = "Paragraph"
+                Kind = NodeKinds.Paragraph
             };
         }
 
@@ -78,8 +78,8 @@ namespace QuickInfo
             return new Node
             {
                 Text = text,
-                Kind = "Paragraph",
-                Style = "MainAnswer"
+                Kind = NodeKinds.Paragraph,
+                Style = NodeStyles.MainAnswer
             };
         }
 
@@ -91,7 +91,7 @@ namespace QuickInfo
         public static object FixedParagraph(string text)
         {
             var node = Fixed(text);
-            node.Kind = "Paragraph";
+            node.Kind = NodeKinds.Paragraph;
             return node;
         }
 
@@ -99,7 +99,7 @@ namespace QuickInfo
         {
             return new Node
             {
-                Style = "Fixed",
+                Style = NodeStyles.Fixed,
                 Text = text
             };
         }
@@ -111,8 +111,17 @@ namespace QuickInfo
             return new Node
             {
                 Text = text,
-                Kind = "Hyperlink",
+                Kind = NodeKinds.Hyperlink,
                 Link = link
+            };
+        }
+
+        public static Node SearchLink(string search)
+        {
+            return new Node
+            {
+                Text = search,
+                SearchLink = search
             };
         }
     }
@@ -182,5 +191,35 @@ namespace QuickInfo
             get => this[nameof(List)] as IEnumerable<object>;
             set => this[nameof(List)] = value;
         }
+    }
+
+    public class NodeKinds
+    {
+        public const string Hyperlink = nameof(Hyperlink);
+        public const string Paragraph = nameof(Paragraph);
+        public const string Table = nameof(Table);
+        public const string Cell = nameof(Cell);
+        public const string Row = nameof(Row);
+        public const string ColumnHeader = nameof(ColumnHeader);
+    }
+
+    public class NodeStyles
+    {
+        public const string Help = nameof(Help);
+        public const string Label = nameof(Label);
+        public const string SectionHeader = nameof(SectionHeader);
+        public const string MainAnswer = nameof(MainAnswer);
+        public const string Fixed = nameof(Fixed);
+        public const string AsciiColumnHeaderCode = nameof(AsciiColumnHeaderCode);
+        public const string AsciiColumnHeaderHex = nameof(AsciiColumnHeaderHex);
+        public const string AsciiColumnCode = nameof(AsciiColumnCode);
+        public const string AsciiColumnHex = nameof(AsciiColumnHex);
+        public const string AsciiColumnChar = nameof(AsciiColumnChar);
+        public const string Ascii = nameof(Ascii);
+        public const string Color = nameof(Color);
+        public const string ColorSwatchLarge = nameof(ColorSwatchLarge);
+        public const string ColorSwatchSmall = nameof(ColorSwatchSmall);
+        public const string ColorSwatchName = nameof(ColorSwatchName);
+        public const string CharSample = nameof(CharSample);
     }
 }
