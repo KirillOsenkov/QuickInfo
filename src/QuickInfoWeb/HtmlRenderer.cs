@@ -26,12 +26,12 @@ namespace QuickInfo
             }
         }
 
-        private void Render(object result, string processorName = null)
+        private void Render(object result, string processorName = null, string suggestedClass = null)
         {
             switch (result)
             {
                 case Node node:
-                    RenderNode(node);
+                    RenderNode(node, suggestedClass);
                     break;
                 case string s:
                     using (Tag("div", tagClass: "mainAnswerText", multilineContent: false))
@@ -41,7 +41,7 @@ namespace QuickInfo
 
                     break;
                 case IEnumerable<object> list:
-                    RenderList(list);
+                    RenderList(list, suggestedClass);
                     break;
                 case null:
                     break;
@@ -60,11 +60,11 @@ namespace QuickInfo
             return text;
         }
 
-        private void RenderNode(Node node)
+        private void RenderNode(Node node, string suggestedClass = null)
         {
             string tag = GetTag(node);
             var list = node.List;
-            var nodeClass = GetClass(node);
+            var nodeClass = GetClass(node) ?? suggestedClass;
             var nodeStyle = GetStyle(node);
 
             if (tag == null)
@@ -87,18 +87,44 @@ namespace QuickInfo
                 attributes.Add(("target", "_blank"));
             }
 
+            string paddingTag = null;
+            string paddingClass = null;
+
+            if (node.Style == NodeStyles.Card)
+            {
+                paddingTag = "div";
+                paddingClass = "singleAnswerSection";
+            }
+
             using (Tag(tag, nodeClass, nodeStyle, multilineContent, attributes.ToArray()))
             {
-                if (list != null)
+                if (node.Style == NodeStyles.Card && node.Text != null)
                 {
-                    foreach (var item in list)
+                    using (Tag("div", "answerBlockHeader"))
                     {
-                        Render(item);
+                        Write(node.Text);
                     }
                 }
-                else
+
+                using (Tag(paddingTag, paddingClass))
                 {
-                    RenderContent(node);
+                    if (list != null)
+                    {
+                        string suggestedChildClass = null;
+                        if (node.Style == NodeStyles.HorizontalList)
+                        {
+                            suggestedChildClass = "inlineBlock";
+                        }
+
+                        foreach (var item in list)
+                        {
+                            Render(item, suggestedClass: suggestedChildClass);
+                        }
+                    }
+                    else
+                    {
+                        RenderContent(node);
+                    }
                 }
             }
         }
@@ -148,9 +174,9 @@ namespace QuickInfo
             }
         }
 
-        private void RenderList(IEnumerable<object> list)
+        private void RenderList(IEnumerable<object> list, string suggestedClass = null)
         {
-            using (Tag("div"))
+            using (Tag("div", tagClass: suggestedClass))
             {
                 foreach (var item in list)
                 {
@@ -219,6 +245,10 @@ namespace QuickInfo
             else if (node.Style == NodeStyles.CharSample)
             {
                 return "charSample";
+            }
+            else if (node.Style == NodeStyles.Card)
+            {
+                return "answerBlock";
             }
 
             return null;

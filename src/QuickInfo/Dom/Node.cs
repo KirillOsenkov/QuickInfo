@@ -23,6 +23,15 @@ namespace QuickInfo
             };
         }
 
+        public static Node HorizontalList(IEnumerable<object> list)
+        {
+            return new Node
+            {
+                List = list,
+                Style = NodeStyles.HorizontalList
+            };
+        }
+
         public static object HelpTable(params (string, string)[] entries)
         {
             var table = NameValueTable(left => left.SearchLink = left.Text, entries: entries);
@@ -221,5 +230,7 @@ namespace QuickInfo
         public const string ColorSwatchSmall = nameof(ColorSwatchSmall);
         public const string ColorSwatchName = nameof(ColorSwatchName);
         public const string CharSample = nameof(CharSample);
+        public const string HorizontalList = nameof(HorizontalList);
+        public const string Card = nameof(Card);
     }
 }

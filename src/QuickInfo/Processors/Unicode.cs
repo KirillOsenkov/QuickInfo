@@ -26,6 +26,7 @@ namespace QuickInfo
             if (query.IsHelp)
             {
                 return HelpTable(
+                    ("unicode", "Display all Unicode blocks"),
                     ("cherries", "Lookup a unicode char/emoji"),
                     ("\\U0001F352", "Lookup char"),
                     ("\\U0001F347 \\U0001F352", "Lookup multiple chars"),
@@ -42,17 +43,17 @@ namespace QuickInfo
 
             if (input.Length == 1)
             {
-                return GetResult(input[0]);
+                return GetResult(input[0], useCard: false);
             }
 
             if (input.Length == 2 && char.IsHighSurrogate(input[0]) && char.IsLowSurrogate(input[1]))
             {
-                return GetResult(char.ConvertToUtf32(input[0], input[1]));
+                return GetResult(char.ConvertToUtf32(input[0], input[1]), useCard: false);
             }
 
             if (string.Equals(input, "Unicode", StringComparison.OrdinalIgnoreCase))
             {
-                return blocks.Select(b => SearchLink(b.Name)).ToArray();
+                return HorizontalList(blocks.Select(b => SearchLink(b.Name)).ToArray());
             }
 
             var prefix = query.TryGetStructure<Prefix>();
@@ -77,7 +78,7 @@ namespace QuickInfo
                     var integer = StructureParser.TryGetStructure<Integer>(prefix.Remainder);
                     if (integer != null && integer.ForceHexadecimalValue() is int hexValue && IsUnicodeCodepoint(hexValue))
                     {
-                        return GetResult(hexValue);
+                        return GetResult(hexValue, useCard: false);
                     }
                 }
             }
@@ -109,18 +110,6 @@ namespace QuickInfo
                 }
             }
 
-            var positions = SortedSearch.FindItems(index, input.SplitIntoWords(), t => t.Item1, t => t.Item2);
-            if (positions.Any())
-            {
-                var characters = positions
-                    .OrderBy(i => i)
-                    .Take(MaxSymbolsToReturn)
-                    .Select(i => GetResult(i))
-                    .ToArray();
-
-                return characters;
-            }
-
             foreach (var block in blocks)
             {
                 if (block.Name.IndexOf(input, StringComparison.OrdinalIgnoreCase) != -1)
@@ -129,12 +118,25 @@ namespace QuickInfo
                 }
             }
 
+            var positions = SortedSearch.FindItems(index, input.SplitIntoWords(), t => t.Item1, t => t.Item2);
+            if (positions.Any())
+            {
+                bool useCard = positions.Count() > 1;
+                var characters = positions
+                    .OrderBy(i => i)
+                    .Take(MaxSymbolsToReturn)
+                    .Select(i => GetResult(i, useCard))
+                    .ToArray();
+
+                return HorizontalList(characters);
+            }
+
             return null;
         }
 
         private object ListBlock(UnicodeBlock block)
         {
-            var characters = block.CodePointRange.Select(i => GetResult(i)).ToArray();
+            var characters = HorizontalList(block.CodePointRange.Select(i => GetResult(i)).ToArray());
             return characters;
         }
 
@@ -232,7 +234,7 @@ namespace QuickInfo
                 (number < 0xd800 || number > 0xdfff); // surrogate code points
         }
 
-        private object GetResult(int value)
+        private object GetResult(int value, bool useCard = true)
         {
             char ch = (char)value;
 
@@ -278,7 +280,17 @@ namespace QuickInfo
                 }
             }, entries: pairs.ToArray()));
 
-            return result;
+            if (!useCard)
+            {
+                return result;
+            }
+
+            return new Node
+            {
+                Text = value.ToString(),
+                Style = NodeStyles.Card,
+                List = result
+            };
         }
 
         private static string GetEscapeString(int value)

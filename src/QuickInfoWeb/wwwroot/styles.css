@@ -94,16 +94,6 @@ a {
     font-size: small;
 }
 
-.answerSection {
-    display: inline-block;
-    border: 1px solid lightgray;
-    margin: 10px;
-    padding: 8px;
-    vertical-align: top;
-    background: white;
-    box-shadow: rgba(200,200,200,0.4) 10px 10px 20px;
-}
-
 .singleAnswerSection {
     margin: 10px;
 }
@@ -122,6 +112,10 @@ a {
     background: lightyellow;
     padding: 6px 9px;
     box-shadow: rgba(200,200,200,0.4) 10px 10px 20px;
+}
+
+.inlineBlock {
+    display: inline-block;
 }
 
 .charSample {
