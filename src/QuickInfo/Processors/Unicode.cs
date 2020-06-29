@@ -10,7 +10,7 @@ namespace QuickInfo
 {
     public class Unicode : IProcessor
     {
-        const int MaxSymbolsToReturn = 60;
+        const int MaxSymbolsToReturn = 100;
 
         private Dictionary<int, string> descriptions = new Dictionary<int, string>();
         private (string, int)[] index;
