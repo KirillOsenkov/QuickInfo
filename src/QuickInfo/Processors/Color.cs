@@ -179,7 +179,7 @@ namespace QuickInfo
                 result.Add(swatchName);
             }
 
-            var nearestColors = GetNearestColors(r, g, b).Take(11);
+            var nearestColors = GetNearestColors(r, g, b).Take(15);
 
             result.Add(SectionHeader("Closest named colors:"));
 
