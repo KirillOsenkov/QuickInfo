@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using static System.Math;
+using Colourful;
+using Colourful.Conversion;
+using Colourful.Difference;
 using static QuickInfo.NodeFactory;
 
 namespace QuickInfo
@@ -231,7 +233,7 @@ namespace QuickInfo
                 int knownR = knownColor % 256;
                 int knownG = (knownColor >> 8) % 256;
                 int knownB = (knownColor >> 16) % 256;
-                double distance = Distance(r, g, b, knownR, knownG, knownB);
+                double distance = CIEDE2000Distance(r, g, b, knownR, knownG, knownB);
                 colorMapByDistance.Add(Tuple.Create(kvp.Value, distance));
             }
 
@@ -239,15 +241,24 @@ namespace QuickInfo
             return colorMapByDistance.Select(t => t.Item1);
         }
 
-        private double Distance(int r1, int g1, int b1, int r2, int g2, int b2)
-        {
-            double dr = (r1 - r2) / 255.0;
-            double dg = (g1 - g2) / 255.0;
-            double db = (b1 - b2) / 255.0;
-            return Sqrt(dr * dr * 0.299 + dg * dg * 0.587 + db * db * 0.114);
-        }
+        private static readonly ColourfulConverter converter = new ColourfulConverter();
 
-        private string GetHexColor(int r, int g, int b)
+        private static readonly CIEDE2000ColorDifference difference = new CIEDE2000ColorDifference();
+
+        /// <summary>
+        /// See https://en.wikipedia.org/wiki/CIELAB_color_space
+        /// </summary>
+        private static LabColor ToLabColor(int r, int g, int b) =>
+            converter.ToLab(new RGBColor((double) r / 255, (double) g / 255, (double) b / 255));
+
+        /// <summary>
+        /// Distance between colors closely matching human perception of colors.
+        /// See https://en.wikipedia.org/wiki/Color_difference#CIEDE2000
+        /// </summary>
+        private static double CIEDE2000Distance(int r1, int g1, int b1, int r2, int g2, int b2) =>
+            difference.ComputeDifference(ToLabColor(r1, g1, b1), ToLabColor(r2, g2, b2));
+
+        private static string GetHexColor(int r, int g, int b)
         {
             string rhex = r.ToHexByte();
             string ghex = g.ToHexByte();
