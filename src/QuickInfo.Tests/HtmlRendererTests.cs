@@ -40,6 +40,12 @@ namespace QuickInfo.Tests
     <tr>");
         }
 
+        [Fact]
+        public void TestTes()
+        {
+            T("tes", "");
+        }
+
         private void T(string input, string expectedHtml)
         {
             var engine = new Engine();

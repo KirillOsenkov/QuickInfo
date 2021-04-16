@@ -112,7 +112,11 @@ namespace QuickInfo
 
             foreach (var block in blocks)
             {
-                if (block.Name.IndexOf(input, StringComparison.OrdinalIgnoreCase) != -1)
+                string name = block.Name;
+                if (name.IndexOf(input, StringComparison.OrdinalIgnoreCase) != -1 &&
+                    name != "High Surrogates" &&
+                    name != "Low Surrogates" &&
+                    name != "High Private Use Surrogates")
                 {
                     return ListBlock(block);
                 }
