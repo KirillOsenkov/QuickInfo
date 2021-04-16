@@ -8,10 +8,10 @@ namespace QuickInfo
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Build().Run();
+            CreateHostBuilder(args).Build().Run();
         }
 
-        public static IHostBuilder BuildWebHost(string[] args) =>
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                .ConfigureWebHostDefaults(webBuilder =>
                {
