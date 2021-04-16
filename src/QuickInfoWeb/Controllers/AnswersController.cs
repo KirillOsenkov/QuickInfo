@@ -101,35 +101,7 @@ namespace QuickInfo.Controllers
 
             var results = engine.GetResults(query);
 
-            if (!results.Any())
-            {
-                return null;
-            }
-
-            if (results.Count() == 1)
-            {
-                var first = results.First();
-                var html = HtmlRenderer.RenderObject(first.resultNode, first.processorName);
-                return html;
-            }
-
-            var sb = new StringBuilder();
-            foreach (var result in results)
-            {
-                var toAppend = HtmlRenderer.RenderObject(result.resultNode, result.processorName);
-
-                toAppend = DivClass(toAppend, "singleAnswerSection");
-
-                toAppend = DivClass(result.processorName, "answerBlockHeader") + toAppend;
-
-                toAppend = DivClass(
-                    toAppend,
-                    "answerBlock");
-
-                sb.AppendLine(toAppend);
-            }
-
-            var response = sb.ToString();
+            var response = HtmlRenderer.RenderObject(results);
 
             if (query.IsHelp)
             {

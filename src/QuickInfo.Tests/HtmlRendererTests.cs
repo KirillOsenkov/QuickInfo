@@ -29,14 +29,6 @@ namespace QuickInfo.Tests
   <div class=""swatchName"">Red</div>
   <div class=""sectionHeader"">Closest named colors:</div>
   <table>
-    <tr>
-      <td>Crimson</td>
-      <td><a href=""?%23DC143C"" onclick=""searchFor(&quot;#DC143C&quot;);return false;"">#DC143C</a>
-      </td>
-      <td><a href=""?%23DC143C"" onclick=""searchFor(&quot;#DC143C&quot;);return false;""><div style=""background:#DC143C;width:60px;height:16px""></div>
-        </a>
-      </td>
-    </tr>
     <tr>");
         }
 
@@ -50,9 +42,11 @@ namespace QuickInfo.Tests
         {
             var engine = new Engine();
             var query = new Query(input);
-            var answerNode = engine.GetResults(query).First().resultNode;
+            var answerNode = engine.GetResults(query);
             var actualResult = HtmlRenderer.RenderObject(answerNode);
-            Assert.Contains(expectedHtml, actualResult);
+            string expectedText = expectedHtml.TrimWhitespaceFromEachLine();
+            string actualText = actualResult.TrimWhitespaceFromEachLine();
+            Assert.Contains(expectedText, actualText);
         }
     }
 }

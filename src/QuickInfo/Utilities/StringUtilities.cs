@@ -126,5 +126,190 @@ namespace QuickInfo
         {
             return word.All(c => char.IsLetter(c));
         }
+
+        public static string NormalizeLineBreaks(this string text)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                return text;
+            }
+
+            text = text.Replace("\r\n", "\n");
+            text = text.Replace("\r", "\n");
+
+            return text;
+        }
+
+        public static IReadOnlyList<string> GetLines(this string text, bool includeLineBreak = false)
+        {
+            return GetLineSpans(text, includeLineBreakInSpan: includeLineBreak)
+                .Select(span => text.Substring(span.Start, span.Length))
+                .ToArray();
+        }
+
+        public static IReadOnlyList<Span> GetLineSpans(this string text, bool includeLineBreakInSpan = true)
+        {
+            if (text == null)
+            {
+                throw new ArgumentNullException(nameof(text));
+            }
+
+            if (text.Length == 0)
+            {
+                return Empty;
+            }
+
+            var result = new List<Span>();
+            text.CollectLineSpans(result, includeLineBreakInSpan);
+            return result.ToArray();
+        }
+
+        public static void CollectLineSpans(this string text, ICollection<Span> spans, bool includeLineBreakInSpan = true)
+        {
+            if (text == null)
+            {
+                throw new ArgumentNullException(nameof(text));
+            }
+
+            if (spans == null)
+            {
+                throw new ArgumentNullException(nameof(spans));
+            }
+
+            if (text.Length == 0)
+            {
+                return;
+            }
+
+            int currentPosition = 0;
+            int currentLineLength = 0;
+            bool previousWasCarriageReturn = false;
+
+            for (int i = 0; i < text.Length; i++)
+            {
+                var ch = text[i];
+                if (ch == '\r')
+                {
+                    if (previousWasCarriageReturn)
+                    {
+                        int lineLengthIncludingLineBreak = currentLineLength;
+                        if (!includeLineBreakInSpan)
+                        {
+                            currentLineLength--;
+                        }
+
+                        spans.Add(new Span(currentPosition, currentLineLength));
+
+                        currentPosition += lineLengthIncludingLineBreak;
+                        currentLineLength = 1;
+                    }
+                    else
+                    {
+                        currentLineLength++;
+                        previousWasCarriageReturn = true;
+                    }
+                }
+                else if (ch == '\n')
+                {
+                    var lineLength = currentLineLength;
+                    if (previousWasCarriageReturn)
+                    {
+                        lineLength--;
+                    }
+
+                    currentLineLength++;
+                    previousWasCarriageReturn = false;
+                    if (includeLineBreakInSpan)
+                    {
+                        lineLength = currentLineLength;
+                    }
+
+                    spans.Add(new Span(currentPosition, lineLength));
+                    currentPosition += currentLineLength;
+                    currentLineLength = 0;
+                }
+                else
+                {
+                    if (previousWasCarriageReturn)
+                    {
+                        var lineLength = currentLineLength;
+                        if (!includeLineBreakInSpan)
+                        {
+                            lineLength--;
+                        }
+
+                        spans.Add(new Span(currentPosition, lineLength));
+                        currentPosition += currentLineLength;
+                        currentLineLength = 0;
+                        previousWasCarriageReturn = false;
+                    }
+
+                    currentLineLength++;
+                }
+            }
+
+            var finalLength = currentLineLength;
+            if (previousWasCarriageReturn && !includeLineBreakInSpan)
+            {
+                finalLength--;
+            }
+
+            spans.Add(new Span(currentPosition, finalLength));
+
+            if (previousWasCarriageReturn)
+            {
+                spans.Add(new Span(currentPosition, 0));
+            }
+        }
+
+        private static readonly IReadOnlyList<Span> Empty = new Span[] { Span.Empty };
+
+        public static string TrimWhitespaceFromEachLine(this string text)
+        {
+            if (text == null)
+            {
+                return null;
+            }
+
+            var lines = text.GetLines();
+            var trimmed = lines.Select(s => s.Trim());
+            var joined = string.Join("\n", trimmed);
+            return joined;
+        }
+    }
+
+    public struct Span
+    {
+        public int Start;
+        public int Length;
+        public int End => Start + Length;
+
+        public static readonly Span Empty = new Span();
+
+        public Span(int start, int length) : this()
+        {
+            Start = start;
+            Length = length;
+        }
+
+        public override string ToString()
+        {
+            return $"({Start}, {Length})";
+        }
+
+        public Span Skip(int length)
+        {
+            if (length > Length)
+            {
+                return new Span();
+            }
+
+            return new Span(Start + length, Length - length);
+        }
+
+        public bool Contains(int position)
+        {
+            return position >= Start && position <= End;
+        }
     }
 }

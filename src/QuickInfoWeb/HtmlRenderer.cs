@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace QuickInfo
 {
@@ -43,10 +44,44 @@ namespace QuickInfo
                 case IEnumerable<object> list:
                     RenderList(list, suggestedClass);
                     break;
+                case IEnumerable<(string processorName, object resultNode)> tupleList:
+                    RenderResults(tupleList);
+                    break;
                 case null:
                     break;
                 default:
                     throw new NotImplementedException("Can't render " + result);
+            }
+        }
+
+        private void RenderResults(IEnumerable<(string processorName, object resultNode)> results)
+        {
+            if (!results.Any())
+            {
+                return;
+            }
+
+            if (results.Count() == 1)
+            {
+                var first = results.First();
+                Render(first.resultNode, first.processorName);
+                return;
+            }
+
+            foreach (var result in results)
+            {
+                using (DivClass("answerBlock"))
+                {
+                    using (DivClass("answerBlockHeader"))
+                    {
+                        Write(result.processorName);
+                    }
+
+                    using (DivClass("singleAnswerSection"))
+                    {
+                        Render(result.resultNode, result.processorName);
+                    }
+                }
             }
         }
 
