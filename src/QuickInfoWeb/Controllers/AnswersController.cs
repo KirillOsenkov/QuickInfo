@@ -100,6 +100,10 @@ namespace QuickInfo.Controllers
             query.Request = request;
 
             var results = engine.GetResults(query);
+            if (results == null || !results.Any())
+            {
+                return null;
+            }
 
             var response = HtmlRenderer.RenderObject(results);
 
