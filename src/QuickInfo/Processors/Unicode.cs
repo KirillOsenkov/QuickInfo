@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Unicode;
 using static QuickInfo.NodeFactory;
+using static System.StringComparison;
 
 namespace QuickInfo
 {
@@ -110,16 +111,22 @@ namespace QuickInfo
                 }
             }
 
-            foreach (var block in blocks)
+            bool IsSurrogate(UnicodeBlock block) => block.Name == "High Surrogates" ||
+                                                    block.Name == "Low Surrogates" ||
+                                                    block.Name == "High Private Use Surrogates";
+
+            // An exact match has the highest precedence, followed by a prefix match, followed by any substring match.
+            // E.g. "Musical" and "Musical Symbols" inputs result in "Musical Symbols" block, rather than in
+            // "Byzantine Musical Symbols", and "Supple" input results in "Supplemental Arrows-A" block rather than
+            // "Latin-1 Supplement". All matches are case-insensitive.
+            var match = blocks.Where(b => !IsSurrogate(b) && b.Name.Equals(input, OrdinalIgnoreCase)).Concat(
+                        blocks.Where(b => !IsSurrogate(b) && b.Name.StartsWith(input, OrdinalIgnoreCase))).Concat(
+                        blocks.Where(b => !IsSurrogate(b) && b.Name.IndexOf(input, OrdinalIgnoreCase) != -1))
+                .FirstOrDefault();
+
+            if (match.Name != null) // `default(UnicodeBlock).Name` returns `null`
             {
-                string name = block.Name;
-                if (name.IndexOf(input, StringComparison.OrdinalIgnoreCase) != -1 &&
-                    name != "High Surrogates" &&
-                    name != "Low Surrogates" &&
-                    name != "High Private Use Surrogates")
-                {
-                    return ListBlock(block);
-                }
+                return ListBlock(match);
             }
 
             var positions = SortedSearch.FindItems(index, input.SplitIntoWords(), t => t.Item1, t => t.Item2);
