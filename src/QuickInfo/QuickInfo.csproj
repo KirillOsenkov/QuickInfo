@@ -4,6 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Version>1.0.2</Version>
     <DebugType>embedded</DebugType>
+    <LangVersion>9</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

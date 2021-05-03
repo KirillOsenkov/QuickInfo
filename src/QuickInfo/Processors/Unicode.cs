@@ -256,6 +256,15 @@ namespace QuickInfo
             if (!isSurrogate)
             {
                 text = char.ConvertFromUtf32(value);
+                if (char.GetUnicodeCategory(text, 0) is
+                    UnicodeCategory.ModifierLetter or
+                    UnicodeCategory.ModifierSymbol or
+                    UnicodeCategory.NonSpacingMark or
+                    UnicodeCategory.SpacingCombiningMark)
+                {
+                    const string DOTTED_CIRCLE = "\u25CC";
+                    text = DOTTED_CIRCLE + text;
+                }
                 var answer = Answer(text);
                 answer.Style = NodeStyles.CharSample;
                 result.Add(answer);
