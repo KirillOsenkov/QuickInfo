@@ -257,8 +257,6 @@ namespace QuickInfo
             {
                 text = char.ConvertFromUtf32(value);
                 if (char.GetUnicodeCategory(text, 0) is
-                    UnicodeCategory.ModifierLetter or
-                    UnicodeCategory.ModifierSymbol or
                     UnicodeCategory.NonSpacingMark or
                     UnicodeCategory.SpacingCombiningMark)
                 {
@@ -278,10 +276,11 @@ namespace QuickInfo
             var info = UnicodeInfo.GetCharInfo(value);
 
             var blockLink = info.Block;
+            var category = info.Category;
             var pairs = new List<(string, string)>
             {
-                ("Code point:", $"{value} (U+{value.ToHex()})"),
-                ("Category:", CharUnicodeInfo.GetUnicodeCategory(ch).ToString()),
+                ("Code point:", $"{value} (U+{value:X4})"),
+                ("Category:", $"{category} ({category.GetShortName()})"),
                 ("Block:", blockLink),
                 ("Escape:", GetEscapeString(value))
             };
