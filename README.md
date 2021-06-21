@@ -3,7 +3,7 @@ Extensible set of little one-off features that Google or Bing are missing, such 
 
 [![NuGet package](https://img.shields.io/nuget/v/GuiLabs.QuickInfo.svg)](https://nuget.org/packages/GuiLabs.QuickInfo)
 
-![screenshot](https://github.com/KirillOsenkov/QuickInfo/raw/master/docs/Demo.gif)
+![screenshot](https://github.com/KirillOsenkov/QuickInfo/raw/main/docs/Demo.gif)
 
 Demo: [http://quickinfo.io/?demo](http://quickinfo.io/?demo)
 
