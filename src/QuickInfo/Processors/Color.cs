@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Colourful;
-using Colourful.Conversion;
-using Colourful.Difference;
 using static QuickInfo.NodeFactory;
 
 namespace QuickInfo
@@ -241,7 +239,7 @@ namespace QuickInfo
             return colorMapByDistance.Select(t => t.Item1);
         }
 
-        private static readonly ColourfulConverter converter = new ColourfulConverter();
+        private static readonly IColorConverter<RGBColor, LabColor> converter = new ConverterBuilder().FromRGB().ToLab(Illuminants.D65).Build();
 
         private static readonly CIEDE2000ColorDifference difference = new CIEDE2000ColorDifference();
 
@@ -249,7 +247,7 @@ namespace QuickInfo
         /// See https://en.wikipedia.org/wiki/CIELAB_color_space
         /// </summary>
         private static LabColor ToLabColor(int r, int g, int b) =>
-            converter.ToLab(new RGBColor((double) r / 255, (double) g / 255, (double) b / 255));
+            converter.Convert(new RGBColor((double) r / 255, (double) g / 255, (double) b / 255));
 
         /// <summary>
         /// Distance between colors closely matching human perception of colors.
