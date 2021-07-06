@@ -239,7 +239,7 @@ namespace QuickInfo
             return colorMapByDistance.Select(t => t.Item1);
         }
 
-        private static readonly IColorConverter<RGBColor, LabColor> converter = new ConverterBuilder().FromRGB().ToLab(Illuminants.D65).Build();
+        private static readonly IColorConverter<RGBColor, LabColor> converter = new ConverterBuilder().FromRGB().ToLab().Build();
 
         private static readonly CIEDE2000ColorDifference difference = new CIEDE2000ColorDifference();
 
