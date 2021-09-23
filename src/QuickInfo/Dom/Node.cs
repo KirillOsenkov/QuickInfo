@@ -65,7 +65,7 @@ namespace QuickInfo
                     return new Node
                     {
                         Kind = NodeKinds.Row,
-                        List = new Node[] {leftNode, rightNode}
+                        List = new Node[] { leftNode, rightNode }
                     };
                 })
             };
@@ -109,6 +109,15 @@ namespace QuickInfo
             return new Node
             {
                 Style = NodeStyles.Fixed,
+                Text = text
+            };
+        }
+
+        public static Node Label(string text)
+        {
+            return new Node
+            {
+                Style = NodeStyles.Label,
                 Text = text
             };
         }

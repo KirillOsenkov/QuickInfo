@@ -20,11 +20,13 @@ namespace Info
                 typeof(Roman),
                 typeof(HttpStatusCode),
                 typeof(QuickInfo.Math),
+                typeof(NTStatusError),
                 typeof(NumberList),
                 typeof(RandomGuid),
                 typeof(Unicode),
                 typeof(UnitConverter),
-                typeof(UrlDecode)
+                typeof(UrlDecode),
+                typeof(Win32Err)
             );
             var query = new Query(commandLine);
             var answers = engine.GetResults(query);

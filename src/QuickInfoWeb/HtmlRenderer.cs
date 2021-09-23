@@ -335,7 +335,7 @@ namespace QuickInfo
 
         public void Write(string text)
         {
-            writer.Write(text);
+            writer.Write(text.Replace("\n", "<br/>"));
         }
 
         public void WriteLine(string text = null)

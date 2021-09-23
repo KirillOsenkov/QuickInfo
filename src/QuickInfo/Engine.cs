@@ -24,7 +24,7 @@ namespace QuickInfo
             {
                 var processorTypes = assembly
                     .GetTypes()
-                    .Where(t => t.GetTypeInfo().ImplementedInterfaces.Contains(typeof(IProcessor)));
+                    .Where(t => t.GetTypeInfo().ImplementedInterfaces.Contains(typeof(IProcessor)) && !t.IsAbstract);
                 processors.AddRange(processorTypes.Select(t => (IProcessor)Activator.CreateInstance(t)));
             }
 
