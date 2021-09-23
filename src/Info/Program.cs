@@ -26,7 +26,7 @@ namespace Info
                 typeof(Unicode),
                 typeof(UnitConverter),
                 typeof(UrlDecode),
-                typeof(Win32Err)
+                typeof(Win32Error)
             );
             var query = new Query(commandLine);
             var answers = engine.GetResults(query);
