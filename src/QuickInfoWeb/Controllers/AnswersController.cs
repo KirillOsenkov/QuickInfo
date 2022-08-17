@@ -14,6 +14,9 @@ namespace QuickInfo.Controllers
         [HttpGet]
         public string Get([FromQuery] string query)
         {
+            // See [Parameters binding removes whitespace](https://github.com/dotnet/aspnetcore/issues/29948#issuecomment-1163905512)
+            query = Request.Query[nameof(query)];
+
             string result = null;
             try
             {
