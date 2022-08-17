@@ -30,7 +30,7 @@ namespace QuickInfo
         private (string Name, string Description) LookUpInternal(Query query)
         {
             var structure = query.TryGetStructure<Integer>();
-            if (structure != null && Lookup.ContainsKey(structure.Int32))
+            if (structure != null && structure.Value >= int.MinValue && structure.Value <= int.MaxValue && Lookup.ContainsKey(structure.Int32))
             {
                 return Lookup[structure.Int32];
             }
