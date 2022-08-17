@@ -64,7 +64,7 @@ namespace QuickInfo
                 if (separatedList != null)
                 {
                     var byteList = separatedList.GetStructuresOfType<Integer>();
-                    if (byteList.Count == separatedList.Count && byteList.All(b => b.Value >= 0 && b.Value <= 255))
+                    if (byteList.Count == separatedList.Count && byteList.All(b => b.Value >= -128 && b.Value <= 127))
                     {
                         List<byte> result = new List<byte>();
                         foreach (var b in byteList)
