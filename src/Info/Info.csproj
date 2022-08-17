@@ -3,7 +3,6 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFrameworks>net472;net6.0</TargetFrameworks>
-    <DebugType>embedded</DebugType>
   </PropertyGroup>
 
   <ItemGroup>

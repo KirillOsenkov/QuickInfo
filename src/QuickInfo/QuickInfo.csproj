@@ -3,8 +3,6 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
     <Version>1.0.2</Version>
-    <DebugType>embedded</DebugType>
-    <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,6 +11,8 @@
     <PackageReference Include="GuiLabs.MathParser" Version="1.0.9" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="UnicodeInformation" Version="2.6.0" />
+    <PackageReference Include="ThisAssembly.AssemblyInfo" Version="1.0.9" />
+    <PackageReference Include="GitInfo" Version="2.2.0" />
   </ItemGroup>
 
   <PropertyGroup>

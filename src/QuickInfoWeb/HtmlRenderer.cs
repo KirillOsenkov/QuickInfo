@@ -115,12 +115,6 @@ namespace QuickInfo
             }
 
             bool multilineContent = list != null;
-            var attributes = new List<(string, string)>();
-            if (node.Link != null)
-            {
-                attributes.Add(("href", node.Link));
-                attributes.Add(("target", "_blank"));
-            }
 
             string paddingTag = null;
             string paddingClass = null;
@@ -131,8 +125,28 @@ namespace QuickInfo
                 paddingClass = "singleAnswerSection";
             }
 
-            using (Tag(tag, nodeClass, nodeStyle, multilineContent, attributes.ToArray()))
+            (string, string)[] attributes = null;
+            if (node.Link != null)
             {
+                attributes = new[]
+                {
+                    ("href", node.Link),
+                    ("target", "_blank")
+                };
+            }
+
+            var hyperlinkAttributes = tag == "a" ? attributes : null;
+
+            using (Tag(tag, nodeClass, nodeStyle, multilineContent, hyperlinkAttributes))
+            {
+                IDisposable linkTag = null;
+                if (node.Link != null && tag != "a")
+                {
+                    linkTag = Tag("a", attributes: attributes);
+                }
+
+                using var _ = linkTag;
+
                 if (node.Style == NodeStyles.Card && node.Text != null)
                 {
                     using (Tag("div", "answerBlockHeader"))

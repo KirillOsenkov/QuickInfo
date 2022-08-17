@@ -70,7 +70,7 @@ namespace QuickInfo
             tagClass = WrapInAttribute("class", tagClass);
             tagStyle = WrapInAttribute("style", tagStyle);
             string attributeList = "";
-            if (attributes.Length > 0)
+            if (attributes != null && attributes.Length > 0)
             {
                 attributeList = " " + string.Join(' ', attributes.Select(pair => pair.Item1 + "=\"" + EscapeAttributeValue(pair.Item2) + "\""));
             }
