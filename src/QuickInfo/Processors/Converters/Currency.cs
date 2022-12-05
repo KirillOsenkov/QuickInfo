@@ -1,20 +1,78 @@
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace QuickInfo
 {
+    public class ExchangeRates
+    {
+        private const string Endpoint = @"https://www.floatrates.com/daily/usd.json";
+        private static readonly HttpClient httpClient = new HttpClient();
+
+        private static DateTime currencyCacheCreated = DateTime.UtcNow;
+
+        private static ExchangeRates instance;
+        public static ExchangeRates Instance
+        {
+            get
+            {
+                var now = DateTime.UtcNow;
+                if (instance == null ||
+                    currencyCacheCreated == default ||
+                    now - currencyCacheCreated > TimeSpan.FromDays(1))
+                {
+                    lock (httpClient)
+                    {
+                        currencyCacheCreated = now;
+                        instance = new ExchangeRates();
+
+                        try
+                        {
+                            string json = httpClient.GetStringAsync(Endpoint).Result;
+                            instance.Rates = JsonConvert.DeserializeObject<Dictionary<string, ExchangeRate>>(json);
+                        }
+                        catch
+                        {
+                        }
+                    }
+                }
+
+                return instance;
+            }
+        }
+
+        public ExchangeRate Get(string currency)
+        {
+            if (Rates.TryGetValue(currency, out var rate))
+            {
+                return rate;
+            }
+
+            rate = Rates.Values.FirstOrDefault(r =>
+                r.code.IndexOf(currency, StringComparison.OrdinalIgnoreCase) != -1 ||
+                r.name.IndexOf(currency, StringComparison.OrdinalIgnoreCase) != -1);
+
+            return rate;
+        }
+
+        public Dictionary<string, ExchangeRate> Rates { get; private set; } = new Dictionary<string, ExchangeRate>();
+    }
+
+    public class ExchangeRate
+    {
+        public string code { get; set; }
+        public string alphaCode { get; set; }
+        public string numericCode { get; set; }
+        public string name { get; set; }
+        public float rate { get; set; }
+        public DateTime date { get; set; }
+        public float inverseRate { get; set; }
+    }
+
     public static class Currency
     {
-        private const string Endpoint = @"https://api.exchangeratesapi.io/latest";
-
-        private static readonly HttpClient _httpClient = new HttpClient();
-
-        private static readonly Dictionary<string, double> currencyCache = new Dictionary<string, double>();
-        private static System.DateTime currencyCacheCreated = System.DateTime.UtcNow;
-
         public static double Convert(string from, string to, double value)
         {
             var rate = GetRate(from, to);
@@ -23,64 +81,53 @@ namespace QuickInfo
 
         private static double GetRate(string from, string to)
         {
-            string cacheKey = from + to;
-            double rateValue;
-
-            lock (currencyCache)
-            {
-                if ((System.DateTime.UtcNow - currencyCacheCreated) > TimeSpan.FromDays(1))
-                {
-                    currencyCache.Clear();
-                    currencyCacheCreated = System.DateTime.UtcNow;
-                }
-
-                if (currencyCache.TryGetValue(cacheKey, out rateValue))
-                {
-                    return rateValue;
-                }
-            }
-
-            from = from.ToUpper();
-            to = to.ToUpper();
-
-            var endpoint = $"{Endpoint}?base={from}&symbols={to}";
-            var result = _httpClient.GetStringAsync(endpoint).Result;
-            var rate = JsonConvert.DeserializeObject<CurrencyRate>(result);
-            var rates = rate.Rates;
-
-            if (rates == null || rates.Count != 1)
+            var rateTo = GetRateToPrimary(from);
+            if (rateTo == 0)
             {
                 return 0;
             }
 
-            rateValue = rates[to];
-
-            lock (currencyCache)
+            var rateFrom = GetRateFromPrimary(to);
+            if (rateFrom == 0)
             {
-                currencyCache[cacheKey] = rateValue;
+                return 0;
             }
 
-            return rateValue;
+            return rateTo * rateFrom;
         }
-    }
 
-    #region Exchange currencies stuff
-    struct CurrencyPair
-    {
-        public CurrencyPair(string from, string to)
+        private const string PrimaryRate = "USD";
+
+        private static double GetRateToPrimary(string from)
         {
-            From = from;
-            To = to;
+            if (string.Equals(from, PrimaryRate, StringComparison.OrdinalIgnoreCase))
+            {
+                return 1.0;
+            }
+
+            var rate = ExchangeRates.Instance.Get(from);
+            if (rate == null)
+            {
+                return 1.0;
+            }
+
+            return rate.inverseRate;
         }
 
-        public string From { get; set; }
-        public string To { get; set; }
-    }
+        private static double GetRateFromPrimary(string to)
+        {
+            if (string.Equals(to, PrimaryRate, StringComparison.OrdinalIgnoreCase))
+            {
+                return 1.0;
+            }
 
-    class CurrencyRate
-    {
-        [JsonProperty(PropertyName = "rates")]
-        public Dictionary<string, double> Rates { get; set; }
+            var rate = ExchangeRates.Instance.Get(to);
+            if (rate == null)
+            {
+                return 1.0;
+            }
+
+            return rate.rate;
+        }
     }
-    #endregion
 }
