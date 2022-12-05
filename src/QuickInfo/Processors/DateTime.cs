@@ -4,7 +4,7 @@ using static QuickInfo.NodeFactory;
 
 namespace QuickInfo
 {
-    public class DateTime : IProcessor
+    public class DateAndTime : IProcessor
     {
         private readonly HashSet<string> utcTriggerStrings = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {

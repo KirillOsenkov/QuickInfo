@@ -12,7 +12,7 @@ namespace Info
             (
                 typeof(Ascii),
                 typeof(Color),
-                typeof(QuickInfo.DateTime),
+                typeof(QuickInfo.DateAndTime),
                 typeof(Emoticons),
                 typeof(Factor),
                 typeof(Hex),
