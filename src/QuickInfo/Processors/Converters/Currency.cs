@@ -168,7 +168,7 @@ namespace QuickInfo
             var rate = ExchangeRates.Instance.Get(to);
             if (rate == null)
             {
-                return 1.0;
+                return 0.0;
             }
 
             return rate.rate;
