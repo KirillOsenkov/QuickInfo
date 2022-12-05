@@ -85,8 +85,7 @@ namespace QuickInfo
                         SectionHeader("Currency converter"),
                         HelpTable
                         (
-                            ("150 EUR in USD", ""),
-                            ("$4000", "")
+                            ("150 EUR in USD", "")
                         )
                     }
                 };
