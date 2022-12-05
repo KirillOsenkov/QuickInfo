@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using Newtonsoft.Json;
+using static QuickInfo.NodeFactory;
 
 namespace QuickInfo
 {
@@ -71,8 +72,52 @@ namespace QuickInfo
         public float inverseRate { get; set; }
     }
 
-    public static class Currency
+    public class Currency : IProcessor
     {
+        public object GetResult(Query query)
+        {
+            if (query.IsHelp)
+            {
+                return new Node
+                {
+                    List = new List<object>
+                    {
+                        SectionHeader("Currency converter"),
+                        HelpTable
+                        (
+                            ("150 EUR in USD", ""),
+                            ("$4000", "")
+                        )
+                    }
+                };
+            }
+
+            var list = query.OriginalInputTrim.SplitIntoWords();
+
+            if (list != null && list.Count == 4)
+            {
+                if (!double.TryParse(list[0], out double firstNumber))
+                {
+                    return null;
+                }
+
+                var keyword = list[2];
+
+                if (keyword == "in" || keyword == "to")
+                {
+                    string unit = list[1];
+                    string tounit = list[3];
+                    var result = Convert(unit, tounit, firstNumber);
+                    if (result != 0.0)
+                    {
+                        return FixedParagraph($"{firstNumber} {unit} = {result:n2} {tounit}");
+                    }
+                }
+            }
+
+            return null;
+        }
+
         public static double Convert(string from, string to, double value)
         {
             var rate = GetRate(from, to);

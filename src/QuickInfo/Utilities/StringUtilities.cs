@@ -119,7 +119,7 @@ namespace QuickInfo
         }
 
         private static readonly char[] space = new[] { ' ' };
-        public static IEnumerable<string> SplitIntoWords(this string text)
+        public static IReadOnlyList<string> SplitIntoWords(this string text)
         {
             return text.Split(space, StringSplitOptions.RemoveEmptyEntries);
         }

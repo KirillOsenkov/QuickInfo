@@ -64,6 +64,7 @@ namespace QuickInfo
         public static readonly Unit Century = new Unit("centuries", "century");
         public static readonly Unit Millennium = new Unit("millennia", "millennium");
 
+        /*
         public static readonly Unit EUR = new Unit("EUR", "Euro", "euros", "€");
         public static readonly Unit USD = new Unit("USD", "United States Dollar", "dollars", "$");
         public static readonly Unit RUB = new Unit("RUB", "Russia ruble", "rubles", "₽");
@@ -78,6 +79,7 @@ namespace QuickInfo
         public static readonly Unit JPY = new Unit("JPY", "Japanese Yen");
         public static readonly Unit CNY = new Unit("CNY", "Chinese Yuan");
         public static readonly Unit GBP = new Unit("GBP", "Pound Sterling");
+        */
 
         public static readonly Conversion[] Conversions =
         {
@@ -179,6 +181,7 @@ namespace QuickInfo
             new Conversion(Millennium, Second, p => p * 60.0 * 60.0 * 24.0 * 365.0 * 1000.0),
             new Conversion(Second, Millennium, p => p / 60.0 / 60.0 / 24.0 / 365.0 / 1000.0),
 
+            /*
             new Conversion(EUR, USD, p => Currency.Convert("EUR", "USD", p), "n2"),
             new Conversion(USD, EUR, p => Currency.Convert("USD", "EUR", p), "n2"),
             new Conversion(EUR, RUB, p => Currency.Convert("EUR", "RUB", p), "n2"),
@@ -218,7 +221,7 @@ namespace QuickInfo
             new Conversion(GBP, EUR, p => Currency.Convert("GBP", "EUR", p), "n2"),
             new Conversion(EUR, GBP, p => Currency.Convert("EUR", "GBP", p), "n2"),
             new Conversion(USD, GBP, p => Currency.Convert("USD", "GBP", p), "n2"),
-            new Conversion(GBP, USD, p => Currency.Convert("GBP", "USD", p), "n2"),
+            new Conversion(GBP, USD, p => Currency.Convert("GBP", "USD", p), "n2"),*/
         };
 
         private static Unit[] allUnits = null;
