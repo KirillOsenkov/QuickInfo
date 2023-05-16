@@ -9,10 +9,10 @@
     <PackageReference Include="Colourful" Version="3.1.0" />
     <PackageReference Include="Ecoji" Version="1.2.1" />
     <PackageReference Include="GuiLabs.MathParser" Version="1.0.9" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="UnicodeInformation" Version="2.6.0" />
-    <PackageReference Include="ThisAssembly.AssemblyInfo" Version="1.0.10" />
-    <PackageReference Include="GitInfo" Version="2.2.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="UnicodeInformation" Version="2.7.1" />
+    <PackageReference Include="ThisAssembly.AssemblyInfo" Version="1.2.15" />
+    <PackageReference Include="GitInfo" Version="3.0.6" />
   </ItemGroup>
 
   <PropertyGroup>
