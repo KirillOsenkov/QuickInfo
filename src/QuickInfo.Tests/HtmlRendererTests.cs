@@ -38,6 +38,13 @@ namespace QuickInfo.Tests
             T("tes", "");
         }
 
+        [Fact]
+        public void TestHex()
+        {
+            T("0x80070032",
+@"");
+        }
+
         private void T(string input, string expectedHtml)
         {
             var engine = new Engine();

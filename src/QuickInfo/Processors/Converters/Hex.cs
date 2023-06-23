@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using static QuickInfo.NodeFactory;
 
@@ -61,20 +62,26 @@ namespace QuickInfo
 
         private IEnumerable<object> GetResult(Integer value)
         {
+            return GetResultCore(value).ToArray();
+        }
+
+        private IEnumerable<object> GetResultCore(Integer value)
+        {
             BigInteger bigInteger = value.Value;
 
             if (value.Kind == IntegerKind.Hexadecimal)
             {
                 string hex = bigInteger.ToString("X");
-                if (value.OriginalText != null &&
-                    hex.TrimStart('0').ToUpperInvariant() == value.OriginalText.TrimStart('0').ToUpperInvariant())
-                {
-                    yield return FixedParagraph($"0x{hex} = {bigInteger}");
-                }
+                yield return FixedParagraph($"0x{hex} = {bigInteger}");
 
-                if (bigInteger < 0 && value.OriginalText != null)
+                if (bigInteger < 0 && value.OriginalText is string originalText)
                 {
-                    string positiveHex = "0" + value.OriginalText.ToUpperInvariant();
+                    if (originalText.StartsWith("0x", System.StringComparison.OrdinalIgnoreCase))
+                    {
+                        originalText = originalText.Substring(2);
+                    }
+
+                    string positiveHex = "0" + originalText.ToUpperInvariant();
                     if (StringUtilities.TryParseHex(positiveHex, out BigInteger positive))
                     {
                         yield return FixedParagraph($"0x{positiveHex} = {positive}");
@@ -83,7 +90,7 @@ namespace QuickInfo
             }
             else
             {
-                yield return FixedParagraph($"{bigInteger} = 0x{bigInteger.ToString("X")}");
+                yield return FixedParagraph($"{bigInteger} = 0x{bigInteger:X}");
             }
         }
     }
