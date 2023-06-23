@@ -12,7 +12,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="UnicodeInformation" Version="2.7.1" />
     <PackageReference Include="ThisAssembly.AssemblyInfo" Version="1.2.15" />
-    <PackageReference Include="GitInfo" Version="3.0.6" />
+    <PackageReference Include="GitInfo" Version="3.1.0" />
   </ItemGroup>
 
   <PropertyGroup>
