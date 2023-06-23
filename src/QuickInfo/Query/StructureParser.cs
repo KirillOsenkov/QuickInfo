@@ -19,7 +19,6 @@ namespace QuickInfo
             Add(new Keyword("hex"));
             Add(new Invocation());
             Add(new Prefix("#"));
-            Add(new Prefix("0x"));
             Add(new Prefix("U+", "u+", "\\U", "\\u"));
             Add(new Prefix("utf8 ", "utf-8 ", "utf "));
             Add(new Prefix("unicode ", "char ", "emoji "));

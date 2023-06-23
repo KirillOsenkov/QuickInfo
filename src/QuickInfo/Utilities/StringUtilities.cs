@@ -88,7 +88,7 @@ namespace QuickInfo
         {
             // Prepend "0" to ensure that the hex string is parsed as a positive number
             // See https://docs.microsoft.com/en-us/dotnet/api/system.numerics.biginteger#working-with-byte-arrays-and-hexadecimal-strings
-            bool success = BigInteger.TryParse("0" + s, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out result);
+            bool success = BigInteger.TryParse(s, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out result);
             return success;
         }
 

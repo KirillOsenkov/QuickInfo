@@ -88,8 +88,8 @@ namespace QuickInfo
 
             if (trimmed.Length > 2 && trimmed.StartsWith("0x"))
             {
-                trimmed = trimmed.Substring(2);
-                if (trimmed.TryParseHex(out result))
+                string no0x = trimmed.Substring(2);
+                if (no0x.TryParseHex(out result))
                 {
                     return new Integer(result)
                     {
