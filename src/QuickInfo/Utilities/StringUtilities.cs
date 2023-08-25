@@ -265,6 +265,12 @@ namespace QuickInfo
         }
 
         private static readonly IReadOnlyList<Span> Empty = new Span[] { Span.Empty };
+        public static string RemoveWhitespace(this string input)
+        {
+            return new string(input.ToCharArray()
+                .Where(c => !Char.IsWhiteSpace(c))
+                .ToArray());
+        }
 
         public static string TrimWhitespaceFromEachLine(this string text)
         {

@@ -7,10 +7,6 @@ namespace QuickInfo
 {
     public class CountryCodes : IProcessor
     {
-        public CountryCodes()
-        {
-           // airportsIndex = SortedSearch.CreateIndex(data.Select((t, i) => (t, i)), a => GetFields(a));
-        }
         public object GetResult(Query query)
         {
             if (query.IsHelp)
@@ -25,7 +21,7 @@ namespace QuickInfo
                 return null;
             }
 
-            if (input.IsSingleWord())
+            if (!string.IsNullOrEmpty(input))
             {
                return Country(input);
                 
@@ -39,12 +35,12 @@ namespace QuickInfo
             var result = new List<object>();
             foreach(var country in countryData)
             {
-                if(country.displayName.ToUpperInvariant().Equals(input.ToUpperInvariant()))
+                string countrydisplayName = country.displayName.RemoveWhitespace();
+                string inputName = input.RemoveWhitespace();
+                if (countrydisplayName.ToUpperInvariant().Equals(inputName.ToUpperInvariant()))
                 {
                     var name = country.displayName +","+ country.regionName;
                     result.Add(SectionHeader(name));
-
-
 
                     var officialName = country.officialName;
                     var capital = country.capital;
@@ -60,8 +56,10 @@ namespace QuickInfo
                     var pairs = new List<(string, string)>
             {
                 ("officialName:", country.officialName),
+                ("Region:", country.subregionName+","+country.regionName),
                 ("capital:",  country.capital),
                 ("TLD:", country.TLD),
+                ("languages:",country.languages),
                 ("currencyName:", country.currencyName),
                 ("currencyAlphabeticCode:", country.currencyAlphabeticCode),
                 ("ISO3166Alpha3:", country.ISO3166Alpha3),
@@ -77,9 +75,6 @@ namespace QuickInfo
                        
                     }, entries: pairs.ToArray()));
 
-                    //result.Add(Fixed("Capital"));
-                    //result.Add(capital);
-
                 }
             }
 
@@ -89,7 +84,6 @@ namespace QuickInfo
 
         private static readonly (string CallingCode, string displayName, string officialName, string regionName, string subregionName, string capital, string continent, string TLD, string languages, string currencyName, string currencyAlphabeticCode, string ISO3166Alpha3, string ISO3166Numeric, string ISO3166Alpha2, string geonameID)[] countryData =
         {
-          ("886","Taiwan","Taiwan","Asia","Eastern Asia","Taipei","AS",".tw","zh-TW,zh,nan,hak","New Taiwan dollar","TWD","TWN","158","TW","1668284"),
 ("93","Afghanistan","Afghanistan","Asia","Southern Asia'","Kabul","AS",".af","fa-AF,ps,uz-AF,tk","Afghani","AFN","AFG","4","AF","1149361"),
 ("355","Albania","Albania","Europe","Southern Europe","Tirana","EU",".al","sq,el","Lek","ALL","ALB","8","AL","783754"),
 ("213","Algeria","Algeria","Africa","Northern Africa","Algiers","AF",".dz","ar-DZ","Algerian Dinar","DZD","DZA","12","DZ","2589581"),
@@ -308,6 +302,7 @@ namespace QuickInfo
 ("41","Switzerland","Switzerland","Europe","Western Europe","Bern","EU",".ch","de-CH,fr-CH,it-CH,rm","Swiss Franc","CHF","CHE","756","CH","2658434"),
 ("963","Syria","Syrian Arab Republic","Asia","Western Asia","Damascus","AS",".sy","ar-SY,ku,hy,arc,fr,en","Syrian Pound","SYP","SYR","760","SY","163843"),
 ("992","Tajikistan","Tajikistan","Asia","Central Asia","Dushanbe","AS",".tj","tg,ru","Somoni","TJS","TJK","762","TJ","1220409"),
+("886","Taiwan","Taiwan","Asia","Eastern Asia","Taipei","AS",".tw","zh-TW,zh,nan,hak","New Taiwan dollar","TWD","TWN","158","TW","1668284"),
 ("66","Thailand","Thailand","Asia","South-eastern Asia","Bangkok","AS",".th","th,en","Baht","THB","THA","764","TH","1605651"),
 ("389","North Macedonia","The former Yugoslav Republic of Macedonia","Europe","Southern Europe","Skopje","EU",".mk","mk,sq,tr,rmm,sr","Denar","MKD","MKD","807","MK","718075"),
 ("670","Timor-Leste","Timor-Leste","Asia","South-eastern Asia","Dili","OC",".tl","tet,pt-TL,id,en","US Dollar","USD","TLS","626","TL","1966436"),
@@ -325,7 +320,7 @@ namespace QuickInfo
 ("971","United Arab Emirates","United Arab Emirates","Asia","Western Asia","Abu Dhabi","AS",".ae","ar-AE,fa,en,hi,ur","UAE Dirham","AED","ARE","784","AE","290557"),
 ("44","UK","United Kingdom of Great Britain and Northern Ireland","Europe","Northern Europe","London","EU",".uk","en-GB,cy-GB,gd","Pound Sterling","GBP","GBR","826","GB","2635167"),
 ("255","Tanzania","United Republic of Tanzania","Africa","Sub-Saharan Africa","Dodoma","AF",".tz","sw-TZ,en,ar","Tanzanian Shilling","TZS","TZA","834","TZ","149590"),
-("Â ","U.S. Outlying Islands","United States Minor Outlying Islands","Oceania","Micronesia","","OC",".um","en-UM","US Dollar","USD","UMI","581","UM","5854968"),
+("001","U.S. Outlying Islands","United States Minor Outlying Islands","Oceania","Micronesia","","OC",".um","en-UM","US Dollar","USD","UMI","581","UM","5854968"),
 ("1-340","U.S. Virgin Islands","United States Virgin Islands","Americas","Latin America and the Caribbean","Charlotte Amalie","NA",".vi","en-VI","US Dollar","USD","VIR","850","VI","4796775"),
 ("1","US","United States of America","Americas","Northern America","Washington","NA",".us","en-US,es-US,haw,fr","US Dollar","USD","USA","840","US","6252001"),
 ("598","Uruguay","Uruguay","Americas","Latin America and the Caribbean","Montevideo","SA",".uy","es-UY","Peso Uruguayo","UYU","URY","858","UY","3439705"),
@@ -338,7 +333,7 @@ namespace QuickInfo
 ("967","Yemen","Yemen","Asia","Western Asia","Sanaa","AS",".ye","ar-YE","Yemeni Rial","YER","YEM","887","YE","69543"),
 ("260","Zambia","Zambia","Africa","Sub-Saharan Africa","Lusaka","AF",".zm","en-ZM,bem,loz,lun,lue,ny,toi","Zambian Kwacha","ZMW","ZMB","894","ZM","895949"),
 ("263","Zimbabwe","Zimbabwe","Africa","Sub-Saharan Africa","Harare","AF",".zw","en-ZW,sn,nr,nd","Zimbabwe Dollar","ZWL","ZWE","716","ZW","878675"),
-("358","Ã…land Islands","Ã…land Islands","Europe","Northern Europe","Mariehamn","EU",".ax","sv-AX","Euro","EUR","ALA","248","AX","661882"),
+("358","Åland Islands","Åland Islands","Europe","Northern Europe","Mariehamn","EU",".ax","sv-AX","Euro","EUR","ALA","248","AX","661882"),
 
         };
     }
