@@ -61,6 +61,7 @@ namespace QuickInfo
                 ("TLD:", country.TLD),
                 ("languages:",country.languages),
                 ("currencyName:", country.currencyName),
+                ("Dialing Code:","+"+country.CallingCode),
                 ("currencyAlphabeticCode:", country.currencyAlphabeticCode),
                 ("ISO3166Alpha3:", country.ISO3166Alpha3),
                 ("ISO3166Numeric:", country.ISO3166Numeric),
