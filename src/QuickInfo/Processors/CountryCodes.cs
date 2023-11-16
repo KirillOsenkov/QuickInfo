@@ -37,7 +37,8 @@ namespace QuickInfo
             {
                 string countrydisplayName = country.displayName.RemoveWhitespace();
                 string inputName = input.RemoveWhitespace();
-                if (countrydisplayName.ToUpperInvariant().Equals(inputName.ToUpperInvariant()))
+                if (countrydisplayName.Equals(inputName, StringComparison.OrdinalIgnoreCase) ||
+                    country.CallingCode == input)
                 {
                     var name = country.displayName +","+ country.regionName;
                     result.Add(SectionHeader(name));
