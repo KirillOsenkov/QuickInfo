@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using static QuickInfo.NodeFactory;
 
 namespace QuickInfo
 {
@@ -423,6 +424,15 @@ namespace QuickInfo
 
         public object GetResult(Query query)
         {
+            if (query.IsHelp)
+            {
+                return HelpTable
+                (
+                    ("425", "Bellevue, WA"),
+                    ("Seattle", "206")
+                );
+            }
+
             string text = query.OriginalInput;
 
             if (areaCodes.TryGetValue(text, out string city))
