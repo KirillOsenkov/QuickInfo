@@ -11,6 +11,7 @@ namespace Info
             var engine = new Engine
             (
                 typeof(Ascii),
+                typeof(Chinese),
                 typeof(Color),
                 typeof(QuickInfo.DateAndTime),
                 typeof(Emoticons),

@@ -13,6 +13,13 @@
     <PackageReference Include="UnicodeInformation" Version="2.7.1" />
     <PackageReference Include="ThisAssembly.AssemblyInfo" Version="1.2.15" />
     <PackageReference Include="GitInfo" Version="3.1.0" />
+    <PackageReference Include="jieba.NET" Version="0.42.2" GeneratePathProperty="True" />
+    <PackageReference Include="CedictParser" Version="1.0.0" GeneratePathProperty="True" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="$(PkgJieba_Net)\Resources\*" CopyToOutputDirectory="PreserveNewest" Link="Resources\%(Filename)%(Extension)" />
+    <None Include="Resources\cedict_ts.u8" CopyToOutputDirectory="PreserveNewest" Link="Resources\cedict_ts.u8" />
   </ItemGroup>
 
   <PropertyGroup>
