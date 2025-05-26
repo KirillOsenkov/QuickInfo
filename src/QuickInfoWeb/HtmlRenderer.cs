@@ -151,7 +151,10 @@ namespace QuickInfo
                 {
                     using (Tag("div", "answerBlockHeader"))
                     {
-                        Write(node.Text);
+                        using (DivClass(node[NodeStyles.HeaderStyle] as string))
+                        {
+                            Write(node.Text);
+                        }
                     }
                 }
 
@@ -320,6 +323,10 @@ namespace QuickInfo
             else if (node.Style == NodeStyles.AsciiColumnHeaderCode || node.Style == NodeStyles.AsciiColumnCode)
             {
                 return "color: lightseagreen";
+            }
+            else if (node.Style == NodeStyles.Accent)
+            {
+                return "color: MediumOrchid";
             }
             else if (node.Style == NodeStyles.AsciiColumnHeaderHex || node.Style == NodeStyles.AsciiColumnHex)
             {

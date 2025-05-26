@@ -92,6 +92,15 @@ namespace QuickInfo
             };
         }
 
+        public static Node Accent(string text)
+        {
+            return new Node
+            {
+                Text = text,
+                Style = NodeStyles.Accent
+            };
+        }
+
         public static Node[] Answers(params string[] lines)
         {
             return lines.Select(Answer).ToArray();
@@ -226,6 +235,7 @@ namespace QuickInfo
         public const string Help = nameof(Help);
         public const string Label = nameof(Label);
         public const string SectionHeader = nameof(SectionHeader);
+        public const string HeaderStyle = nameof(HeaderStyle);
         public const string MainAnswer = nameof(MainAnswer);
         public const string Fixed = nameof(Fixed);
         public const string AsciiColumnHeaderCode = nameof(AsciiColumnHeaderCode);
@@ -234,6 +244,7 @@ namespace QuickInfo
         public const string AsciiColumnHex = nameof(AsciiColumnHex);
         public const string AsciiColumnChar = nameof(AsciiColumnChar);
         public const string Ascii = nameof(Ascii);
+        public const string Accent = nameof(Accent);
         public const string Color = nameof(Color);
         public const string ColorSwatchLarge = nameof(ColorSwatchLarge);
         public const string ColorSwatchSmall = nameof(ColorSwatchSmall);
