@@ -30,7 +30,7 @@ public class Chinese : IProcessor
 
                     dictionary = new Dictionary<string, CedictEntry>();
 
-                    var parser = new CedictParser(
+                    using var parser = new CedictParser(
                         Path.Combine(
                             Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
                             "Resources",
