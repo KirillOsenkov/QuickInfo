@@ -70,6 +70,10 @@ public class Chinese : IProcessor
             return null;
         }
 
+        // ignore commas
+        text = text.Replace("，", "");
+        text = text.Replace("。", "");
+
         for (int i = 0; i < text.Length; i++)
         {
             char ch = text[i];
