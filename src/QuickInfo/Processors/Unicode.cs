@@ -255,14 +255,7 @@ namespace QuickInfo
             string text = null;
             if (!isSurrogate)
             {
-                text = char.ConvertFromUtf32(value);
-                if (char.GetUnicodeCategory(text, 0) is
-                    UnicodeCategory.NonSpacingMark or
-                    UnicodeCategory.SpacingCombiningMark)
-                {
-                    const string DOTTED_CIRCLE = "\u25CC";
-                    text = DOTTED_CIRCLE + text;
-                }
+                text = GetCodePointText(value);
                 var answer = Answer(text);
                 answer.Style = NodeStyles.CharSample;
                 result.Add(answer);
@@ -312,6 +305,20 @@ namespace QuickInfo
             };
         }
 
+        private static string GetCodePointText(int value)
+        {
+            var text = char.ConvertFromUtf32(value);
+            if (char.GetUnicodeCategory(text, 0) is
+                    UnicodeCategory.NonSpacingMark or
+                    UnicodeCategory.SpacingCombiningMark)
+            {
+                const string DOTTED_CIRCLE = "\u25CC";
+                text = DOTTED_CIRCLE + text;
+            }
+
+            return text;
+        }
+
         private static string GetEscapeString(int value)
         {
             if (char.ConvertFromUtf32(value).Length == 2)
@@ -336,20 +343,9 @@ namespace QuickInfo
                 return GetResult(char.ConvertToUtf32(text[0], text[1]));
             }
 
-            var list = new List<object>();
-            var answer = Answer(text);
-            answer.Style = NodeStyles.CharSample;
-            list.Add(answer);
-            foreach (var codepoint in text.EnumerateCodePoints().Select(c => GetEscapeString(c)))
-            {
-                var link = Fixed(codepoint);
-                link.SearchLink = codepoint;
-                list.Add(link);
-            }
+            var codepoints = text.EnumerateCodePoints();
 
-            list.Add(FixedParagraph(GetUtf8(text)));
-
-            return list;
+            return HorizontalList(codepoints.Select(c => GetResult(c)));
         }
     }
 }

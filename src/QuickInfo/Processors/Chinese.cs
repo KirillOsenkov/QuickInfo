@@ -65,7 +65,7 @@ public class Chinese : IProcessor
 
         string text = query.OriginalInputTrim;
 
-        if (text.Length > 1024)
+        if (string.IsNullOrWhiteSpace(text) || text.Length > 1024)
         {
             return null;
         }
