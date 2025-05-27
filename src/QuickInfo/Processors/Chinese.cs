@@ -95,8 +95,19 @@ public class Chinese : IProcessor
 
                 if (entry.Definitions != null && entry.Definitions.Length > 0)
                 {
-                    var definitions = string.Join("; ", entry.Definitions);
-                    details.Add(definitions);
+                    if (entry.Definitions.Length == 1)
+                    {
+                        details.Add(Answer(entry.Definitions[0]));
+                    }
+                    else
+                    {
+                        var bullets = new Node
+                        {
+                            List = entry.Definitions,
+                            Style = NodeStyles.BulletList
+                        };
+                        details.Add(bullets);
+                    }
                 }
             }
 
