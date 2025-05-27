@@ -252,5 +252,6 @@ namespace QuickInfo
         public const string CharSample = nameof(CharSample);
         public const string HorizontalList = nameof(HorizontalList);
         public const string Card = nameof(Card);
+        public const string BulletList = nameof(BulletList);
     }
 }

@@ -124,6 +124,10 @@ namespace QuickInfo
                 paddingTag = "div";
                 paddingClass = "singleAnswerSection";
             }
+            else if (node.Style == NodeStyles.BulletList)
+            {
+                paddingTag = "ul";
+            }
 
             (string, string)[] attributes = null;
             if (node.Link != null)
@@ -170,7 +174,11 @@ namespace QuickInfo
 
                         foreach (var item in list)
                         {
-                            Render(item, suggestedClass: suggestedChildClass);
+                            var listTag = node.Style == NodeStyles.BulletList ? "li" : null;
+                            using (Tag(listTag))
+                            {
+                                Render(item, suggestedClass: suggestedChildClass);
+                            }
                         }
                     }
                     else
