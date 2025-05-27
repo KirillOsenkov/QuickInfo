@@ -79,8 +79,7 @@ public class Chinese : IProcessor
             }
         }
 
-        var words = Segmenter.Cut(text);
-        words = SplitFurther(words).ToArray();
+        var words = SplitIntoWords(text);
 
         var list = new List<object>();
 
@@ -117,6 +116,18 @@ public class Chinese : IProcessor
         }
 
         return list;
+    }
+
+    private IEnumerable<string> SplitIntoWords(string text)
+    {
+        if (Dictionary.ContainsKey(text))
+        {
+            return [text];
+        }
+
+        var words = Segmenter.Cut(text);
+        words = SplitFurther(words).ToArray();
+        return words;
     }
 
     private IEnumerable<string> SplitFurther(IEnumerable<string> words)
