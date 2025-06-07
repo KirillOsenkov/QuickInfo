@@ -1,4 +1,4 @@
-body {
+﻿body {
     font-family: Segoe UI, Tahoma, Helvetica, sans-serif;
     box-sizing: border-box;
     padding: 0px;
@@ -24,17 +24,32 @@ a {
 
 #inputBox {
     font-size: 16pt;
-    width: 405px;
+    width: 400px;
     border-color: lightgray;
     border-width: 1px;
     border-style: solid;
     padding: 10px;
-    margin: 15px;
-    margin: 15px;
-    margin: 15px;
-    margin: 15px;
+    margin-left: 15px;
+    margin-top: 15px;
+    margin-bottom: 15px;
     vertical-align: top;
 }
+
+#pasteButton {
+    font-size: 24pt;
+    border: none;
+    border-radius: 0;
+    margin-left: -5;
+    margin-right: 5px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    background-color: transparent;
+    opacity: 50%;
+}
+
+    #pasteButton:hover {
+        opacity: 100%;
+    }
 
 #outputDiv {
     margin: 20px;

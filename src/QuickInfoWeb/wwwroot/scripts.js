@@ -73,6 +73,13 @@ function onSearchChange() {
     }
 }
 
+async function onPasteClick() {
+    var text = await navigator.clipboard.readText();
+    if (text && text.length < 1024) {
+        searchFor(text);
+    }
+}
+
 var currentDemoTerm = 0;
 var terms = [
     "color",
@@ -177,17 +184,20 @@ function updateInputBoxWidth() {
 
     var pageWidth = window.innerWidth || document.body.clientWidth;
 
-    if (pageWidth < 452) {
-        inputBox.style.width = "calc(100% - 52px)";
+    var minInputBoxWidth = 400;
+    var pasteButtonWidth = 75;
+
+    if (pageWidth < minInputBoxWidth + pasteButtonWidth) {
+        inputBox.style.width = `calc(100% - ${pasteButtonWidth}px)`;
         return;
     }
 
     var length = inputBox.value.length;
     if (length > 15) {
-        inputBox.style.width = "calc(100% - 52px)";
+        inputBox.style.width = `calc(100% - ${pasteButtonWidth}px)`;
     }
     else {
-        inputBox.style.width = "400px";
+        inputBox.style.width = `${minInputBoxWidth}px`;
     }
 }
 
