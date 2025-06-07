@@ -74,9 +74,15 @@ function onSearchChange() {
 }
 
 async function onPasteClick() {
-    var text = await navigator.clipboard.readText();
-    if (text && text.length < 1024) {
-        searchFor(text);
+    try {
+        inputBox.focus();
+        inputBox.value = "";
+        var text = await navigator.clipboard.readText();
+        if (text && text.length < 1024) {
+            searchFor(text);
+        }
+    } catch (err) {
+        displayResults(err);
     }
 }
 
