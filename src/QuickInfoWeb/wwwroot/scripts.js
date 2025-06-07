@@ -183,9 +183,9 @@ function onWindowResize() {
 function updateInputBoxWidth() {
 
     var pageWidth = window.innerWidth || document.body.clientWidth;
+    var pasteButtonWidth = pasteButton.scrollWidth + 25;
 
     var minInputBoxWidth = 400;
-    var pasteButtonWidth = 75;
 
     if (pageWidth < minInputBoxWidth + pasteButtonWidth) {
         inputBox.style.width = `calc(100% - ${pasteButtonWidth}px)`;
