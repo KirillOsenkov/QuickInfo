@@ -140,30 +140,54 @@ public class Chinese : IProcessor
             return [text];
         }
 
-        var words = Segmenter.Cut(text);
+        var words = Segmenter.Cut(text).ToArray();
         words = SplitFurther(words).ToArray();
+        words = RecombineIntoLongerWords(words).ToArray();
         return words;
     }
 
-    private IEnumerable<string> SplitFurther(IEnumerable<string> words)
+    private IEnumerable<string> SplitFurther(IReadOnlyList<string> words)
     {
-        foreach (var word in words)
+        for (int i = 0; i < words.Count; i++)
         {
-            if (word.Length == 1)
-            {
-                yield return word;
-            }
-            else if (!Dictionary.ContainsKey(word) && word.All(ch => Dictionary.ContainsKey(ch.ToString())))
+            var word = words[i];
+
+            if (word.Length > 1 &&
+                !Dictionary.ContainsKey(word) &&
+                word.All(ch => Dictionary.ContainsKey(ch.ToString())))
             {
                 foreach (var ch in word)
                 {
                     yield return ch.ToString();
                 }
+
+                continue;
             }
-            else
+
+            yield return word;
+        }
+    }
+
+    private IEnumerable<string> RecombineIntoLongerWords(IReadOnlyList<string> words)
+    {
+        for (int i = 0; i < words.Count; i++)
+        {
+            var word = words[i];
+            for (int j = i + 1; j < words.Count; j++)
             {
-                yield return word;
+                var candidate = word + words[j];
+                if (Dictionary.ContainsKey(candidate))
+                {
+                    word = candidate;
+                    i++;
+                }
+                else
+                {
+                    break;
+                }
             }
+
+            yield return word;
         }
     }
 
