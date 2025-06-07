@@ -36,6 +36,7 @@ a {
 }
 
 #pasteButton {
+    -webkit-appearance: none;
     font-size: 24pt;
     border: none;
     border-radius: 0;
