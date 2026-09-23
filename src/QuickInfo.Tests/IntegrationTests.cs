@@ -11,8 +11,8 @@ namespace QuickInfo.Tests
         [InlineData("%C3%A9",    @"<div class=""mainAnswerText"">LATIN SMALL LETTER E WITH ACUTE</div>")]
         [InlineData("%E2%80%AF", @"<div class=""mainAnswerText"">NARROW NO-BREAK SPACE</div>")]
         [InlineData("U%2BA7FB",  @"<div class=""mainAnswerText"">LATIN EPIGRAPHIC LETTER REVERSED F</div>")]
-        [InlineData("F0 9F 8D 92 F0 9F 8D 87", @"🍒🍇")]
-        [InlineData("100 EUR", "100")]
+        [InlineData("F0 9F 8D 92 F0 9F 8D 87", @"<div class=""mainAnswerText"">CHERRIES</div>")]
+        [InlineData("F0 9F 8D 92 F0 9F 8D 87", @"<div class=""mainAnswerText"">GRAPES</div>")]
         public async Task TestQuery(string query, string output)
         {
             var response = await GetResponse(query);

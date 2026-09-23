@@ -63,15 +63,24 @@ namespace QuickInfo
                 if (separatedList != null)
                 {
                     var byteList = separatedList.GetStructuresOfType<Integer>();
-                    if (byteList.Count == separatedList.Count && byteList.All(b => b.Value >= 0 && b.Value <= 255))
+                    if (byteList.Count == separatedList.Count)
                     {
                         List<byte> result = new List<byte>();
                         foreach (var b in byteList)
                         {
-                            result.Add((byte)b.ForceHexadecimalValue());
+                            if (!b.TryForceHexadecimalValue(out int value) || value < 0 || value > 255)
+                            {
+                                result = null;
+                                break;
+                            }
+
+                            result.Add((byte)value);
                         }
 
-                        return (T)(object)result.ToArray();
+                        if (result != null)
+                        {
+                            return (T)(object)result.ToArray();
+                        }
                     }
                 }
             }

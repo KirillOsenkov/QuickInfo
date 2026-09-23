@@ -27,19 +27,33 @@ namespace QuickInfo
 
         public int ForceHexadecimalValue()
         {
+            TryForceHexadecimalValue(out int result);
+            return result;
+        }
+
+        /// <summary>
+        /// Interprets the original digits as an unsigned hexadecimal number.
+        /// Hex text with the high bit set (e.g. "A7FB" or "F0") parses as a negative
+        /// two's complement <see cref="Value"/>, so we re-parse the digits with a leading "0".
+        /// A decimal like "92" is re-interpreted as hex 0x92.
+        /// </summary>
+        public bool TryForceHexadecimalValue(out int result)
+        {
+            string digits;
             if (Kind == IntegerKind.Hexadecimal)
             {
-                // we're already hex
-                return Int32;
+                digits = OriginalText ?? Value.ToString("X");
+                if (digits.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
+                {
+                    digits = digits.Substring(2);
+                }
             }
             else
             {
-                // we originally interpreted the value as decimal;
-                // now re-interpret as hex and return
-                var hexString = Int32.ToString();
-                hexString.TryParseHex(out int hexNumber);
-                return hexNumber;
+                digits = Value.ToString();
             }
+
+            return ("0" + digits).TryParseHex(out result);
         }
 
         public bool TryGetInt32(out int int32)

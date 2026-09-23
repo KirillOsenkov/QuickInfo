@@ -77,7 +77,7 @@ namespace QuickInfo
                 if (prefix.PrefixKind == "U+")
                 {
                     var integer = StructureParser.TryGetStructure<Integer>(prefix.Remainder);
-                    if (integer != null && integer.ForceHexadecimalValue() is int hexValue && IsUnicodeCodepoint(hexValue))
+                    if (integer != null && integer.TryForceHexadecimalValue(out int hexValue) && IsUnicodeCodepoint(hexValue))
                     {
                         return GetResult(hexValue, useCard: false);
                     }
@@ -99,7 +99,7 @@ namespace QuickInfo
                 foreach (var uPrefix in codepoints)
                 {
                     var integer = StructureParser.TryGetStructure<Integer>(uPrefix.Remainder);
-                    if (integer != null && integer.ForceHexadecimalValue() is int hexValue && IsUnicodeCodepoint(hexValue))
+                    if (integer != null && integer.TryForceHexadecimalValue(out int hexValue) && IsUnicodeCodepoint(hexValue))
                     {
                         sb.Append(char.ConvertFromUtf32(hexValue));
                     }
