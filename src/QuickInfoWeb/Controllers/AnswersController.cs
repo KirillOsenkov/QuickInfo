@@ -29,11 +29,11 @@ namespace QuickInfo.Controllers
                 result = DivClass(text, "exception");
             }
 
-            Response.Headers.Add("Cache-Control", new[] { "no-cache" });
-            Response.Headers.Add("Pragma", new[] { "no-cache" });
-            Response.Headers.Add("Expires", new[] { "-1" });
-            Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
-            Response.Headers.Add("Access-Control-Allow-Headers", new[] { "Content-Type" });
+            Response.Headers.Append("Cache-Control", new[] { "no-cache" });
+            Response.Headers.Append("Pragma", new[] { "no-cache" });
+            Response.Headers.Append("Expires", new[] { "-1" });
+            Response.Headers.Append("Access-Control-Allow-Origin", new[] { "*" });
+            Response.Headers.Append("Access-Control-Allow-Headers", new[] { "Content-Type" });
 
             return result;
         }
